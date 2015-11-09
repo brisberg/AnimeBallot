@@ -1,0 +1,29 @@
+.ember-application {
+}
+
+.container {
+    background: #eee;
+    min-height: 700px;
+}
+
+#header {
+    background: #337AB7;
+    color: white;
+}
+
+#footer {
+    background: #eee;
+    padding: 5px;
+}
+
+.series {
+    background: lightblue;
+}
+
+.episode {
+    background: lightblue;
+}
+
+.ballot {
+    background: lightblue;
+}

@@ -1,0 +1,14 @@
+.container {
+    background: #eee;
+    min-height: 700px;
+}
+
+#header {
+    background: #337AB7;
+    color: white;
+}
+
+#footer {
+    background: #ccc;
+    padding: 5px;
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+    <definition name="exceptionDetails" template="/WEB-INF/views/errors/exceptionDetails.jsp">
+    </definition>
+
+    <definition name="indexHtmlLayout" template="/index.html">
+    </definition>
+
+    <definition name="adminLayout" template="/WEB-INF/layouts/standard.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header" value="/WEB-INF/views/header.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/footer.jsp"/>
+    </definition>
+
+    <definition name="home/*" extends="indexHtmlLayout">
+    </definition>
+
+    <definition name="uncaughtException" extends="adminLayout">
+        <put-attribute name="body" value="/WEB-INF/views/errors/uncaughtException.jsp"/>
+    </definition>
+
+    <definition name="resourceNotFoundException" extends="adminLayout">
+        <put-attribute name="body" value="/WEB-INF/views/errors/resourceNotFoundException.jsp"/>
+    </definition>
+
+    <definition name="accessDeniedException" extends="adminLayout">
+        <put-attribute name="body" value="/WEB-INF/views/errors/accessDeniedException.jsp"/>
+    </definition>
+
+    <definition name="admin/home/*" extends="adminLayout">
+        <put-attribute name="title" value="Admin Home"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/home/{1}.jsp"/>
+    </definition>
+
+    <definition name="admin/season/*" extends="adminLayout">
+        <put-attribute name="title" value="Admin Seasons"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/season/{1}.jsp"/>
+    </definition>
+
+    <definition name="admin/series/*" extends="adminLayout">
+        <put-attribute name="title" value="Admin Series"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/series/{1}.jsp"/>
+    </definition>
+
+    <definition name="admin/episode/*" extends="adminLayout">
+        <put-attribute name="title" value="Admin Episodes"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/episode/{1}.jsp"/>
+    </definition>
+
+    <definition name="admin/ballot/*" extends="adminLayout">
+        <put-attribute name="title" value="Admin Ballots"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/ballot/{1}.jsp"/>
+    </definition>
+
+    <definition name="admin/user/*" extends="adminLayout">
+        <put-attribute name="title" value="Admin Users"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/user/{1}.jsp"/>
+    </definition>
+
+</tiles-definitions>
