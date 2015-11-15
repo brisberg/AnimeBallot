@@ -34,6 +34,17 @@ public class EpisodeService {
         return em.createQuery(criteria).getResultList();
     }
 
+    public List<Episode> findEntityListByWeekIndex(int weekIndex) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Episode> criteria = builder.createQuery(Episode.class);
+        Root<Episode> root = criteria.from(Episode.class);
+
+        Path<String> rootWeekIndex = root.get("weekIndex");
+        criteria.where(builder.equal(rootWeekIndex, weekIndex));
+
+        return em.createQuery(criteria).getResultList();
+    }
+
     public Episode findEntityById(int id) {
         return em.find(Episode.class, id);
     }

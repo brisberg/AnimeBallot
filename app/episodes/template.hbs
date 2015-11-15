@@ -1,0 +1,21 @@
+{{outlet}}
+
+<div>
+    {{#each model.weekIndexes as |weekIndex|}}
+        {{#link-to 'episodes.by-week' weekIndex}}
+            Week {{weekIndex}}
+        {{/link-to}}
+    {{/each}}
+</div>
+
+<h3>Here are all the episodes:</h3>
+
+<table cell-spacing="2">
+    {{#each model.episodes as |episode|}}
+        <tr class="series">
+            <td>{{episode.title}}</td>
+            <td>{{episode.weekIndex}}</td>
+            <td>{{episode.formattedAirDate}}</td>
+        </tr>
+    {{/each}}
+</table>
