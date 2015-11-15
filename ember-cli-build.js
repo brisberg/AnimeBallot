@@ -40,7 +40,5 @@ module.exports = function(defaults) {
 
   app.import('bower_components/moment/moment.js');
 
-  //app.import('src/main/WEB-INF/web.xml');
-
   return app.toTree();
 };
