@@ -39,6 +39,8 @@ public class AdminEpisodeController extends AbstractAdminController {
     @Autowired
     private EpisodeService episodeService;
     @Autowired
+    private SeriesService seriesService;
+    @Autowired
     private SeasonService seasonService;
     @Autowired
     private PageFrameworkService pageFrameworkService;
@@ -53,59 +55,69 @@ public class AdminEpisodeController extends AbstractAdminController {
                 (Date.class, new CustomDateEditor(new SimpleDateFormat("MM-dd-yyyy"), false));
     }
 
-    @RequestMapping(value = "/admin/episode/**")
-    public String index() {
-        return "redirect:/admin/episode/list";
+    @RequestMapping(value = "/admin/series/{seriesId}/episode/**")
+    public String index(@PathVariable int seriesId) {
+        return "redirect:/admin/series/" + seriesId + "/episode/list";
     }
 
-    @RequestMapping(value = "/admin/episode/list")
-    public ModelAndView list(Object criteria) {
+    @RequestMapping(value = "/admin/series/{seriesId}/episode/list")
+    public ModelAndView list(@PathVariable int seriesId, Object criteria) {
 
-        List<Episode> episodeList = episodeService.findEntityList();
+        Series series = seriesService.findEntityById(seriesId); // TODO: might take this out since we can infer the seriesId on the other side from the episodes.
+        List<Episode> episodeList = episodeService.findEntityListBySeriesId(seriesId);
 
-        ModelAndView modelAndView = new ModelAndView("admin/episode/list");
+        ModelAndView modelAndView = new ModelAndView("admin/series/" + seriesId + "/episode/list");
         modelAndView.addObject("episodeList", episodeList);
+        modelAndView.addObject("series", series);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/admin/episode/show/{id}", method = RequestMethod.GET)
-    public String show(@PathVariable int id, Model model, HttpSession session) {
+    @RequestMapping(value = "/admin/series/{seriesId}/episode/show/{id}", method = RequestMethod.GET)
+    public String show(@PathVariable int seriesId, @PathVariable int id, Model model, HttpSession session) {
 
         Episode episode = episodeService.findEntityById(id);
+        Series series = seriesService.findEntityById(seriesId);
+
         if (episode != null) {
             model.addAttribute(episode);
-            return "admin/episode/show";
+            model.addAttribute(series);
+            return "admin/series/" + seriesId + "/episode/show";
         } else {
             pageFrameworkService.setFlashMessage(session, "No Episode with that id");
             pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
-            return "redirect:/admin/episode/list";
+            return "redirect:/admin/series/" + seriesId + "/episode/list";
         }
     }
 
-    @RequestMapping(value = "/admin/episode/create", method = RequestMethod.GET)
-    public ModelAndView create() {
+    @RequestMapping(value = "/admin/series/{seriesId}/episode/create", method = RequestMethod.GET)
+    public ModelAndView create(@PathVariable int seriesId) {
 
+        Series series = seriesService.findEntityById(seriesId);
         Episode episode = new Episode();
+        episode.setSeries(series);
 
-        ModelAndView modelAndView = new ModelAndView("admin/episode/create");
+        ModelAndView modelAndView = new ModelAndView("admin/series/" + seriesId + "/episode/create");
         modelAndView.addObject("command", episode);
+        modelAndView.addObject("series", series);
         modelAndView.addObject("episodeList", episodeService.findEntityList());
         return modelAndView;
     }
 
-    @RequestMapping(value = "/admin/episode/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable int id) {
+    @RequestMapping(value = "/admin/series/{seriesId}/episode/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView edit(@PathVariable int seriesId, @PathVariable int id) {
+        Series series = seriesService.findEntityById(seriesId);
         Episode episode = episodeService.findEntityById(id);
 
-        ModelAndView modelAndView = new ModelAndView("admin/episode/edit");
+        ModelAndView modelAndView = new ModelAndView("admin/series/" + seriesId + "/episode/edit");
         modelAndView.addObject("command", episode);
+        modelAndView.addObject("series", series);
         modelAndView.addObject("seasonList", episodeService.findEntityList());
 
         return modelAndView;
     }
 
-    @RequestMapping(value = "/admin/episode/save", method = RequestMethod.POST)
-    public String save(final @ModelAttribute("command") @Valid Episode episode,
+    @RequestMapping(value = "/admin/series/{seriesId}/episode/save", method = RequestMethod.POST)
+    public String save(@PathVariable int seriesId, final @ModelAttribute("command") @Valid Episode episode,
                        BindingResult result, Model model, HttpSession session) {
 
         if (result.hasErrors()) {
@@ -120,7 +132,7 @@ public class AdminEpisodeController extends AbstractAdminController {
 
             // TODO: work out the model
             model.addAttribute("seasonList", seasonService.findEntityList());
-            return "admin/episode/edit";
+            return "admin/series/" + seriesId + "/episode/edit";
         }
 
         try {
@@ -131,14 +143,14 @@ public class AdminEpisodeController extends AbstractAdminController {
         } catch (RuntimeException re) {
             pageFrameworkService.setFlashMessage(session, re.getMessage());
             pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
-            return "redirect:/admin/episode/list";
+            return "redirect:/admin/series/" + seriesId + "/episode/list";
         }
 
-        return "redirect:/admin/episode/list";
+        return "redirect:/admin/series/" + seriesId + "/episode/list";
     }
 
-    @RequestMapping(value = "/admin/episode/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable int id, HttpSession session) {
+    @RequestMapping(value = "/admin/series/{seriesId}/episode/delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable int seriesId, @PathVariable int id, HttpSession session) {
 
         Episode episode = episodeService.findEntityById(id);
         if (episode != null) {
@@ -147,13 +159,13 @@ public class AdminEpisodeController extends AbstractAdminController {
             } catch (RuntimeException re) {
                 pageFrameworkService.setFlashMessage(session, re.getMessage());
                 pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
-                return "redirect:/admin/episode/show/" + id;
+                return "redirect:/admin/series/" + seriesId + "/episode/show/" + id;
             }
         } else {
             pageFrameworkService.setFlashMessage(session, "No Episode with that id");
             pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
         }
 
-        return "redirect:/admin/episode/list";
+        return "redirect:/admin/series/" + seriesId + "/episode/list";
     }
 }

@@ -65,6 +65,7 @@ public class AdminSeriesController extends AbstractAdminController {
 
         ModelAndView modelAndView = new ModelAndView("admin/series/list");
         modelAndView.addObject("seriesList", seriesList);
+        modelAndView.addObject("seasonList", seasonService.findEntityList());
         return modelAndView;
     }
 

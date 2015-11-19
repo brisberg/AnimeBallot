@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <c:if test="${flashMessage != null}">
     <div class="message">${flashMessage}</div>
@@ -8,10 +10,17 @@
 
 
 <div class="row" style="padding-top: 8px">
-    <div class="col-md-6" style="font-size: 16px; font-weight: bold">
+    <div class="col-md-4" style="font-size: 16px; font-weight: bold">
         Find, edit, and create Series
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
+        <select path="season">
+            <c:forEach var="season" items="${seasonList}">
+                <option value="${season.id}">${season.title}</option>
+            </c:forEach>
+        </select>
+    </div>
+    <div class="col-md-4">
         <a href="<c:url value="/admin/series/create" />" class="pull-right btn btn-default" style="padding: 0px 10px">
             Create New Series &raquo
         </a>
@@ -35,15 +44,15 @@
                     <a href="<c:url value="/admin/series/show/${series.id}" />">${series.title}</a>
                 </td>
                 <td>
-                    ${series.season.title}
+                        ${series.season.title}
                 </td>
                 <td>
                     <fmt:formatDate pattern="MM-dd-yyyy"
-                                    value="${series.startDate}" />
+                                    value="${series.startDate}"/>
                 </td>
                 <td>
                     <fmt:formatDate pattern="MM-dd-yyyy"
-                                    value="${series.endDate}" />
+                                    value="${series.endDate}"/>
                 </td>
                 <td style="white-space: nowrap">
                     <a class="btn btn-default" style="padding: 0px 10px"

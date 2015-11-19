@@ -45,6 +45,17 @@ public class EpisodeService {
         return em.createQuery(criteria).getResultList();
     }
 
+    public List<Episode> findEntityListBySeriesId(int seriesId) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Episode> criteria = builder.createQuery(Episode.class);
+        Root<Episode> root = criteria.from(Episode.class);
+
+        Path<String> rootSeriesId = root.get("series");
+        criteria.where(builder.equal(rootSeriesId, seriesId));
+
+        return em.createQuery(criteria).getResultList();
+    }
+
     public Episode findEntityById(int id) {
         return em.find(Episode.class, id);
     }

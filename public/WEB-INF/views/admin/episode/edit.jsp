@@ -12,7 +12,7 @@
     <div class="message">${flashMessage}</div>
 </c:if>
 
-<c:url var="saveUrl" value="/admin/episode/save"/>
+<c:url var="saveUrl" value="/admin/series/${series.id}/episode/save"/>
 <form:form method="post" action="${saveUrl}">
     <form:hidden path="id"/>
     <table>
