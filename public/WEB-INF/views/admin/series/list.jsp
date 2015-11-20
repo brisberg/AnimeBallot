@@ -56,6 +56,8 @@
                 </td>
                 <td style="white-space: nowrap">
                     <a class="btn btn-default" style="padding: 0px 10px"
+                       href="<c:url value="/admin/series/${series.id}/episode/list" />">Episodes</a>
+                    <a class="btn btn-default" style="padding: 0px 10px"
                        href="<c:url value="/admin/series/edit/${series.id}" />">Edit</a>
                     <a class="btn btn-default" style="padding: 0px 10px"
                        href="<c:url value="/admin/series/delete/${series.id}" />">Delete</a>

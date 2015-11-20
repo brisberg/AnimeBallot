@@ -42,14 +42,14 @@
         <put-attribute name="body" value="/WEB-INF/views/admin/season/{1}.jsp"/>
     </definition>
 
-    <definition name="admin/series/*/episode/*" extends="adminLayout">
-        <put-attribute name="title" value="Admin Episodes"/>
-        <put-attribute name="body" value="/WEB-INF/views/admin/series/episode/{2}.jsp"/>
-    </definition>
-
     <definition name="admin/series/*" extends="adminLayout">
         <put-attribute name="title" value="Admin Series"/>
         <put-attribute name="body" value="/WEB-INF/views/admin/series/{1}.jsp"/>
+    </definition>
+
+    <definition name="admin/series/episode/*" extends="adminLayout">
+        <put-attribute name="title" value="Admin Episodes"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/series/episode/{1}.jsp"/>
     </definition>
 
     <definition name="admin/ballot/*" extends="adminLayout">

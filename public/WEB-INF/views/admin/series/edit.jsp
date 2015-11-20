@@ -40,6 +40,11 @@
             <td><form:input path="endDate" size="40"/></td>
             <td><form:errors path="endDate" cssClass="error"/></td>
         </tr>
+        <tr>
+            <td>Episode Count:</td>
+            <td><form:input path="episodeCount" size="40"/></td>
+            <td><form:errors path="episodeCount" cssClass="error"/></td>
+        </tr>
     </table>
 
     <div class="botButtons">

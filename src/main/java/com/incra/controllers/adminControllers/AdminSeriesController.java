@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The <i>SeriesController</i> controller implements listing of seasons.
+ * The <i>SeriesController</i> controller implements listing of series and episodes.
  *
  * @author Brandon Risberg
  * @since 10/23/2015
@@ -169,7 +169,7 @@ public class AdminSeriesController extends AbstractAdminController {
         Series series = seriesService.findEntityById(seriesId); // TODO: might take this out since we can infer the seriesId on the other side from the episodes.
         List<Episode> episodeList = episodeService.findEntityListBySeriesId(seriesId);
 
-        ModelAndView modelAndView = new ModelAndView("admin/series/" + seriesId + "/episode/list");
+        ModelAndView modelAndView = new ModelAndView("admin/series/episode/list");
         modelAndView.addObject("episodeList", episodeList);
         modelAndView.addObject("series", series);
         return modelAndView;
@@ -184,7 +184,7 @@ public class AdminSeriesController extends AbstractAdminController {
         if (episode != null) {
             model.addAttribute(episode);
             model.addAttribute(series);
-            return "admin/series/" + seriesId + "/episode/show";
+            return "admin/series/episode/show";
         } else {
             pageFrameworkService.setFlashMessage(session, "No Episode with that id");
             pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
@@ -199,7 +199,7 @@ public class AdminSeriesController extends AbstractAdminController {
         Episode episode = new Episode();
         episode.setSeries(series);
 
-        ModelAndView modelAndView = new ModelAndView("admin/series/" + seriesId + "/episode/create");
+        ModelAndView modelAndView = new ModelAndView("admin/series/episode/create");
         modelAndView.addObject("command", episode);
         modelAndView.addObject("series", series);
         modelAndView.addObject("episodeList", episodeService.findEntityList());
@@ -211,7 +211,7 @@ public class AdminSeriesController extends AbstractAdminController {
         Series series = seriesService.findEntityById(seriesId);
         Episode episode = episodeService.findEntityById(id);
 
-        ModelAndView modelAndView = new ModelAndView("admin/series/" + seriesId + "/episode/edit");
+        ModelAndView modelAndView = new ModelAndView("admin/series/episode/edit");
         modelAndView.addObject("command", episode);
         modelAndView.addObject("series", series);
         modelAndView.addObject("seasonList", episodeService.findEntityList());
@@ -235,7 +235,7 @@ public class AdminSeriesController extends AbstractAdminController {
 
             // TODO: work out the model
             model.addAttribute("seasonList", seasonService.findEntityList());
-            return "admin/series/" + seriesId + "/episode/edit";
+            return "admin/series/episode/edit";
         }
 
         try {
