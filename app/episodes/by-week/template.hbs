@@ -1,13 +1,17 @@
 <h4>For week {{model.weekIndex}}, there are:</h4>
 
-<table cell-spacing="2">
+<table class="table">
+    <tbody>
     {{#each model.episodes as |episode|}}
-        <tr class="series">
+        <tr class="episode">
             <td>{{episode.title}}</td>
             <td>{{episode.weekIndex}}</td>
             <td>{{episode.formattedAirDate}}</td>
         </tr>
     {{/each}}
+    </tbody>
 </table>
 
-
+{{#link-to 'episodes.calendar'}}
+    <button class="btn btn-default">Back</button>
+{{/link-to}}

@@ -1,0 +1,15 @@
+<table class="table">
+    <tbody>
+    {{#each model.weekIndexes as |weekIndex|}}
+        <tr>
+            <td style="background: #EEE;">
+                {{#link-to 'episodes.by-week' weekIndex}}
+                    Week {{weekIndex}}
+                {{/link-to}}
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+
+
