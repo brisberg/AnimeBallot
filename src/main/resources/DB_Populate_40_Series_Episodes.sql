@@ -15,6 +15,8 @@ VALUES (11, 2, 'Gakkou Gurashi', 13, '2015-10-10 00:00:00', '2016-1-3 00:00:00',
 INSERT INTO series (id, season_id, title, episode_count, start_date, end_date, date_created, last_updated)
 VALUES (12, 2, 'Monster Musume', 12, '2015-10-15 00:00:00', '2015-12-29 00:00:00', now(), now());
 
+ALTER SEQUENCE series_id_seq RESTART WITH 9999;
+
 -- episodes
 
 -- Asterisk
@@ -196,3 +198,5 @@ INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title,
 VALUES (131, 12, 11, 1, 11, '', '2015-12-22 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
 VALUES (132, 12, 12, 1, 12, '', '2015-12-29 00:00:00', now(), now());
+
+ALTER SEQUENCE episode_id_seq RESTART WITH 9999;

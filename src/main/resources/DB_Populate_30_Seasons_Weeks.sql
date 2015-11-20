@@ -5,6 +5,8 @@ VALUES (1, 'Fall 2015', '2015-10-10 00:00:00', '2016-1-9 00:00:00', now(), now()
 INSERT INTO season (id, title, start_date, end_date, date_created, last_updated)
 VALUES (2, 'Summer 2015', '2015-7-2 00:00:00', '2015-10-5 00:00:00', now(), now());
 
+ALTER SEQUENCE season_id_seq RESTART WITH 9999;
+
 -- -- weeks
 -- INSERT INTO week (id, season_id, index, start_date, end_date, date_created, last_updated)
 -- VALUES (1, 1, 1, '2015-10-10 00:00:00', '2015-10-17 00:00:00', now(), now());

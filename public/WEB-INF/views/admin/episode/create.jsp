@@ -10,7 +10,7 @@
             <td>Title:</td>
             <td><form:input path="title" size="40"/></td>
             <td><form:errors path="title" cssClass="error"/></td>
-        </tr
+        </tr>
     </table>
 
     <div class="botButtons">

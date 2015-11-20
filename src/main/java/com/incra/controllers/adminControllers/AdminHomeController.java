@@ -42,7 +42,7 @@ public class AdminHomeController extends AbstractAdminController {
         adminPanel = new AdminPanel("Series", "/admin/series");
         adminPanelList.add(adminPanel);
 
-        adminPanel = new AdminPanel("Episodes", "/admin/episode");
+        adminPanel = new AdminPanel("Episodes", "/admin/series/1/episode");
         adminPanelList.add(adminPanel);
 
         adminPanel = new AdminPanel("Ballots", "/admin/ballot");
