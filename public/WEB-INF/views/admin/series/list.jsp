@@ -14,11 +14,14 @@
         Find, edit, and create Series
     </div>
     <div class="col-md-4">
-        <select path="season">
-            <c:forEach var="season" items="${seasonList}">
-                <option value="${season.id}">${season.title}</option>
-            </c:forEach>
-        </select>
+        <form action="<c:url value="/admin/series/filter" />" method="post">
+            <select name="season">
+                <c:forEach var="season" items="${seasonList}">
+                    <option value="${season.id}">${season.title}</option>
+                </c:forEach>
+            </select>
+            <input type="submit"/>
+        </form>
     </div>
     <div class="col-md-4">
         <a href="<c:url value="/admin/series/create" />" class="pull-right btn btn-default" style="padding: 0px 10px">
