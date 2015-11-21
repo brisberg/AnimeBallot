@@ -4,6 +4,7 @@ export default DS.Model.extend({
     title: DS.attr('string'),
     weekIndex: DS.attr('number'),
     airDate: DS.attr('number'),
+    series: DS.belongsTo('series', {async: true}),
 
     formattedAirDate: function () {
         var date = this.get('airDate');

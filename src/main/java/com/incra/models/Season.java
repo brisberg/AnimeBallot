@@ -1,7 +1,7 @@
 package com.incra.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.incra.database.AbstractDatedDatabaseItem;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

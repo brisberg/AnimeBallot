@@ -1,7 +1,10 @@
 package com.incra.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.incra.database.AbstractDatedDatabaseItem;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -33,9 +36,12 @@ public class Series extends AbstractDatedDatabaseItem {
 
     @ManyToOne
     @JoinColumn(name = "season_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Season season;
 
     @OneToMany(mappedBy = "series")
+    @JsonIgnore
     private List<Episode> episodeList;
 
     public Series() {
@@ -81,7 +87,6 @@ public class Series extends AbstractDatedDatabaseItem {
         this.season = season;
     }
 
-    @JsonIgnore
     public List<Episode> getEpisodeList() {
         return episodeList;
     }

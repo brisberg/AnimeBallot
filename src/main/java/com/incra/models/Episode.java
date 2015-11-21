@@ -1,5 +1,6 @@
 package com.incra.models;
 
+import com.fasterxml.jackson.annotation.*;
 import com.incra.database.AbstractDatedDatabaseItem;
 
 import javax.persistence.*;
@@ -27,6 +28,8 @@ public class Episode extends AbstractDatedDatabaseItem {
 
     @ManyToOne
     @JoinColumn(name = "season_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Season season;
 
     @Column(name = "week_index")
@@ -34,6 +37,8 @@ public class Episode extends AbstractDatedDatabaseItem {
 
     @ManyToOne
     @JoinColumn(name = "series_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Series series;
 
     public Episode() {

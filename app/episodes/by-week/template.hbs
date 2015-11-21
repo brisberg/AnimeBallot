@@ -1,9 +1,18 @@
-<h4>For week {{model.weekIndex}}, there are:</h4>
+<h4>For week {{model.weekIndex}}:</h4>
 
 <table class="table">
+    <thead>
+    <tr>
+        <th>Series</th>
+        <th>Title</th>
+        <th>Week</th>
+        <th>Air Date</th>
+    </tr>
+    </thead>
     <tbody>
     {{#each model.episodes as |episode|}}
         <tr class="episode">
+            <td>{{episode.series.title}}</td>
             <td>{{episode.title}}</td>
             <td>{{episode.weekIndex}}</td>
             <td>{{episode.formattedAirDate}}</td>

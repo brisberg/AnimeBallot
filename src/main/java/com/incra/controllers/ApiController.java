@@ -52,27 +52,51 @@ public class ApiController {
         return result;
     }
 
+    @RequestMapping(value = "/api/series/{id}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiSeries(@PathVariable("id") int id, HttpServletRequest request, HttpSession session) {
+        Series series = seriesService.findEntityById(id);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("series", series);
+
+        return result;
+    }
+
     @RequestMapping(value = "/api/episodes", headers = "Accept=application/json")
     public
     @ResponseBody
     Map<String, Object> apiEpisodeList(HttpServletRequest request, HttpSession session) {
 
-        List<Episode> episodeLists = new ArrayList<Episode>();
+        List<Episode> episodeList = new ArrayList<Episode>();
 
         String weekIndexStr = request.getParameter("weekIndex");
         if (weekIndexStr != null) {
             try {
                 Integer weekIndex = Integer.parseInt(weekIndexStr);
-                episodeLists = episodeService.findEntityListByWeekIndex(weekIndex);
+                episodeList = episodeService.findEntityListByWeekIndex(weekIndex);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            episodeLists = episodeService.findEntityList();
+            episodeList = episodeService.findEntityList();
         }
 
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("episodes", episodeLists);
+        result.put("episodes", episodeList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/episodes/{id}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiSeriesList(@PathVariable("id") int id, HttpSession session) {
+        Episode episode = episodeService.findEntityById(id);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("episode", episode);
 
         return result;
     }
