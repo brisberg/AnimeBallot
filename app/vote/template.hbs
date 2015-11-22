@@ -1,0 +1,30 @@
+<h4>Place your vote!</h4>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Series</th>
+        <th>Title</th>
+        <th>Week</th>
+        <th>Air Date</th>
+        <th>Points</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each model.formData as |epsData|}}
+        <tr class="episode">
+            <td>{{epsData.episode.series.title}}</td>
+            <td>{{epsData.episode.title}}</td>
+            <td>{{epsData.episode.weekIndex}}</td>
+            <td>{{epsData.episode.formattedAirDate}}</td>
+            <td>{{input value=epsData.value}}</td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+
+<button {{action 'submitVote'}} class="btn btn-default">Submit Vote</button>
+
+{{#link-to 'index'}}
+    <button class="btn btn-default">Cancel</button>
+{{/link-to}}

@@ -6,12 +6,13 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function () {
-    this.route('users', {});
-    this.route('series', {});
+    this.route('vote', {});
     this.route('episodes', {}, function () {
         this.route('calendar', {});
         this.route('by-week', {path: "by-week/:week_index"});
     });
+    this.route('users', {});
+    this.route('series', {});
 });
 
 export default Router;
