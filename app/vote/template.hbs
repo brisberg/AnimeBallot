@@ -7,17 +7,17 @@
         <th>Title</th>
         <th>Week</th>
         <th>Air Date</th>
-        <th>Points</th>
+        <th>Score</th>
     </tr>
     </thead>
     <tbody>
-    {{#each model.formData as |epsData|}}
+    {{#each model.episodes as |episode|}}
         <tr class="episode">
-            <td>{{epsData.episode.series.title}}</td>
-            <td>{{epsData.episode.title}}</td>
-            <td>{{epsData.episode.weekIndex}}</td>
-            <td>{{epsData.episode.formattedAirDate}}</td>
-            <td>{{input value=epsData.value}}</td>
+            <td>{{episode.series.title}}</td>
+            <td>{{episode.title}}</td>
+            <td>{{episode.weekIndex}}</td>
+            <td>{{episode.formattedAirDate}}</td>
+            <td><input type="text" id="score_{{episode.id}}" /></td>
         </tr>
     {{/each}}
     </tbody>

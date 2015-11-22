@@ -1,13 +1,8 @@
 package com.incra.controllers;
 
 import com.incra.controllers.adminControllers.AbstractAdminController;
-import com.incra.models.Episode;
-import com.incra.models.Series;
-import com.incra.models.User;
-import com.incra.services.EpisodeService;
-import com.incra.services.PageFrameworkService;
-import com.incra.services.SeriesService;
-import com.incra.services.UserService;
+import com.incra.models.*;
+import com.incra.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -19,26 +14,56 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * The <i>ApiController</i> handles all api fetches.
+ * The <i>ApiController</i> handles all REST API methods.
  *
  * @author Jeffrey Risberg
- * @since 10/25/14
+ * @since 10/30/14
  */
 @Controller
 public class ApiController {
+
     @Autowired
-    private UserService userService;
+    private SeasonService seasonService;
     @Autowired
     private SeriesService seriesService;
     @Autowired
     private EpisodeService episodeService;
     @Autowired
+    private BallotService ballotService;
+    @Autowired
+    private UserService userService;
+    @Autowired
     private PageFrameworkService pageFrameworkService;
+
+    @RequestMapping(value = "/api/seasons", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiSeasonList(HttpServletRequest request, HttpSession session) {
+        List<Season> seasonList = seasonService.findEntityList();
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("seasons", seasonList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/seasons/{id}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiSeason(@PathVariable("id") int id, HttpServletRequest request, HttpSession session) {
+        Season season = seasonService.findEntityById(id);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("season", season);
+
+        return result;
+    }
 
     @RequestMapping(value = "/api/series", headers = "Accept=application/json")
     public
@@ -92,7 +117,7 @@ public class ApiController {
     @RequestMapping(value = "/api/episodes/{id}", headers = "Accept=application/json")
     public
     @ResponseBody
-    Map<String, Object> apiSeriesList(@PathVariable("id") int id, HttpSession session) {
+    Map<String, Object> apiEpisode(@PathVariable("id") int id, HttpSession session) {
         Episode episode = episodeService.findEntityById(id);
 
         Map<String, Object> result = new HashMap<String, Object>();
@@ -101,14 +126,85 @@ public class ApiController {
         return result;
     }
 
+    @RequestMapping(value = "/api/ballots", method = RequestMethod.GET, headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiBallotList(HttpServletRequest request, HttpSession session) {
+        System.out.println("apiBallotList");
+        List<Ballot> ballotList = ballotService.findEntityList();
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("ballots", ballotList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/ballots", method = RequestMethod.POST, headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Ballot apiBallotPost(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        System.out.println("apiBallotPost");
+        String seasonIdStr = request.getParameter("season");
+        String weekIndexStr = request.getParameter("weekIndex");
+        String userIdStr = request.getParameter("user");
+
+        System.out.println(seasonIdStr + " " + weekIndexStr);
+
+        Ballot ballot = null;
+
+        try {
+            int seasonId = Integer.parseInt(seasonIdStr);
+            int userId = Integer.parseInt(userIdStr);
+            int weekIndex = Integer.parseInt(weekIndexStr);
+            Season season = seasonService.findEntityById(seasonId);
+            User user = userService.findEntityById(userId);
+
+            ballot = new Ballot();
+            ballot.setSeason(season);
+            ballot.setUser(user);
+            ballot.setWeekIndex(weekIndex);
+
+            ballotService.save(ballot);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        response.setStatus(201);
+        return ballot;
+    }
+
+
+    @RequestMapping(value = "/api/ballots/{id}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiBallot(@PathVariable("id") int id, HttpSession session) {
+        Ballot ballot = ballotService.findEntityById(id);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("ballot", ballot);
+
+        return result;
+    }
+
     @RequestMapping(value = "/api/users", headers = "Accept=application/json")
     public
     @ResponseBody
     Map<String, Object> apiUserList(HttpServletRequest request, HttpSession session) {
-        List<User> userLists = userService.findEntityList();
+        List<User> userList = userService.findEntityList();
 
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("users", userLists);
+        result.put("users", userList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/users/{id}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiUser(@PathVariable("id") int id, HttpSession session) {
+        User user = userService.findEntityById(id);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("user", user);
 
         return result;
     }
