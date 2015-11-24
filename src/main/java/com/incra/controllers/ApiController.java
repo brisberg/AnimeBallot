@@ -5,6 +5,7 @@ import com.incra.models.*;
 import com.incra.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -36,6 +37,8 @@ public class ApiController {
     private EpisodeService episodeService;
     @Autowired
     private BallotService ballotService;
+    @Autowired
+    private BallotVoteService ballotVoteService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -130,7 +133,6 @@ public class ApiController {
     public
     @ResponseBody
     Map<String, Object> apiBallotList(HttpServletRequest request, HttpSession session) {
-        System.out.println("apiBallotList");
         List<Ballot> ballotList = ballotService.findEntityList();
 
         Map<String, Object> result = new HashMap<String, Object>();
@@ -138,40 +140,6 @@ public class ApiController {
 
         return result;
     }
-
-    @RequestMapping(value = "/api/ballots", method = RequestMethod.POST, headers = "Accept=application/json")
-    public
-    @ResponseBody
-    Ballot apiBallotPost(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-        System.out.println("apiBallotPost");
-        String seasonIdStr = request.getParameter("season");
-        String weekIndexStr = request.getParameter("weekIndex");
-        String userIdStr = request.getParameter("user");
-
-        System.out.println(seasonIdStr + " " + weekIndexStr);
-
-        Ballot ballot = null;
-
-        try {
-            int seasonId = Integer.parseInt(seasonIdStr);
-            int userId = Integer.parseInt(userIdStr);
-            int weekIndex = Integer.parseInt(weekIndexStr);
-            Season season = seasonService.findEntityById(seasonId);
-            User user = userService.findEntityById(userId);
-
-            ballot = new Ballot();
-            ballot.setSeason(season);
-            ballot.setUser(user);
-            ballot.setWeekIndex(weekIndex);
-
-            ballotService.save(ballot);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        response.setStatus(201);
-        return ballot;
-    }
-
 
     @RequestMapping(value = "/api/ballots/{id}", headers = "Accept=application/json")
     public
@@ -183,6 +151,106 @@ public class ApiController {
         result.put("ballot", ballot);
 
         return result;
+    }
+
+    @RequestMapping(value = "/api/ballots", method = RequestMethod.POST)
+    @ResponseStatus( HttpStatus.CREATED )
+    public void apiBallotPost(@RequestBody Object data) {
+        Map ballotData = (Map) ((Map) data).get("ballot");
+
+        try {
+            String comment = (String) ballotData.get("comment");
+            Integer weekIndex = (Integer) ballotData.get("weekIndex");
+            String seasonIdStr = (String) ballotData.get("season");
+            String userIdStr = (String) ballotData.get("user");
+            int seasonId = Integer.parseInt(seasonIdStr);
+            int userId = Integer.parseInt(userIdStr);
+            Season season = seasonService.findEntityById(seasonId);
+            User user = userService.findEntityById(userId);
+
+            Ballot ballot = new Ballot();
+            ballot.setSeason(season);
+            ballot.setUser(user);
+            ballot.setWeekIndex(weekIndex);
+            ballot.setComment(comment);
+
+            List<Map> ballotVotesData = (List<Map>) ballotData.get("ballotVotes");
+            System.out.println(ballotVotesData);
+
+            if (ballotVotesData != null) {
+                for (Map ballotVoteData : ballotVotesData) {
+                    System.out.println(ballotVotesData);
+
+                    Integer score = (Integer) ballotVoteData.get("score");
+                    String episodeIdStr = (String) ballotData.get("episode");
+                    System.out.println(score);
+                    System.out.println(episodeIdStr);
+                    int episodeId = Integer.parseInt(episodeIdStr);
+                    Episode episode = episodeService.findEntityById(episodeId);
+
+                    BallotVote ballotVote = new BallotVote();
+                    ballotVote.setEpisode(episode);
+                    ballotVote.setScore(score);
+
+                    ballot.getBallotVotes().add(ballotVote);
+                }
+            }
+
+            // this should cascade to the ballot votes
+            ballotService.save(ballot);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/api/ballot_votes", method = RequestMethod.GET, headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiBallotVoteList(HttpServletRequest request, HttpSession session) {
+        List<BallotVote> ballotVoteList = ballotVoteService.findEntityList();
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("ballotVotes", ballotVoteList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/ballot_votes/{id}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiBallotVote(@PathVariable("id") int id, HttpSession session) {
+        BallotVote ballotVote = ballotVoteService.findEntityById(id);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("ballotVote", ballotVote);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/ballot_votes", method = RequestMethod.POST)
+    @ResponseStatus( HttpStatus.CREATED )
+    public void apiBallotVotePost(@RequestBody Object data) {
+        Map ballotVoteData = (Map) ((Map) data).get("ballot-vote");
+
+        try {
+            //Integer weekIndex = (Integer) ballotData.get("weekIndex");
+            //String seasonIdStr = (String) ballotData.get("season");
+            //String userIdStr = (String) ballotData.get("user");
+            //int seasonId = Integer.parseInt(seasonIdStr);
+            //int userId = Integer.parseInt(userIdStr);
+            //Season season = seasonService.findEntityById(seasonId);
+            //User user = userService.findEntityById(userId);
+
+            BallotVote ballotVote = new BallotVote();
+            //ballot.setSeason(season);
+            //ballot.setUser(user);
+            //ballot.setWeekIndex(weekIndex);
+
+            ballotVoteService.save(ballotVote);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/api/users", headers = "Accept=application/json")

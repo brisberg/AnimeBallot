@@ -44,18 +44,22 @@ export default Ember.Route.extend({
 
             // Create a ballot
             var ballot = this.get('store').createRecord('ballot',
-                {user: user, weekIndex: weekIndex, season: season});
+                {user: user, weekIndex: weekIndex, season: season, comment: "Hello Jeff"});
 
+            var ballotVotes = [];
+            var me = this;
             episodes.forEach(function (episode) {
                 var episodeId = episode.id;
-                console.log(episodeId);
                 var element = document.getElementById("score_" + episodeId);
-                var value = element.value;
-                console.log(value);
+                var score = element.value;
 
                 // Create a ballot-vote
+                ballotVotes.push(me.get('store').createRecord('ballot-vote',
+                    {episode: episode, score: score}));
             });
+            console.log(ballotVotes);
 
+            ballot.set('ballotVotes', ballotVotes);
             ballot.save();
             this.transitionTo('index');
         }

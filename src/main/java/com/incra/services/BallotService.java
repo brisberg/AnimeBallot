@@ -38,21 +38,6 @@ public class BallotService {
         return em.find(Ballot.class, id);
     }
 
-    public Ballot findEntityByTitle(String title) {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Ballot> criteria = builder.createQuery(Ballot.class);
-        Root<Ballot> root = criteria.from(Ballot.class);
-
-        Path<String> rootTitle = root.get("title");
-        criteria.where(builder.equal(rootTitle, title));
-
-        try {
-            return em.createQuery(criteria).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
     public void save(Ballot ballot) {
         if (ballot.getId() == null || ballot.getId() == 0) {
             em.persist(ballot);

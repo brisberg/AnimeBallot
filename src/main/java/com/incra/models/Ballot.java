@@ -4,6 +4,7 @@ import com.incra.database.AbstractDatedDatabaseItem;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Ballot extends AbstractDatedDatabaseItem {
     private User user;
 
     @OneToMany(mappedBy = "ballot")
-    private List<BallotVote> voteList;
+    private List<BallotVote> ballotVotes = new ArrayList<BallotVote>();
 
     @Column(name = "comment")
     private String comment;
@@ -64,12 +65,12 @@ public class Ballot extends AbstractDatedDatabaseItem {
         this.user = user;
     }
 
-    public List<BallotVote> getVoteList() {
-        return voteList;
+    public List<BallotVote> getBallotVotes() {
+        return ballotVotes;
     }
 
-    public void setVoteList(List<BallotVote> voteList) {
-        this.voteList = voteList;
+    public void setBallotVotes(List<BallotVote> ballotVotes) {
+        this.ballotVotes = ballotVotes;
     }
 
     public String getComment() {
