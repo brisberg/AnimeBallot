@@ -7,16 +7,43 @@
 
 <table class="table">
     <tr>
-        <td>Title:</td>
-        <td>${season.title}</td>
+        <td>User:</td>
+        <td>${ballot.user.name}</td>
+        <td>Season:</td>
+        <td>${ballot.season.title}</td>
+        <td>Week:</td>
+        <td>${ballot.weekIndex}</td>
     </tr>
     <tr>
-        <td>Start Date:</td>
-        <td>${season.startDate}</td>
-    </tr>
-    <tr>
-        <td>End Date:</td>
-        <td>${season.endDate}</td>
+        <table class="table" style="background:#DDDDDD">
+            <thead>
+            <tr>
+                <th>Series</th>
+                <th>Episode</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="ballotVote" items="${ballot.ballotVotes}" varStatus="rowCounter">
+                <tr class="${rowCounter.count % 2 == 0 ? 'even' : 'odd'}">
+                    <td>
+                        <a href="<c:url value="/admin/series/show/${ballotVote.episode.series.id}" />">${ballotVote.episode.series.title}</a>
+                    </td>
+                    <td>
+                            ${ballotVote.episode.episodeIndex}
+                    </td>
+                    <td>
+                            ${ballotVote.score}
+                    </td>
+                </tr>
+            </c:forEach>
+            <c:if test="${empty ballot.ballotVotes}">
+                <tr>
+                    <td colspan="999">No votes found</td>
+                </tr>
+            </c:if>
+            </tbody>
+        </table>
     </tr>
 </table>
 
@@ -25,5 +52,5 @@
 </table>
 
 <div class="botButtons">
-    <a href="<c:url value="/admin/season/edit/${season.id}" />" class="btn btn-default">Edit</a>
+    <a href="<c:url value="/admin/ballot/list" />" class="btn btn-default">Back</a>
 </div>
