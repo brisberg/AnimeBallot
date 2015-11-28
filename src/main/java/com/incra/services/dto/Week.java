@@ -1,6 +1,8 @@
-package com.incra.models;
+package com.incra.services.dto;
 
 import com.incra.database.AbstractDatedDatabaseItem;
+import com.incra.models.Episode;
+import com.incra.models.Season;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

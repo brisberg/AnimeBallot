@@ -19,8 +19,9 @@
             <thead>
             <tr>
                 <th>Series</th>
-                <th>Episode</th>
-                <th>Score</th>
+                <th>Episode Index</th>
+                <th>Episode Title</th>
+                <th style="text-align:right;">Score</th>
             </tr>
             </thead>
             <tbody>
@@ -33,6 +34,9 @@
                             ${ballotVote.episode.episodeIndex}
                     </td>
                     <td>
+                            ${ballotVote.episode.title}
+                    </td>
+                    <td style="text-align:right;">
                             ${ballotVote.score}
                     </td>
                 </tr>

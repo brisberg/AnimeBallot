@@ -1,5 +1,9 @@
 package com.incra.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.incra.database.AbstractDatedDatabaseItem;
 
 import javax.persistence.*;
@@ -17,10 +21,14 @@ public class BallotVote extends AbstractDatedDatabaseItem {
 
     @ManyToOne
     @JoinColumn(name = "episode_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Episode episode;
 
     @ManyToOne
     @JoinColumn(name = "ballot_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Ballot ballot;
 
     @Basic

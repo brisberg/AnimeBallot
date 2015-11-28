@@ -154,8 +154,10 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/api/ballots", method = RequestMethod.POST)
-    @ResponseStatus( HttpStatus.CREATED )
-    public void apiBallotPost(@RequestBody Object data) {
+    public
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
+    Map<String, Object> apiBallotPost(@RequestBody Object data) {
         Map ballotData = (Map) ((Map) data).get("ballot");
 
         try {
@@ -175,14 +177,12 @@ public class ApiController {
             ballot.setComment(comment);
 
             List<Map> ballotVotesData = (List<Map>) ballotData.get("ballotVotes");
-            System.out.println(ballotVotesData);
 
             if (ballotVotesData != null) {
                 for (Map ballotVoteData : ballotVotesData) {
-                    System.out.println(ballotVotesData);
 
                     Integer score = (Integer) ballotVoteData.get("score");
-                    String episodeIdStr = (String) ballotData.get("episode");
+                    String episodeIdStr = (String) ballotVoteData.get("episode");
                     System.out.println(score);
                     System.out.println(episodeIdStr);
                     int episodeId = Integer.parseInt(episodeIdStr);
@@ -193,15 +193,22 @@ public class ApiController {
                     ballotVote.setScore(score);
 
                     ballot.getBallotVotes().add(ballotVote);
+                    ballotVote.setBallot(ballot);
                 }
             }
 
-            // this should cascade to the ballot votes
+            // This cascades to also save the ballot votes
             ballotService.save(ballot);
 
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("ballot", ballot);
+
+            return result;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        return null;
     }
 
     @RequestMapping(value = "/api/ballot_votes", method = RequestMethod.GET, headers = "Accept=application/json")
@@ -229,7 +236,7 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/api/ballot_votes", method = RequestMethod.POST)
-    @ResponseStatus( HttpStatus.CREATED )
+    @ResponseStatus(HttpStatus.CREATED)
     public void apiBallotVotePost(@RequestBody Object data) {
         Map ballotVoteData = (Map) ((Map) data).get("ballot-vote");
 

@@ -1,5 +1,8 @@
 package com.incra.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.incra.database.AbstractDatedDatabaseItem;
 
 import javax.persistence.*;
@@ -20,6 +23,8 @@ public class Ballot extends AbstractDatedDatabaseItem {
 
     @ManyToOne
     @JoinColumn(name = "season_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Season season;
 
     @Column(name = "week_index")
@@ -27,9 +32,13 @@ public class Ballot extends AbstractDatedDatabaseItem {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
-    @OneToMany(mappedBy = "ballot")
+    @OneToMany(mappedBy = "ballot", cascade = CascadeType.ALL)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private List<BallotVote> ballotVotes = new ArrayList<BallotVote>();
 
     @Column(name = "comment")

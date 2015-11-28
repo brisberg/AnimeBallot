@@ -23,6 +23,7 @@
         <tr>
             <th>Season</th>
             <th>User</th>
+            <th>Date Created</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -30,12 +31,18 @@
         <c:forEach var="ballot" items="${ballotList}" varStatus="rowCounter">
             <tr class="${rowCounter.count % 2 == 0 ? 'even' : 'odd'}">
                 <td>
-                    <a href="<c:url value="/admin/ballot/show/${ballot.id}" />">${ballot.season.title}</a>
+                        ${ballot.season.title}
                 </td>
                 <td>
-                    ${ballot.user.name}
+                        ${ballot.user.name}
+                </td>
+                <td>
+                    <fmt:formatDate pattern="MM-dd-yyyy HH:mm"
+                                    value="${ballot.dateCreated}"/>
                 </td>
                 <td style="white-space: nowrap">
+                    <a class="btn btn-default" style="padding: 0px 10px"
+                       href="<c:url value="/admin/ballot/show/${ballot.id}" />">Show</a>
                     <a class="btn btn-default" style="padding: 0px 10px"
                        href="<c:url value="/admin/ballot/edit/${ballot.id}" />">Edit</a>
                     <a class="btn btn-default" style="padding: 0px 10px"

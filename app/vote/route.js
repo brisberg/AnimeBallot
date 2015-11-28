@@ -4,7 +4,7 @@ export default Ember.Route.extend({
     model: function () {
         var userId = 1; // TODO: Hard coded for now
         var seasonId = 1; // TODO: Hard coded for now
-        var weekIndex = 1; // TODO: Hard coded for now
+        var weekIndex = 2; // TODO: Hard coded for now
 
         var user = this.get('store').findRecord('user', userId);
 
@@ -46,20 +46,18 @@ export default Ember.Route.extend({
             var ballot = this.get('store').createRecord('ballot',
                 {user: user, weekIndex: weekIndex, season: season, comment: "Hello Jeff"});
 
-            var ballotVotes = [];
             var me = this;
             episodes.forEach(function (episode) {
                 var episodeId = episode.id;
                 var element = document.getElementById("score_" + episodeId);
                 var score = element.value;
 
-                // Create a ballot-vote
-                ballotVotes.push(me.get('store').createRecord('ballot-vote',
-                    {episode: episode, score: score}));
+                // Create a ballotVote
+                var ballotVote = me.get('store').createRecord('ballot-vote', {episode: episode, score: score});
+                ballot.get('ballotVotes').pushObject(ballotVote);
             });
-            console.log(ballotVotes);
+            console.log(ballot.get('ballotVotes'));
 
-            ballot.set('ballotVotes', ballotVotes);
             ballot.save();
             this.transitionTo('index');
         }
