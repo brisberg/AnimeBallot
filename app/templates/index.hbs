@@ -1,8 +1,37 @@
-<div>{{link-to 'Vote' 'vote' class="btn btn-primary"}}</div>
+<div class="row">
+    <div class="col-md-3">
+        <div style="background: #333">
+            <div>{{link-to 'Voting' 'voting.show' class="btn btn-primary"}}</div>
+            <div>{{link-to 'Episodes' 'episodes.calendar' class="btn btn-primary"}}</div>
+            <div>{{link-to 'Friends' 'friends' class="btn btn-primary"}}</div>
+        </div>
+    </div>
+    <div class="col-md-9" style="background: #888; min-height: 300px">
+        <h2>Last Week's Results</h2>
+        <table>
+            <tr>
+                <td>first from last week</td>
+            </tr>
+            <tr>
+                <td>second from last week</td>
+            </tr>
+            <tr>
+                <td>third from last week</td>
+            </tr>
+            <tr>
+                <td>fourth from last week</td>
+            </tr>
+            <tr>
+                <td>fifth from last week</td>
+            </tr>
+        </table>
+        <div class="background: #888">
+            {{model.comment}}
+        </div>
+    </div>
+</div>
 
-<div>{{link-to 'Episodes' 'episodes.calendar' class="btn btn-primary"}}</div>
 
-<div>{{link-to 'Series' 'series' class="btn btn-primary"}}</div>
 
-<div>{{link-to 'Users' 'users' class="btn btn-primary"}}</div>
+
 

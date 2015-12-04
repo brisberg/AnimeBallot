@@ -61,13 +61,13 @@ public class UserService {
         return em.find(User.class, id);
     }
 
-    public User findEntityByUsername(String username) {
+    public User findEntityByName(String name) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<User> criteria = builder.createQuery(User.class);
         Root<User> root = criteria.from(User.class);
 
-        Path<String> rootUsername = root.get("username");
-        criteria.where(builder.equal(rootUsername, username));
+        Path<String> rootName = root.get("name");
+        criteria.where(builder.equal(rootName, name));
 
         try {
             return em.createQuery(criteria).getSingleResult();

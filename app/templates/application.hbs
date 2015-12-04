@@ -1,11 +1,32 @@
+<style>
+    .topBarItem {
+        text-decoration: none;
+        color: black;
+    }
+</style>
+
 <div class="container">
     <div id="header" class="row">
         <div class="col-md-4">
             {{#link-to 'index'}}<img src="assets/images/logo.gif"/>{{/link-to}}
         </div>
-        <div class="col-md-8"
-             style="text-align: right; padding-top: 10px; font-weight: bold; font-size: 20px">
-            <a style="text-decoration: none; color: black;"
+        <div class="col-md-4"
+             style="text-align: left; padding-top: 10px; font-weight: bold; font-size: 20px;">
+            {{#if user}}
+                <span class="topBarItem">Hello, {{user.name}}</span>
+            {{/if}}
+        </div>
+        <div class="col-md-4"
+             style="text-align: right; padding-top: 10px; font-weight: bold; font-size: 20px;">
+            {{#if user}}
+                {{#link-to 'login' class='topBarItem'}}Logout{{/link-to}}
+                {{#link-to 'profile.show' class='topBarItem'}}Profile{{/link-to}}
+            {{/if}}
+            {{#unless user}}
+                {{#link-to 'login' class='topBarItem'}}Login{{/link-to}}
+                {{#link-to 'register' class='topBarItem'}}Register{{/link-to}}
+            {{/unless}}
+            <a class="topBarItem"
                href="/admin/home" {{action 'noAction' preventDefault=false}}>
                 Admin
             </a>

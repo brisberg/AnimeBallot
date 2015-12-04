@@ -1,0 +1,22 @@
+<h3>Edit Profile</h3>
+
+<table>
+    <tr>
+        <td>Name:</td>
+        <td>{{input value='Brandon'}}</td>
+    </tr>
+    <tr>
+        <td>Nickname:</td>
+        <td>{{input value='Super guy'}}</td>
+    </tr>
+    <tr>
+        <td>Photo:</td>
+        <td>{{textarea value='photo goes here'}}</td>
+    </tr>
+</table>
+
+<button class="btn btn-default" {{action 'saveProfile'}}>Save</button>
+
+{{#link-to 'profile.show'}}
+    <button class="btn btn-default">Cancel</button>
+{{/link-to}}

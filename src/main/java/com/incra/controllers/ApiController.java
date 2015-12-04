@@ -264,7 +264,21 @@ public class ApiController {
     public
     @ResponseBody
     Map<String, Object> apiUserList(HttpServletRequest request, HttpSession session) {
-        List<User> userList = userService.findEntityList();
+
+        List<User> userList = new ArrayList<User>();
+
+        String name = request.getParameter("name");
+        if (name != null) {
+            try {
+                User user = userService.findEntityByName(name);
+                if (user != null)
+                    userList.add(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            userList = userService.findEntityList();
+        }
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("users", userList);
@@ -282,5 +296,34 @@ public class ApiController {
         result.put("user", user);
 
         return result;
+    }
+
+    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
+    Map<String, Object> apiUserPost(@RequestBody Object data) {
+        Map userData = (Map) ((Map) data).get("user");
+
+        try {
+            String name = (String) userData.get("name");
+
+            User user = new User();
+            user.setName(name);
+            user.setFirstName("dummy");
+            user.setLastName("dummy");
+            user.setEmail("dummy@gmail.com");
+
+            userService.save(user);
+
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("user", user);
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
 }

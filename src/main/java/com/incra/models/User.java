@@ -12,6 +12,9 @@ import javax.persistence.*;
 public class User extends AbstractDatedDatabaseItem {
 
     @Basic
+    private String name;
+
+    @Basic
     private String firstName;
 
     @Basic
@@ -22,6 +25,10 @@ public class User extends AbstractDatedDatabaseItem {
 
     @Basic
     private String password;
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -43,6 +50,7 @@ public class User extends AbstractDatedDatabaseItem {
         return firstName + " " + lastName;
 
     }
+
     public String getEmail() {
         return email;
     }

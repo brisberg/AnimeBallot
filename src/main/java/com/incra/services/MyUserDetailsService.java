@@ -31,19 +31,19 @@ public class MyUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String username)
+    public UserDetails loadUserByUsername(String name)
             throws UsernameNotFoundException, DataAccessException {
 
         try {
             if (logger.isInfoEnabled()) {
-                logger.info(">>loading user with name=" + username);
+                logger.info(">>loading user with name=" + name);
             }
 
             com.incra.models.User domainUser = userService
-                    .findEntityByUsername(username);
+                    .findEntityByName(name);
 
             if (domainUser == null) {
-                throw new UsernameNotFoundException("Username " + username
+                throw new UsernameNotFoundException("Username " + name
                         + " not found");
             }
 
@@ -57,7 +57,7 @@ public class MyUserDetailsService implements UserDetailsService {
                     + domainUser.getLastName();
             String email = domainUser.getEmail();
 
-            MyUserDetails user = new MyUserDetails(username, password,
+            MyUserDetails user = new MyUserDetails(name, password,
                     false, true, true, true, authList, userId,
                     fullName, email);
 
@@ -66,14 +66,14 @@ public class MyUserDetailsService implements UserDetailsService {
             }
             return user;
         } catch (DataAccessException dae) {
-            logger.warn("<<Can't access data for user " + username);
-            throw new DataRetrievalFailureException("Name " + username
+            logger.warn("<<Can't access data for user " + name);
+            throw new DataRetrievalFailureException("Name " + name
                     + " data not accessible");
         } catch (Exception e) {
             e.printStackTrace();
-            logger.warn("Username " + username + " not found "
+            logger.warn("Username " + name + " not found "
                     + e.getLocalizedMessage());
-            throw new UsernameNotFoundException("Username " + username
+            throw new UsernameNotFoundException("Username " + name
                     + " not found", e);
         }
     }

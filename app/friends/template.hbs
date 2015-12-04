@@ -1,3 +1,5 @@
+<h3>Friends</h3>
+
 <table class="table" style="width: 400px">
     <thead>
     <tr>
@@ -7,16 +9,16 @@
     </tr>
     </thead>
     <tbody>
-    {{#each model as |user|}}
+    {{#each model as |friend|}}
         <tr>
             <td>
-                {{user.firstName}}
+                {{friend.firstName}}
             </td>
             <td>
-                {{user.lastName}}
+                {{friend.lastName}}
             </td>
             <td>
-                {{user.email}}
+                {{friend.email}}
             </td>
         </tr>
     {{/each}}
