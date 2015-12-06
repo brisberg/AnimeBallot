@@ -1,37 +1,99 @@
+<style>
+  .table-striped tr td { padding: 6px; }
+  .table-striped tr th { padding: 6px; }
+</style>
+
 <div class="row">
-    <div class="col-md-3">
-        <div style="background: #333">
-            <div>{{link-to 'Voting' 'voting.show' class="btn btn-primary"}}</div>
-            <div>{{link-to 'Episodes' 'episodes.calendar' class="btn btn-primary"}}</div>
-            <div>{{link-to 'Friends' 'friends' class="btn btn-primary"}}</div>
+    <div class="col-md-8" style="background: #eee;">
+        <div style="min-height: 300px">
+            <img src="assets/images/chart.png">
         </div>
+        <h3>Last Week's Results</h3>
+        <table class="table-striped" style="width: 100%">
+            <thead>
+            <th>Rank</th>
+            <th>Title</th>
+            <th>Episode</th>
+            <th>% of Ballots</th>
+            <th>Change</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Glasslip</td>
+                <td>4</td>
+                <td>93%</td>
+                <td>+2</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>K: Return of Kings</td>
+                <td>4</td>
+                <td>56%</td>
+                <td>+0</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Absolute</td>
+                <td>4</td>
+                <td>33%</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>School-Live</td>
+                <td>4</td>
+                <td>23%</td>
+                <td>-1</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="col-md-9" style="background: #888; min-height: 300px">
-        <h2>Last Week's Results</h2>
-        <table>
+    <div class="col-md-4" style="min-height: 300px; background: #eee; border: 1px solid gray;">
+        <div style="padding: 4px; font-size: 24px; font-weight: bold; text-align: center;">
+            3 days, 22 hrs, 26 mins
+        </div>
+        <h3>Current Ballot</h3>
+        <table class="table-striped" width="100%">
+            <tbody>
             <tr>
-                <td>first from last week</td>
+                <td width="70%">One Punch Man</td>
+                <td>4</td>
             </tr>
             <tr>
-                <td>second from last week</td>
+                <td>Absolute</td>
+                <td>4</td>
             </tr>
             <tr>
-                <td>third from last week</td>
+                <td>School-Live</td>
+                <td>4</td>
             </tr>
             <tr>
-                <td>fourth from last week</td>
+                <td>Danganronpa</td>
+                <td>4</td>
             </tr>
             <tr>
-                <td>fifth from last week</td>
+                <td>K: Return of Kings</td>
+                <td>4</td>
             </tr>
+            </tbody>
         </table>
         <div class="background: #888">
             {{model.comment}}
         </div>
+        <button class="btn btn-default">Edit</button>
     </div>
 </div>
 
-
-
-
-
+<div class="row" style="margin-top: 10px; border: 1px solid black; background: #ccc; padding: 6px">
+    <div class="col-md-8">
+        {{link-to 'Review Episodes' 'episodes.calendar'}}
+        |
+        {{link-to 'Manage Friends' 'friends'}}
+    </div>
+    <div class="col-md-4" style="text-align: right">
+        Updated 2015, released by
+        <a {{action 'noAction' preventDefault=false}}
+                href="http://www.linkedin.com/in/brandon-risberg-84900414/">AnimeBallot.com</a>
+    </div>
+</div>
