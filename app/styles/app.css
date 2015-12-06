@@ -27,3 +27,8 @@
 .ballot {
     background: #EEE;
 }
+
+body {
+    background-image: url("images/geometric.gif");
+    background-color: #cccccc;
+}
