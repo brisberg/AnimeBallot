@@ -2,6 +2,8 @@ package com.incra.services;
 
 import com.incra.models.Ballot;
 import com.incra.models.BallotVote;
+import com.incra.models.Series;
+import com.incra.models.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,19 @@ public class BallotVoteService {
 
     public BallotVote findEntityById(int id) {
         return em.find(BallotVote.class, id);
+    }
+
+    public List<BallotVote> findEntityListByUserAndWeekIndex(User user, Integer weekIndex) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<BallotVote> criteria = builder.createQuery(BallotVote.class);
+        Root<BallotVote> root = criteria.from(BallotVote.class);
+
+        Path<String> rootUser = root.get("ballot.user");
+        criteria.where(builder.equal(rootUser, user));
+        Path<String> rootWeekIndex = root.get("weekIndex");
+        criteria.where(builder.equal(rootWeekIndex, weekIndex));
+
+        return em.createQuery(criteria).getResultList();
     }
 
     public void save(BallotVote ballotVote) {

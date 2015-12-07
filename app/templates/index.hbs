@@ -1,6 +1,11 @@
 <style>
-  .table-striped tr td { padding: 6px; }
-  .table-striped tr th { padding: 6px; }
+    .table-striped tr td {
+        padding: 6px;
+    }
+
+    .table-striped tr th {
+        padding: 6px;
+    }
 </style>
 
 <div class="row">
@@ -18,41 +23,15 @@
             <th>Change</th>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>Glasslip</td>
-                <td>4</td>
-                <td>93%</td>
-                <td>+2</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>K: Return of Kings</td>
-                <td>4</td>
-                <td>56%</td>
-                <td>+0</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Absolute</td>
-                <td>4</td>
-                <td>33%</td>
-                <td>-1</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>School-Live</td>
-                <td>4</td>
-                <td>23%</td>
-                <td>-1</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Danganronpa</td>
-                <td>5</td>
-                <td>18%</td>
-                <td>+1</td>
-            </tr>
+            {{#each model.resultList as |resultList index|}}
+                <tr>
+                    <td>{{index}}</td>
+                    <td>{{resultList.title}}</td>
+                    <td>{{resultList.episodeIndex}}</td>
+                    <td>{{resultList.percent}}</td>
+                    <td>{{resultList.change}}</td>
+                </tr>
+            {{/each}}
             </tbody>
         </table>
     </div>
@@ -63,32 +42,18 @@
         <h3>Current Ballot</h3>
         <table class="table-striped" width="100%">
             <tbody>
-            <tr>
-                <td width="70%">One Punch Man</td>
-                <td>4</td>
-            </tr>
-            <tr>
-                <td>Absolute</td>
-                <td>4</td>
-            </tr>
-            <tr>
-                <td>School-Live</td>
-                <td>4</td>
-            </tr>
-            <tr>
-                <td>Danganronpa</td>
-                <td>4</td>
-            </tr>
-            <tr>
-                <td>K: Return of Kings</td>
-                <td>4</td>
-            </tr>
+            {{#each model.ballotVotes as |ballotVote|}}
+                <tr>
+                    <td>{{ballotVote.episode.series.title}}</td>
+                    <td>{{ballotVote.score}}</td>
+                </tr>
+            {{/each}}
             </tbody>
         </table>
         <div class="background: #888">
             {{model.comment}}
         </div>
-        <button class="btn btn-default">Edit</button>
+        {{#link-to 'voting' class="btn btn-default"}}Edit{{/link-to}}
     </div>
 </div>
 

@@ -2,18 +2,43 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
     model: function () {
+        var userId = 1; // TODO: Hard coded for now
+        var seasonId = 1; // TODO: Hard coded for now
+        var weekIndex = 2; // TODO: Hard coded for now
+
+        // Set up environment
+        var user = this.get('store').findRecord('user', userId);
+
+        var season = this.get('store').findRecord('season', seasonId);
+
+        // Get the current ballot votes
+        var ballotVotes = this.get('store').query('ballot-vote', {userId: userId, weekIndex: weekIndex});
+
+        ballotVotes.then(
+            (data) => {
+                this.set('ballotVotes', data);
+            }
+        );
+
+        // Collect the current results list
         var resultList = [];
-        // add to the resultList
-        // this list will be chronological
-        var result1 = {date: '11/30/15', text: 'text for Friday'};
-        resultList.push(result1);
+        var result;
 
-        var result2 = {date: '12/01/15', text: 'text for Saturday'};
-        resultList.push(result2);
+        result = {rank: 1, title: "Glasslip", episodeIndex: 4, percent: 93.2, change: "+2"};
+        resultList.push(result);
 
-        var result3 = {date: '12/02/15', text: 'text for Sunday'};
-        resultList.push(result3);
+        result = {rank: 2, title: "K: Return of Kings", episodeIndex: 4, percent: 57.3, change: "+0"};
+        resultList.push(result);
 
-        return {resultList: resultList, comment: 'The summary comment goes here'};
+        result = {rank: 3, title: "Absolute", episodeIndex: 4, percent: 45.7, change: "+0"};
+        resultList.push(result);
+
+        result = {rank: 4, title: "School-Live", episodeIndex: 4, percent: 37.3, change: "+1"};
+        resultList.push(result);
+
+        result = {rank: 5, title: "Danganronpa", episodeIndex: 4, percent: 25.5, change: "-2"};
+        resultList.push(result);
+
+        return {user: user, season: season, ballotVotes: ballotVotes, resultList: resultList};
     }
 });

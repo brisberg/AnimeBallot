@@ -29,29 +29,29 @@ VALUES (3, 1, 3, 1, 3, 'Episode3', '2015-10-24 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
 VALUES (4, 1, 4, 1, 4, 'Episode4', '2015-10-31 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (5, 1, 5, 1, 5, '', '2015-11-7 00:00:00', now(), now());
+VALUES (5, 1, 5, 1, 5, 'Episode5', '2015-11-7 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (6, 1, 6, 1, 6, '', '2015-11-14 00:00:00', now(), now());
+VALUES (6, 1, 6, 1, 6, 'Episode6', '2015-11-14 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (7, 1, 7, 1, 7, '', '2015-11-21 00:00:00', now(), now());
+VALUES (7, 1, 7, 1, 7, 'Episode7', '2015-11-21 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (8, 1, 8, 1, 8, '', '2015-11-28 00:00:00', now(), now());
+VALUES (8, 1, 8, 1, 8, 'Episode8', '2015-11-28 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (9, 1, 9, 1, 9, '', '2015-12-5 00:00:00', now(), now());
+VALUES (9, 1, 9, 1, 9, 'Episode9', '2015-12-5 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (10, 1, 10, 1, 10, '', '2015-12-12 00:00:00', now(), now());
+VALUES (10, 1, 10, 1, 10, 'Episode10', '2015-12-12 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (11, 1, 11, 1, 11, '', '2015-12-19 00:00:00', now(), now());
+VALUES (11, 1, 11, 1, 11, 'Episode11', '2015-12-19 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (12, 1, 12, 1, 12, '', '2015-12-26 00:00:00', now(), now());
+VALUES (12, 1, 12, 1, 12, 'Episode12', '2015-12-26 00:00:00', now(), now());
 
 -- Rakudai
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (21, 2, 1, 1, 1, '', '2015-10-11 00:00:00', now(), now());
+VALUES (21, 2, 1, 1, 1, 'Episode1', '2015-10-11 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (22, 2, 2, 1, 2, '', '2015-10-18 00:00:00', now(), now());
+VALUES (22, 2, 2, 1, 2, 'Episode2', '2015-10-18 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (23, 2, 3, 1, 3, '', '2015-10-25 00:00:00', now(), now());
+VALUES (23, 2, 3, 1, 3, 'Episode3', '2015-10-25 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
 VALUES (24, 2, 4, 1, 4, '', '2015-11-1 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
@@ -73,11 +73,11 @@ VALUES (32, 2, 12, 1, 12, '', '2015-12-27 00:00:00', now(), now());
 
 -- One-Punch Man
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (41, 3, 1, 1, 1, '', '2015-10-12 00:00:00', now(), now());
+VALUES (41, 3, 1, 1, 1, 'Episode1', '2015-10-12 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (42, 3, 2, 1, 2, '', '2015-10-19 00:00:00', now(), now());
+VALUES (42, 3, 2, 1, 2, 'Episode2', '2015-10-19 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (43, 3, 3, 1, 3, '', '2015-10-26 00:00:00', now(), now());
+VALUES (43, 3, 3, 1, 3, 'Episode3', '2015-10-26 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
 VALUES (44, 3, 4, 1, 4, '', '2015-11-2 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
@@ -97,11 +97,11 @@ VALUES (51, 3, 11, 1, 11, '', '2015-12-21 00:00:00', now(), now());
 
 -- K: Return of Kings
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (61, 4, 1, 1, 2, '', '2015-10-18 00:00:00', now(), now());
+VALUES (61, 4, 1, 1, 2, 'Episode1', '2015-10-18 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (62, 4, 2, 1, 3, '', '2015-10-25 00:00:00', now(), now());
+VALUES (62, 4, 2, 1, 3, 'Episode2', '2015-10-25 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (63, 4, 3, 1, 4, '', '2015-11-1 00:00:00', now(), now());
+VALUES (63, 4, 3, 1, 4, 'Episode3', '2015-11-1 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
 VALUES (64, 4, 4, 1, 5, '', '2015-11-8 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
@@ -119,13 +119,13 @@ VALUES (70, 4, 10, 1, 11, '', '2015-12-20 00:00:00', now(), now());
 
 -- Prison School
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (81, 10, 1, 1, 1, '', '2015-10-10 00:00:00', now(), now());
+VALUES (81, 10, 1, 1, 1, 'Episode1', '2015-10-10 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (82, 10, 2, 1, 2, '', '2015-10-17 00:00:00', now(), now());
+VALUES (82, 10, 2, 1, 2, 'Epsode2', '2015-10-17 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (83, 10, 3, 1, 3, '', '2015-10-24 00:00:00', now(), now());
+VALUES (83, 10, 3, 1, 3, 'Episode3', '2015-10-24 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (84, 10, 4, 1, 4, '', '2015-11-1 00:00:00', now(), now());
+VALUES (84, 10, 4, 1, 4, 'Episode4', '2015-11-1 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
 VALUES (85, 10, 5, 1, 5, '', '2015-11-8 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
@@ -147,9 +147,9 @@ VALUES (93, 10, 13, 1, 13, '', '2016-1-3 00:00:00', now(), now());
 
 -- Gakkou Gurashi
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (101, 11, 1, 1, 1, '', '2015-10-10 00:00:00', now(), now());
+VALUES (101, 11, 1, 1, 1, 'Episode1', '2015-10-10 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (102, 11, 2, 1, 2, '', '2015-10-17 00:00:00', now(), now());
+VALUES (102, 11, 2, 1, 2, 'Episode2', '2015-10-17 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
 VALUES (103, 11, 3, 1, 3, '', '2015-10-24 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
@@ -175,9 +175,9 @@ VALUES (113, 11, 13, 1, 13, '', '2016-1-3 00:00:00', now(), now());
 
 -- Monster Musume
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (121, 12, 1, 1, 1, '', '2015-10-15 00:00:00', now(), now());
+VALUES (121, 12, 1, 1, 1, 'Episode1', '2015-10-15 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
-VALUES (122, 12, 2, 1, 2, '', '2015-10-22 00:00:00', now(), now());
+VALUES (122, 12, 2, 1, 2, 'Episode2', '2015-10-22 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)
 VALUES (123, 12, 3, 1, 3, '', '2015-10-29 00:00:00', now(), now());
 INSERT INTO episode (id, series_id, episode_index, season_id, week_index, title, air_date, date_created, last_updated)

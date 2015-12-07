@@ -211,11 +211,28 @@ public class ApiController {
         return null;
     }
 
-    @RequestMapping(value = "/api/ballot_votes", method = RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(value = "/api/ballotVotes", method = RequestMethod.GET, headers = "Accept=application/json")
     public
     @ResponseBody
     Map<String, Object> apiBallotVoteList(HttpServletRequest request, HttpSession session) {
         List<BallotVote> ballotVoteList = ballotVoteService.findEntityList();
+
+        String userIdStr = request.getParameter("userId");
+        String weekIndexStr = request.getParameter("weekIndex");
+
+        if (userIdStr != null && weekIndexStr != null) {
+            try {
+                Integer userId = Integer.parseInt(userIdStr);
+                Integer weekIndex = Integer.parseInt(weekIndexStr);
+                User user = userService.findEntityById(userId);
+
+                ballotVoteList = ballotVoteService.findEntityListByUserAndWeekIndex(user, weekIndex);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            ballotVoteList = ballotVoteService.findEntityList();
+        }
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("ballotVotes", ballotVoteList);
@@ -223,7 +240,7 @@ public class ApiController {
         return result;
     }
 
-    @RequestMapping(value = "/api/ballot_votes/{id}", headers = "Accept=application/json")
+    @RequestMapping(value = "/api/ballotVotes/{id}", headers = "Accept=application/json")
     public
     @ResponseBody
     Map<String, Object> apiBallotVote(@PathVariable("id") int id, HttpSession session) {
@@ -235,7 +252,7 @@ public class ApiController {
         return result;
     }
 
-    @RequestMapping(value = "/api/ballot_votes", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/ballotVotes", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void apiBallotVotePost(@RequestBody Object data) {
         Map ballotVoteData = (Map) ((Map) data).get("ballot-vote");

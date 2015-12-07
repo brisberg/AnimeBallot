@@ -6,9 +6,10 @@ export default Ember.Route.extend({
       var friends = [];
       var friend;
 
-      friend = this.get('store').createRecord('user', {firstName: 'Bob'});
+      friend = this.get('store').createRecord('user', {name: "bob", firstName: 'Bob', lastName: "Jones", email: "bob@gmail.com"});
       friends.push(friend);
-      friend = this.get('store').createRecord('user', {firstName: 'Tom'});
+
+      friend = this.get('store').createRecord('user', {name: "tom", firstName: 'Tom', lastName: "Smith", email: "tom@gmail.com"});
       friends.push(friend);
 
       return friends;

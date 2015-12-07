@@ -3,8 +3,8 @@
 <table class="table" style="width: 400px">
     <thead>
     <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th>User Name</th>
+        <th>Full Name</th>
         <th>Email</th>
     </tr>
     </thead>
@@ -12,10 +12,10 @@
     {{#each model as |friend|}}
         <tr>
             <td>
-                {{friend.firstName}}
+                {{friend.name}}
             </td>
             <td>
-                {{friend.lastName}}
+                {{friend.firstName}} {{friend.lastName}}
             </td>
             <td>
                 {{friend.email}}

@@ -9,8 +9,6 @@ Router.map(function () {
     this.route('register');
     this.route('login');
     this.route('voting', {}, function () {
-        this.route('show', {});
-        this.route('edit', {});
     });
     this.route('episodes', {}, function () {
         this.route('calendar', {});
