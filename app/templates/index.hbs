@@ -17,19 +17,19 @@
         <table class="table-striped" style="width: 100%">
             <thead>
             <th>Rank</th>
-            <th>Title</th>
+            <th>Series</th>
             <th>Episode</th>
-            <th>% of Ballots</th>
-            <th>Change</th>
+            <th style="text-align: right;">% of Ballots</th>
+            <th style="text-align: right;">Change</th>
             </thead>
             <tbody>
             {{#each model.voteSummaries as |voteSummary|}}
                 <tr>
                     <td>{{voteSummary.rank}}</td>
-                    <td>{{voteSummary.title}}</td>
+                    <td>{{voteSummary.series.title}}</td>
                     <td>{{voteSummary.episodeIndex}}</td>
-                    <td>{{voteSummary.percent}}</td>
-                    <td>{{voteSummary.change}}</td>
+                    <td style="text-align: right;">{{voteSummary.formattedPercentage}}</td>
+                    <td style="text-align: right;">{{voteSummary.change}}</td>
                 </tr>
             {{/each}}
             </tbody>
@@ -50,8 +50,10 @@
             {{/each}}
             </tbody>
         </table>
-        <div class="background: #888">
-            {{model.comment}}
+        <div style="margin: 10px 0 10px 0; background: #fff; border: 1px solid #888; padding: 5px; ">
+            {{#each model.ballots as |ballot|}}
+                Comment: {{ballot.comment}}
+            {{/each}}
         </div>
         {{#link-to 'voting' class="btn btn-default"}}Edit{{/link-to}}
     </div>

@@ -136,6 +136,23 @@ public class ApiController {
     Map<String, Object> apiBallotList(HttpServletRequest request, HttpSession session) {
         List<Ballot> ballotList = ballotService.findEntityList();
 
+        String userIdStr = request.getParameter("userId");
+        String weekIndexStr = request.getParameter("weekIndex");
+
+        if (userIdStr != null && weekIndexStr != null) {
+            try {
+                Integer userId = Integer.parseInt(userIdStr);
+                Integer weekIndex = Integer.parseInt(weekIndexStr);
+                User user = userService.findEntityById(userId);
+
+                ballotList = ballotService.findEntityListByUserAndWeekIndex(user, weekIndex);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            ballotList = ballotService.findEntityList();
+        }
+
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("ballots", ballotList);
 
@@ -355,12 +372,14 @@ public class ApiController {
         List<VoteSummary> voteSummaryList = new ArrayList<VoteSummary>();
 
         try {
+            int id = 1;
             int rank = 1;
-            double percentage = 100.0;
+            double percentage = 0.833;
 
             for (Series series : seriesList) {
                 VoteSummary voteSummary = new VoteSummary();
 
+                voteSummary.setId(id);
                 voteSummary.setWeekIndex(Integer.parseInt(weekIndexStr));
                 voteSummary.setRank(rank);
                 voteSummary.setSeries(series);
@@ -368,8 +387,11 @@ public class ApiController {
                 voteSummary.setPercentage(percentage);
                 voteSummary.setChange("+0");
                 voteSummaryList.add(voteSummary);
+
+                id++;
                 rank++;
-                percentage -= Math.random() * 10.0;
+                percentage -= Math.random() * 0.2;
+                if (percentage < 0.01) percentage = 0.01;
             }
         } catch (Exception e) {
             e.printStackTrace();

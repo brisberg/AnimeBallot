@@ -11,14 +11,22 @@ export default Ember.Route.extend({
 
         var season = this.get('store').findRecord('season', seasonId);
 
+        // Get the vote summaries
+        var voteSummaries = this.get('store').query('vote-summary', {weekIndex: weekIndex});
+
+        // Get the current ballot
+        var ballots = this.get('store').query('ballot', {userId: userId, weekIndex: weekIndex});
+
         // Get the current ballot votes
         var ballotVotes = this.get('store').query('ballot-vote', {userId: userId, weekIndex: weekIndex});
 
-        // Get the vote summary
-        var voteSummaries = this.get('store').query('vote-summary', {weekIndex: weekIndex});
-
-        return {ballotVotes: ballotVotes, voteSummaries: voteSummaries};
+        return {
+            user: user,
+            season: season,
+            voteSummaries: voteSummaries,
+            ballots: ballots,
+            ballotVotes: ballotVotes
+        };
     },
-    actions: {
-    }
+    actions: {}
 });

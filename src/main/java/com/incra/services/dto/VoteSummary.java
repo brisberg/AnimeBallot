@@ -1,5 +1,8 @@
 package com.incra.services.dto;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.incra.models.Episode;
 import com.incra.models.Season;
 import com.incra.models.Series;
@@ -15,10 +18,14 @@ import java.util.List;
  */
 public class VoteSummary {
 
+    private Integer id;
+
     private Integer weekIndex;
 
     private Integer rank;
 
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Series series;
 
     private Integer episodeIndex;
@@ -31,6 +38,14 @@ public class VoteSummary {
      * Default Constructor
      */
     public VoteSummary() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getWeekIndex() {

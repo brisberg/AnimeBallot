@@ -2,7 +2,6 @@
 }
 
 .container {
-    background: #eee;
     min-height: 700px;
 }
 
@@ -30,5 +29,17 @@
 
 body {
     background-image: url("images/geometric.gif");
-    background-color: #cccccc;
+    background-color: #333;
+}
+
+h2 {
+    background: url("images/heading_bar.gif") repeat-x;
+    padding-left: 10px;
+    color: #fff;
+}
+
+h3 {
+    background: url("images/heading_bar.gif") repeat-x;
+    padding-left: 10px;
+    color: #fff;
 }
