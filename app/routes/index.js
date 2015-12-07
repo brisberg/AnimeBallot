@@ -14,31 +14,11 @@ export default Ember.Route.extend({
         // Get the current ballot votes
         var ballotVotes = this.get('store').query('ballot-vote', {userId: userId, weekIndex: weekIndex});
 
-        ballotVotes.then(
-            (data) => {
-                this.set('ballotVotes', data);
-            }
-        );
+        // Get the vote summary
+        var voteSummaries = this.get('store').query('vote-summary', {weekIndex: weekIndex});
 
-        // Collect the current results list
-        var resultList = [];
-        var result;
-
-        result = {rank: 1, title: "Glasslip", episodeIndex: 4, percent: 93.2, change: "+2"};
-        resultList.push(result);
-
-        result = {rank: 2, title: "K: Return of Kings", episodeIndex: 4, percent: 57.3, change: "+0"};
-        resultList.push(result);
-
-        result = {rank: 3, title: "Absolute", episodeIndex: 4, percent: 45.7, change: "+0"};
-        resultList.push(result);
-
-        result = {rank: 4, title: "School-Live", episodeIndex: 4, percent: 37.3, change: "+1"};
-        resultList.push(result);
-
-        result = {rank: 5, title: "Danganronpa", episodeIndex: 4, percent: 25.5, change: "-2"};
-        resultList.push(result);
-
-        return {user: user, season: season, ballotVotes: ballotVotes, resultList: resultList};
+        return {ballotVotes: ballotVotes, voteSummaries: voteSummaries};
+    },
+    actions: {
     }
 });

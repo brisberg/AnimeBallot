@@ -3,6 +3,7 @@ package com.incra.controllers;
 import com.incra.controllers.adminControllers.AbstractAdminController;
 import com.incra.models.*;
 import com.incra.services.*;
+import com.incra.services.dto.VoteSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -183,8 +184,6 @@ public class ApiController {
 
                     Integer score = (Integer) ballotVoteData.get("score");
                     String episodeIdStr = (String) ballotVoteData.get("episode");
-                    System.out.println(score);
-                    System.out.println(episodeIdStr);
                     int episodeId = Integer.parseInt(episodeIdStr);
                     Episode episode = episodeService.findEntityById(episodeId);
 
@@ -342,5 +341,43 @@ public class ApiController {
         }
 
         return null;
+    }
+
+    @RequestMapping(value = "/api/voteSummaries", method = RequestMethod.GET, headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiVoteSummaryList(HttpServletRequest request, HttpSession session) {
+
+        String weekIndexStr = request.getParameter("weekIndex");
+
+        List<Series> seriesList = seriesService.findEntityList();
+
+        List<VoteSummary> voteSummaryList = new ArrayList<VoteSummary>();
+
+        try {
+            int rank = 1;
+            double percentage = 100.0;
+
+            for (Series series : seriesList) {
+                VoteSummary voteSummary = new VoteSummary();
+
+                voteSummary.setWeekIndex(Integer.parseInt(weekIndexStr));
+                voteSummary.setRank(rank);
+                voteSummary.setSeries(series);
+                voteSummary.setEpisodeIndex(1);
+                voteSummary.setPercentage(percentage);
+                voteSummary.setChange("+0");
+                voteSummaryList.add(voteSummary);
+                rank++;
+                percentage -= Math.random() * 10.0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("voteSummaries", voteSummaryList);
+
+        return result;
     }
 }

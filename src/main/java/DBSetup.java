@@ -48,7 +48,7 @@ public class DBSetup {
         loadSetupFile(appContext, "DB_Populate_30_Seasons_Weeks.sql");
         loadSetupFile(appContext, "DB_Populate_40_Series_Episodes.sql");
         loadSetupFile(appContext, "DB_Populate_50_Ballots.sql");
-
+        loadSetupFile(appContext, "DB_Populate_60_Configuration.sql");
     }
 
     @SuppressWarnings("deprecation")

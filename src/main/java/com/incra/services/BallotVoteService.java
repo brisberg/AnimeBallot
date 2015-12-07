@@ -46,8 +46,8 @@ public class BallotVoteService {
         CriteriaQuery<BallotVote> criteria = builder.createQuery(BallotVote.class);
         Root<BallotVote> root = criteria.from(BallotVote.class);
 
-        Path<String> rootUser = root.get("ballot.user");
-        criteria.where(builder.equal(rootUser, user));
+        //Path<String> rootUser = root.get("ballot.user");
+        //criteria.where(builder.equal(rootUser, user));
         Path<String> rootWeekIndex = root.get("weekIndex");
         criteria.where(builder.equal(rootWeekIndex, weekIndex));
 

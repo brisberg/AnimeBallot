@@ -10,14 +10,14 @@ ALTER SEQUENCE ballot_id_seq RESTART WITH 9999;
 -- ballotVotes
 
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
-VALUES (1, 1, 1, 5, now(), now());
+VALUES (1, 1, 1, 2, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
 VALUES (2, 1, 21, 5, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
 VALUES (3, 1, 41, 4, now(), now());
 
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
-VALUES (11, 2, 1, 5, now(), now());
+VALUES (11, 2, 1, 4, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
 VALUES (12, 2, 21, 3, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)

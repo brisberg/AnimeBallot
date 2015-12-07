@@ -56,7 +56,6 @@ export default Ember.Route.extend({
                 var ballotVote = me.get('store').createRecord('ballot-vote', {episode: episode, score: score});
                 ballot.get('ballotVotes').pushObject(ballotVote);
             });
-            console.log(ballot.get('ballotVotes'));
 
             ballot.save();
             this.transitionTo('index');

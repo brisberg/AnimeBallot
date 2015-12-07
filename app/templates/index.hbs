@@ -23,13 +23,13 @@
             <th>Change</th>
             </thead>
             <tbody>
-            {{#each model.resultList as |resultList index|}}
+            {{#each model.voteSummaries as |voteSummary|}}
                 <tr>
-                    <td>{{index}}</td>
-                    <td>{{resultList.title}}</td>
-                    <td>{{resultList.episodeIndex}}</td>
-                    <td>{{resultList.percent}}</td>
-                    <td>{{resultList.change}}</td>
+                    <td>{{voteSummary.rank}}</td>
+                    <td>{{voteSummary.title}}</td>
+                    <td>{{voteSummary.episodeIndex}}</td>
+                    <td>{{voteSummary.percent}}</td>
+                    <td>{{voteSummary.change}}</td>
                 </tr>
             {{/each}}
             </tbody>
@@ -44,7 +44,7 @@
             <tbody>
             {{#each model.ballotVotes as |ballotVote|}}
                 <tr>
-                    <td>{{ballotVote.episode.series.title}}</td>
+                    <td width="75%">{{ballotVote.episode.series.title}}</td>
                     <td>{{ballotVote.score}}</td>
                 </tr>
             {{/each}}
