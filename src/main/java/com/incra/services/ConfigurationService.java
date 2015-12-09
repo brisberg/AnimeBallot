@@ -36,6 +36,17 @@ public class ConfigurationService {
         return em.find(Configuration.class, id);
     }
 
+    /**
+     * Returns the first configuration. Presumably we only have 1 configuration in the table and it is the active one.
+     */
+    public Configuration findActiveEntity() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Configuration> criteria = cb.createQuery(Configuration.class);
+        criteria.from(Configuration.class);
+
+        return em.createQuery(criteria).getResultList().get(0);
+    }
+
     public void save(Configuration configuration) {
         if (configuration.getId() == null || configuration.getId() == 0) {
             em.persist(configuration);

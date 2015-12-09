@@ -1,5 +1,8 @@
 package com.incra.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.incra.database.AbstractDatedDatabaseItem;
 
 import javax.persistence.*;
@@ -19,6 +22,8 @@ public class Configuration extends AbstractDatedDatabaseItem {
     // Sometimes changes
     @OneToOne
     @JoinColumn(name = "current_season_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Season currentSeason;
 
     // Weekly changes

@@ -37,6 +37,11 @@
         <put-attribute name="body" value="/WEB-INF/views/admin/home/{1}.jsp"/>
     </definition>
 
+    <definition name="admin/configuration/*" extends="adminLayout">
+        <put-attribute name="title" value="Admin Configuration"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/configuration/{1}.jsp"/>
+    </definition>
+
     <definition name="admin/season/*" extends="adminLayout">
         <put-attribute name="title" value="Admin Seasons"/>
         <put-attribute name="body" value="/WEB-INF/views/admin/season/{1}.jsp"/>
