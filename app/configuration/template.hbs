@@ -1,0 +1,23 @@
+<h3>Current Configuration</h3>
+
+<div style="background-color: #9acfea">
+    <table>
+        <tr>
+            <td>Week Start Time:</td>
+            <td>{{model.formattedWeekStartDate}}</td>
+        </tr>
+        <tr>
+            <td>Current Season:</td>
+            <td>{{model.currentSeason.title}}</td>
+        </tr>
+        <tr>
+            <td>Current Week Index:</td>
+            <td>{{model.currentWeekIndex}}</td>
+        </tr>
+    </table>
+</div>
+
+{{#link-to 'index'}}
+    <button class="btn btn-default">Back</button>
+{{/link-to}}
+{{outlet}}

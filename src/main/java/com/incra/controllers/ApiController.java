@@ -43,6 +43,8 @@ public class ApiController {
     @Autowired
     private UserService userService;
     @Autowired
+    private ConfigurationService configurationService;
+    @Autowired
     private PageFrameworkService pageFrameworkService;
 
     @RequestMapping(value = "/api/seasons", headers = "Accept=application/json")
@@ -399,6 +401,31 @@ public class ApiController {
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("voteSummaries", voteSummaryList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/configurations", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiConfigurationList(HttpServletRequest request, HttpSession session) {
+
+        List<Configuration> configList = configurationService.findEntityList();
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("configurations", configList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/configurations/{id}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiConfiguration(@PathVariable("id") int id, HttpSession session) {
+        Configuration config = configurationService.findEntityById(1); // TODO: Hardcoded ID for now
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("configuration", config);
 
         return result;
     }
