@@ -1,36 +1,36 @@
 import Ember from 'ember';
+import WithConfiguration from 'animeBallot/mixins/with-configuration';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(WithConfiguration, {
     model: function () {
-        var userId = 1; // TODO: Hard coded for now
-        var seasonId = 1; // TODO: Hard coded for now
-        var weekIndex = 2; // TODO: Hard coded for now
+        var configuration, userId, weekIndex, episodes;
 
-        var user = this.get('store').findRecord('user', userId);
+        this.get('configuration').then(() => {
+            configuration = this.get('configuration');
+            userId = 1; // TODO: Hard coded for now
+            weekIndex = configuration.currentWeekIndex;
+            console.log(configuration);
+            console.log("WeekIndex: " + weekIndex);
+            this.set('currentSeason', configuration.currentSeason);
 
-        user.then(
-            (data) => {
-                this.set('currentUser', data);
-            }
-        );
+            var user = this.get('store').findRecord('user', userId);
 
-        var season = this.get('store').findRecord('season', seasonId);
+            user.then(
+                (data) => {
+                    this.set('currentUser', data);
+                }
+            );
 
-        season.then(
-            (data) => {
-                this.set('currentSeason', data);
-            }
-        );
+            this.set('currentWeekIndex', weekIndex);
 
-        this.set('currentWeekIndex', weekIndex);
+            episodes = this.get('store').query('episode', {weekIndex: weekIndex});
 
-        var episodes = this.get('store').query('episode', {weekIndex: weekIndex});
-
-        episodes.then(
-            (data) => {
-                this.set('currentEpisodes', data);
-            }
-        );
+            episodes.then(
+                (data) => {
+                    this.set('currentEpisodes', data);
+                }
+            );
+        });
 
         return {weekIndex: weekIndex, episodes: episodes};
     },
