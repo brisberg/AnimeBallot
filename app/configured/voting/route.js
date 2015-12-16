@@ -46,8 +46,9 @@ export default Ember.Route.extend({
                 ballot.get('ballotVotes').pushObject(ballotVote);
             });
 
-            ballot.save();
-            this.transitionTo('index');
+            ballot.save().then(() => {
+                this.transitionTo('configured.dashboard', user.get('id'));
+            });
         }
     }
 });

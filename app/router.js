@@ -10,7 +10,7 @@ Router.map(function () {
     this.route('login');
 
     this.route('configured', {}, function () {
-        this.route('voting', {});
+        this.route('voting', {path: 'voting/:user_id'});
         this.route('dashboard', {path: 'dashboard/:user_id'});
     });
 
