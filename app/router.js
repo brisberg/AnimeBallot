@@ -11,6 +11,7 @@ Router.map(function () {
 
     this.route('configured', {}, function () {
         this.route('voting', {});
+        this.route('dashboard', {path: 'dashboard/:user_id'});
     });
 
     this.route('episodes', {}, function () {

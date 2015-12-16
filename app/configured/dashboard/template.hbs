@@ -50,12 +50,18 @@
             {{/each}}
             </tbody>
         </table>
-        <div style="margin: 10px 0 10px 0; background: #fff; border: 1px solid #888; padding: 5px; ">
-            {{#each model.ballots as |ballot|}}
-                Comment: {{ballot.comment}}
-            {{/each}}
-        </div>
-        {{#link-to 'configured.voting' class="btn btn-default"}}Edit{{/link-to}}
+        {{#if model.loggedIn}}
+            <div style="margin: 10px 0 10px 0; background: #fff; border: 1px solid #888; padding: 5px; ">
+                {{#each model.ballots as |ballot|}}
+                    Comment: {{ballot.comment}}
+                {{/each}}
+            </div>
+
+            {{#link-to 'configured.voting' user.id class="btn btn-default"}}Edit{{/link-to}}
+        {{/if}}
+        {{#unless model.loggedIn}}
+            Log in so that you can vote!
+        {{/unless}}
     </div>
 </div>
 
