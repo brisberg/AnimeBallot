@@ -48,7 +48,6 @@ public class User extends AbstractDatedDatabaseItem {
 
     public String getName() {
         return firstName + " " + lastName;
-
     }
 
     public String getEmail() {

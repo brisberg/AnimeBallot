@@ -29,9 +29,12 @@ public class Season extends AbstractDatedDatabaseItem {
     @Column(name = "end_date")
     private Date endDate;
 
-    @OneToMany (mappedBy = "season")
+    @OneToMany(mappedBy = "season")
     private List<Series> seriesList;
 
+    /**
+     * Constructor
+     */
     public Season() {
         seriesList = new ArrayList<Series>();
     }

@@ -43,6 +43,8 @@ public class ApiController {
     @Autowired
     private UserService userService;
     @Autowired
+    private TaskService taskService;
+    @Autowired
     private ConfigurationService configurationService;
     @Autowired
     private PageFrameworkService pageFrameworkService;
@@ -402,6 +404,44 @@ public class ApiController {
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("voteSummaries", voteSummaryList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/tasks", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiTaskList(HttpServletRequest request, HttpSession session) {
+
+        List<Task> taskList = new ArrayList<Task>();
+
+        String userIdStr = request.getParameter("userId");
+        if (userIdStr != null) {
+            try {
+                Integer userId = Integer.parseInt(userIdStr);
+                User user = userService.findEntityById(userId);
+                taskList = taskService.findEntityListByUser(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            taskList = taskService.findEntityList();
+        }
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("tasks", taskList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/tasks/{id}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiTask(@PathVariable("id") int id, HttpSession session) {
+        Task task = taskService.findEntityById(id);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("task", task);
 
         return result;
     }
