@@ -1,36 +1,27 @@
 import Ember from 'ember';
-import WithConfiguration from 'animeBallot/mixins/with-configuration';
 
-export default Ember.Route.extend(WithConfiguration, {
+export default Ember.Route.extend({
+
     model: function () {
-        var configuration, userId, weekIndex, episodes;
+        var user = this.controllerFor('application').get('user');
 
-        configuration = this.get('configuration');
-        userId = 1; // TODO: Hard coded for now
-        weekIndex = configuration.currentWeekIndex;
-        console.log(configuration);
-        console.log("WeekIndex: " + weekIndex);
-        this.set('currentSeason', configuration.currentSeason);
+        var configuration = this.modelFor('configured');
+        var currentSeason = configuration.get('currentSeason');
+        var currentWeekIndex = configuration.get('currentWeekIndex');
 
-        var user = this.get('store').findRecord('user', userId);
-
-        user.then(
-            (data) => {
-                this.set('currentUser', data);
-            }
-        );
-
-        this.set('currentWeekIndex', weekIndex);
-
-        episodes = this.get('store').query('episode', {weekIndex: weekIndex});
-
+        var episodes = this.get('store').query('episode', {weekIndex: currentWeekIndex});
         episodes.then(
             (data) => {
                 this.set('currentEpisodes', data);
             }
         );
 
-        return {weekIndex: weekIndex, episodes: episodes};
+        // Handover to the action
+        this.set('currentUser', user);
+        this.set('currentSeason', currentSeason);
+        this.set('currentWeekIndex', currentWeekIndex);
+
+        return {weekIndex: currentWeekIndex, episodes: episodes};
     },
 
     actions: {
@@ -42,7 +33,7 @@ export default Ember.Route.extend(WithConfiguration, {
 
             // Create a ballot
             var ballot = this.get('store').createRecord('ballot',
-                {user: user, weekIndex: weekIndex, season: season, comment: "Hello Jeff"});
+                {user: user, weekIndex: weekIndex, season: season, comment: this.controller.get('comment')});
 
             var me = this;
             episodes.forEach(function (episode) {

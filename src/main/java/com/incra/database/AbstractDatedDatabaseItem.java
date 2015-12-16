@@ -39,6 +39,7 @@ public abstract class AbstractDatedDatabaseItem extends AbstractDatabaseItem {
     @PrePersist
     protected void onCreate() {
         dateCreated = new Date();
+        lastUpdated = new Date();
     }
 
     @PreUpdate

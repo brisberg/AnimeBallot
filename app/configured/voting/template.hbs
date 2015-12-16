@@ -1,7 +1,7 @@
 <h3>Place your vote!</h3>
 
 <table class="table">
-    <thead>
+    <thead class="episode">
     <tr>
         <th>Series</th>
         <th>Title</th>
@@ -23,6 +23,9 @@
     </tbody>
 </table>
 
+<div style="background: #ddd; margin-bottom: 5px;">
+Comment: {{input value=comment}}
+</div>
 <button {{action 'submitVote'}} class="btn btn-default">Submit Vote</button>
 
 {{#link-to 'index'}}
