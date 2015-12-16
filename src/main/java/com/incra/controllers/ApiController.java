@@ -195,6 +195,7 @@ public class ApiController {
             ballot.setUser(user);
             ballot.setWeekIndex(weekIndex);
             ballot.setComment(comment);
+            ballot.setSubmitDate(new Date());
 
             List<Map> ballotVotesData = (List<Map>) ballotData.get("ballotVotes");
 
