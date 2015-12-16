@@ -28,12 +28,19 @@ export default Ember.Route.extend({
             });
         }
 
+        // Get the tasks
+        var tasks = [];
+        if (userId !== 0) {
+            tasks = this.get('store').query('task', {userId: userId});
+        }
+
         return {
             loggedIn: (userId !== 0),
             season: currentSeason,
             voteSummaries: voteSummaries,
             ballots: ballots,
-            ballotVotes: ballotVotes
+            ballotVotes: ballotVotes,
+            tasks: tasks
         };
     },
     actions: {}

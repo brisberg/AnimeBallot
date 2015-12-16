@@ -62,6 +62,17 @@
         {{#unless model.loggedIn}}
             Log in so that you can vote!
         {{/unless}}
+        <h3>Current Tasks</h3>
+        <table class="table-striped" width="100%">
+            <tbody>
+            {{#each model.tasks as |task|}}
+                <tr>
+                    <td width="75%">{{task.name}}</td>
+                    <td>{{task.formattedDueDate}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
     </div>
 </div>
 
