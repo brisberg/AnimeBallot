@@ -36,7 +36,7 @@ public class Ballot extends AbstractDatedDatabaseItem {
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
-    @OneToMany(mappedBy = "ballot", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ballot", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private List<BallotVote> ballotVotes = new ArrayList<BallotVote>();

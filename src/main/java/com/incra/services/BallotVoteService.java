@@ -64,7 +64,7 @@ public class BallotVoteService {
         }
     }
 
-    public void delete(Ballot ballotVote) {
+    public void delete(BallotVote ballotVote) {
         this.delete(ballotVote.getId());
     }
 

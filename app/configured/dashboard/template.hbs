@@ -6,12 +6,35 @@
     .table-striped tr th {
         padding: 6px;
     }
+    #chart_container {
+        margin-top: 30px;
+        display: inline-block;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #chart {
+        float: left;
+    }
+
+    #legend {
+        float: left;
+        margin-left: 15px;
+    }
+
+    #y_axis {
+        float: left;
+        width: 40px;
+    }
 </style>
 
 <div class="row">
     <div class="col-md-8" style="background: #eee;">
         <div style="min-height: 300px">
-            <img src="assets/images/chart.png">
+            <div id="chart_container">
+                <div id="y_axis"></div>
+                <div id="chart"></div>
+                <div id="legend"></div>
+            </div>
         </div>
         <h3>Last Week's Results</h3>
         <table class="table-striped" style="width: 100%">

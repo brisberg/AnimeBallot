@@ -12,3 +12,5 @@ export default DS.Model.extend({
         return moment(date).format('LL');
     }.property('airDate')
 });
+// we should be using a helper instead of a computed property here
+// {{format-air-date episode.airDate}}

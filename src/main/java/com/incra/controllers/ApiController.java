@@ -192,12 +192,24 @@ public class ApiController {
             Season season = seasonService.findEntityById(seasonId);
             User user = userService.findEntityById(userId);
 
-            Ballot ballot = new Ballot();
-            ballot.setSeason(season);
-            ballot.setUser(user);
-            ballot.setWeekIndex(weekIndex);
-            ballot.setComment(comment);
-            ballot.setSubmitDate(new Date());
+            List<Ballot> ballots = ballotService.findEntityListByUserAndWeekIndex(user, weekIndex);
+            Ballot ballot = null;
+
+            if (ballots.size() > 0) {
+                ballot = ballots.get(0);
+
+                ballot.setComment(comment);
+                ballot.setSubmitDate(new Date());
+
+                ballot.getBallotVotes().clear();
+            } else {
+                ballot = new Ballot();
+                ballot.setSeason(season);
+                ballot.setUser(user);
+                ballot.setWeekIndex(weekIndex);
+                ballot.setComment(comment);
+                ballot.setSubmitDate(new Date());
+            }
 
             List<Map> ballotVotesData = (List<Map>) ballotData.get("ballotVotes");
 

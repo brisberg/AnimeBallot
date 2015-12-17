@@ -10,7 +10,41 @@ export default Ember.Route.extend({
         var currentWeekIndex = configuration.get('currentWeekIndex');
 
         // Get the chart data
-        // to be written
+        var chartData = [];
+        var chart;
+
+        chart = {
+            name: "Asterisk",
+            data: [
+                {x: 1449101800, y: 10},
+                {x: 1449706600, y: 20},
+                {x: 1450311401, y: 30}
+            ],
+            color: 'red'
+        };
+        chartData.push(chart);
+
+        chart = {
+            name: "One-Punch Man",
+            data: [
+                {x: 1449101800, y: 20},
+                {x: 1449706600, y: 19},
+                {x: 1450311401, y: 24}
+            ],
+            color: 'blue'
+        };
+        chartData.push(chart);
+
+        chart = {
+            name: "Rakudai",
+            data: [
+                {x: 1449101800, y: 12},
+                {x: 1449706600, y: 22},
+                {x: 1450311401, y: 29}
+            ],
+            color: 'green'
+        };
+        chartData.push(chart);
 
         // Get the vote summaries
         var voteSummaries = this.get('store').query('vote-summary', {weekIndex: currentWeekIndex});
@@ -36,15 +70,53 @@ export default Ember.Route.extend({
             tasks = this.get('store').query('task', {userId: userId});
         }
 
+        Ember.run.scheduleOnce('afterRender', this, function() {
+            console.log("beginAfterRender");
+
+            /* jshint ignore:start */
+            var graph = new Rickshaw.Graph({
+                element: document.querySelector("#chart"),
+                width: 540,
+                height: 240,
+                renderer: 'line',
+                series: chartData
+            });
+
+            var x_axis = new Rickshaw.Graph.Axis.Time({graph: graph});
+
+            var y_axis = new Rickshaw.Graph.Axis.Y({
+                graph: graph,
+                orientation: 'left',
+                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+                element: document.getElementById('y_axis')
+            });
+
+            var legend = new Rickshaw.Graph.Legend({
+                element: document.querySelector('#legend'),
+                graph: graph
+            });
+
+            console.log(graph);
+            console.log(x_axis);
+            console.log(y_axis);
+            console.log(legend);
+
+            graph.render();
+            /* jshint ignore:end */
+            console.log("endAfterRender");
+        });
+
         return {
             userId: userId,
             loggedIn: (userId !== '0'),
             season: currentSeason,
+            chartData: chartData,
             voteSummaries: voteSummaries,
             ballots: ballots,
             ballotVotes: ballotVotes,
             tasks: tasks
         };
     },
+
     actions: {}
 });
