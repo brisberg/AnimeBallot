@@ -29,14 +29,14 @@ INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_up
 VALUES (13, 2, 41, 2, now(), now());
 
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
-VALUES (21, 11, 1, 5, now(), now());
+VALUES (21, 11, 2, 5, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
 VALUES (22, 11, 21, 2, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
 VALUES (23, 11, 41, 3, now(), now());
 
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
-VALUES (31, 12, 1, 2, now(), now());
+VALUES (31, 12, 2, 2, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
 VALUES (32, 12, 21, 2, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)

@@ -15,9 +15,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,6 +32,9 @@ import java.util.*;
  */
 @Controller
 public class ApiController {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     private SeasonService seasonService;
@@ -388,27 +394,41 @@ public class ApiController {
 
         List<VoteSummary> voteSummaryList = new ArrayList<VoteSummary>();
 
+        StringBuilder voteSummarySQL = new StringBuilder();
+        voteSummarySQL.append("SELECT e.series_id,e.episode_index,count(b.id),sum(bv.score) ");
+        voteSummarySQL.append("FROM ballot_vote as bv ");
+        voteSummarySQL.append("LEFT JOIN ballot as b ON bv.ballot_id=b.id ");
+        voteSummarySQL.append("LEFT JOIN episode as e ON bv.episode_id=e.id ");
+        voteSummarySQL.append("WHERE b.week_index=" + weekIndexStr + " ");
+        voteSummarySQL.append("ORDER BY sum(bv.score) DESC; ");
+
+        List<Object[]> voteSummaryResults = em.createNativeQuery(voteSummarySQL.toString()).getResultList();
+
+        StringBuilder ballotCountSQL = new StringBuilder();
+        ballotCountSQL.append("SELECT count(b.id) ");
+        ballotCountSQL.append("FROM ballot as b ");
+        ballotCountSQL.append("WHERE b.week_index=1; ");
+
+        List<BigInteger> ballotCountResults = em.createNativeQuery(ballotCountSQL.toString()).getResultList();
+        int numTotalBallots = ballotCountResults.get(0).intValue();
+
+        System.out.println("Total ballots: " + numTotalBallots);
+
         try {
             int id = 1;
             int rank = 1;
-            double percentage = 0.833;
+            for (Object[] foobar : voteSummaryResults) {
+                VoteSummary summary = new VoteSummary();
+                summary.setId(id);
+                summary.setRank(rank);
+                summary.setSeries(seriesService.findEntityById((Integer) foobar[0]));
+                summary.setEpisodeIndex((Integer) foobar[1]);
+                summary.setPercentage(((BigInteger) foobar[2]).doubleValue() / numTotalBallots);
+                summary.setChange(((BigInteger) foobar[3]).toString());
 
-            for (Series series : seriesList) {
-                VoteSummary voteSummary = new VoteSummary();
-
-                voteSummary.setId(id);
-                voteSummary.setWeekIndex(Integer.parseInt(weekIndexStr));
-                voteSummary.setRank(rank);
-                voteSummary.setSeries(series);
-                voteSummary.setEpisodeIndex(1);
-                voteSummary.setPercentage(percentage);
-                voteSummary.setChange("+0");
-                voteSummaryList.add(voteSummary);
-
+                voteSummaryList.add(summary);
                 id++;
                 rank++;
-                percentage -= Math.random() * 0.2;
-                if (percentage < 0.01) percentage = 0.01;
             }
         } catch (Exception e) {
             e.printStackTrace();
