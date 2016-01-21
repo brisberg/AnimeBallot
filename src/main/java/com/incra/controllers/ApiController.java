@@ -400,6 +400,7 @@ public class ApiController {
         voteSummarySQL.append("LEFT JOIN ballot as b ON bv.ballot_id=b.id ");
         voteSummarySQL.append("LEFT JOIN episode as e ON bv.episode_id=e.id ");
         voteSummarySQL.append("WHERE b.week_index=" + weekIndexStr + " ");
+        voteSummarySQL.append("GROUP BY e.series_id,e.episode_index ");
         voteSummarySQL.append("ORDER BY sum(bv.score) DESC; ");
 
         List<Object[]> voteSummaryResults = em.createNativeQuery(voteSummarySQL.toString()).getResultList();
