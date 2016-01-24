@@ -1,7 +1,7 @@
 /**
  * Provides an improved version of database schema setup and initial population
  * loading, with multi-line SQL statements in the loading file.
- * <p/>
+ * <p>
  * Copyright (C) 2006-2008 Jeffrey Risberg
  *
  * @author Jeff Risberg
@@ -50,6 +50,7 @@ public class DBSetup {
         loadSetupFile(appContext, "DB_Populate_50_Ballots.sql");
         loadSetupFile(appContext, "DB_Populate_60_Configuration.sql");
         loadSetupFile(appContext, "DB_Populate_70_Tasks.sql");
+        loadSetupFile(appContext, "DB_Populate_80_EpisodeVoteSummaries.sql");
     }
 
     @SuppressWarnings("deprecation")

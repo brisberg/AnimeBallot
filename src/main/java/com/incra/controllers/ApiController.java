@@ -1,27 +1,19 @@
 package com.incra.controllers;
 
-import com.incra.controllers.adminControllers.AbstractAdminController;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.incra.models.*;
 import com.incra.services.*;
-import com.incra.services.dto.VoteSummary;
+import com.incra.models.EpisodeVoteSummary;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -52,6 +44,8 @@ public class ApiController {
     private TaskService taskService;
     @Autowired
     private ConfigurationService configurationService;
+    @Autowired
+    private EpisodeVoteSummaryService episodeVoteSummaryService;
     @Autowired
     private PageFrameworkService pageFrameworkService;
 
@@ -392,7 +386,7 @@ public class ApiController {
 
         List<Series> seriesList = seriesService.findEntityList();
 
-        List<VoteSummary> voteSummaryList = new ArrayList<VoteSummary>();
+        List<EpisodeVoteSummary> episodeVoteSummaryList = new ArrayList<EpisodeVoteSummary>();
 
         StringBuilder voteSummarySQL = new StringBuilder();
         voteSummarySQL.append("SELECT e.series_id,e.episode_index,count(b.id),sum(bv.score) ");
@@ -419,15 +413,15 @@ public class ApiController {
             int id = 1;
             int rank = 1;
             for (Object[] foobar : voteSummaryResults) {
-                VoteSummary summary = new VoteSummary();
+                EpisodeVoteSummary summary = new EpisodeVoteSummary();
                 summary.setId(id);
                 summary.setRank(rank);
                 summary.setSeries(seriesService.findEntityById((Integer) foobar[0]));
                 summary.setEpisodeIndex((Integer) foobar[1]);
                 summary.setPercentage(((BigInteger) foobar[2]).doubleValue() / numTotalBallots);
-                summary.setChange(((BigInteger) foobar[3]).toString());
+                summary.setChange(((BigInteger) foobar[3]).intValue());
 
-                voteSummaryList.add(summary);
+                episodeVoteSummaryList.add(summary);
                 id++;
                 rank++;
             }
@@ -436,7 +430,7 @@ public class ApiController {
         }
 
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("voteSummaries", voteSummaryList);
+        result.put("voteSummaries", episodeVoteSummaryList);
 
         return result;
     }
@@ -500,6 +494,20 @@ public class ApiController {
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("configuration", config);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/episodeVoteSummaries/{weekIndex}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiEpisodeVoteSummaries(@PathVariable("weekIndex") int weekIndex, HttpServletRequest request,
+                                                HttpSession session) {
+
+        List<EpisodeVoteSummary> configList = episodeVoteSummaryService.findEntityListByWeekIndex(weekIndex);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("episodeVoteSummaries", configList);
 
         return result;
     }
