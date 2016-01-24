@@ -1,8 +1,10 @@
 import DS from 'ember-data';
+import ENV from "../config/environment";
 
 export default DS.RESTAdapter.extend({
-    host: 'http://localhost:8080',
-    namespace: 'api',
+    namespace: ENV.baseURL + 'api',
 
-    shouldReloadAll() { return false; }
+    shouldReloadAll() {
+        return false;
+    }
 });

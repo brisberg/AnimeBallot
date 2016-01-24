@@ -18,7 +18,7 @@
     </organization>
 
     <properties>
-        <javax.servlet.version>2.5</javax.servlet.version>
+        <javax.servlet.version>3.0.1</javax.servlet.version>
         <javax.servlet.jsp.version>2.1</javax.servlet.jsp.version>
         <spring.version>3.2.13.RELEASE</spring.version>
         <spring.security.version>3.0.5.RELEASE</spring.security.version>
@@ -53,9 +53,10 @@
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet.version}</version>
             <type>jar</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
