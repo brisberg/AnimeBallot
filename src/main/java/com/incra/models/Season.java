@@ -6,6 +6,7 @@ import com.incra.database.AbstractDatedDatabaseItem;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
@@ -70,6 +71,20 @@ public class Season extends AbstractDatedDatabaseItem {
 
     public void setSeriesList(List<Series> seriesList) {
         this.seriesList = seriesList;
+    }
+
+    public Date getStartDateByWeekIndex(int weekIndex) {
+        Date startDate = getStartDate();
+
+        Calendar c = Calendar.getInstance();
+
+        for (int i = 1; i < weekIndex; i++) {
+            c.setTime(startDate);
+            c.add(Calendar.DATE, 7);
+            startDate = c.getTime();
+        }
+
+        return startDate;
     }
 
     @Override

@@ -10,6 +10,8 @@ export default Ember.Route.extend({
         var currentWeekIndex = configuration.get('currentWeekIndex');
 
         // Get the chart data
+        var episodeVoteSummaries = this.get('store').query('episode-vote-summary', {weekIndex: currentWeekIndex});
+
         var chartData = [];
         var chart;
 
@@ -46,6 +48,31 @@ export default Ember.Route.extend({
         };
         chartData.push(chart);
 
+        // check the episodeVoteSummaries
+        var newChartData = [];
+        episodeVoteSummaries.forEach(function (evs) {
+            // get the series
+            var series = evs.get("series");
+            var chartData = null;
+
+            // find if it already exists
+            newChartData.forEach(function (cd) {
+                if (cd.name === series.name) {
+                    chartData = cd;
+                }
+            });
+
+            if (chartData == null) {
+                chartData = {};
+                chartData.name = series.name;
+                chartData.color = "green";
+                newChartData.push(chartData);
+            }
+
+            // now add to the time values
+            // to be written
+        });
+
         // Get the vote summaries
         var voteSummaries = this.get('store').query('vote-summary', {weekIndex: currentWeekIndex});
 
@@ -70,7 +97,7 @@ export default Ember.Route.extend({
             tasks = this.get('store').query('task', {userId: userId});
         }
 
-        Ember.run.scheduleOnce('afterRender', this, function() {
+        Ember.run.scheduleOnce('afterRender', this, function () {
             console.log("beginAfterRender");
 
             /* jshint ignore:start */

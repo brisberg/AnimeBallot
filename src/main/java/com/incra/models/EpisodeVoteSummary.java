@@ -23,18 +23,24 @@ import java.util.List;
 public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
 
     @ManyToOne
+    @JoinColumn(name = "season_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Season season;
 
     @Column(name = "week_index")
     private int weekIndex;
 
     @ManyToOne
+    @JoinColumn(name = "series_id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Series series;
 
     @Column(name = "episode_index")
     private int episodeIndex;
 
-    @Basic
+    @Column(name = "rank")
     private int rank; // 1 - n
 
     @Column(name = "score_raw")
@@ -43,11 +49,22 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
     @Column(name = "score_norm")
     private double normScore;
 
-    @Basic
+    @Column(name = "percentage")
     private double percentage;
 
-    @Basic
+    @Column(name = "change")
     private int change;
+
+    public Date getWeekIndexDate() {
+        return weekIndexDate;
+    }
+
+    public void setWeekIndexDate(Date weekIndexDate) {
+        this.weekIndexDate = weekIndexDate;
+    }
+
+    @Transient
+    private Date weekIndexDate;
 
     /**
      * Default Constructor

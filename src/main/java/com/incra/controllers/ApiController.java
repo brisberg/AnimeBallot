@@ -504,10 +504,34 @@ public class ApiController {
     Map<String, Object> apiEpisodeVoteSummaries(@PathVariable("weekIndex") int weekIndex, HttpServletRequest request,
                                                 HttpSession session) {
 
-        List<EpisodeVoteSummary> configList = episodeVoteSummaryService.findEntityListByWeekIndex(weekIndex);
+        List<EpisodeVoteSummary> evsList = episodeVoteSummaryService.findEntityListByWeekIndex(weekIndex);
+
+        for (EpisodeVoteSummary evs : evsList) {
+            Season season = evs.getSeason();
+            evs.setWeekIndexDate(season.getStartDateByWeekIndex(weekIndex));
+        }
 
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("episodeVoteSummaries", configList);
+        result.put("episodeVoteSummaries", evsList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/episodeVoteSummaries/{seasionId}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiEpisodeVoteSummaries(@PathVariable("seasionId") Season season, HttpServletRequest request,
+                                                HttpSession session) {
+
+        List<EpisodeVoteSummary> evsList = episodeVoteSummaryService.findEntityListByWeekRange(1, 13);
+
+        //for (EpisodeVoteSummary evs : evsList) {
+        //    Season season = evs.getSeason();
+        //    evs.setWeekIndexDate(season.getStartDateByWeekIndex(weekIndex));
+        //}
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("episodeVoteSummaries", evsList);
 
         return result;
     }
