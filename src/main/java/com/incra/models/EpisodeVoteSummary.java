@@ -25,8 +25,6 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
 
     @ManyToOne
     @JoinColumn(name = "season_id", nullable = false)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
     @JsonIgnore
     private Season season;
 
@@ -35,8 +33,6 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
 
     @ManyToOne
     @JoinColumn(name = "series_id", nullable = false)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
     @JsonIgnore
     private Series series;
 
@@ -57,17 +53,6 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
 
     @Column(name = "change")
     private int change;
-
-    public Date getWeekIndexDate() {
-        return weekIndexDate;
-    }
-
-    public void setWeekIndexDate(Date weekIndexDate) {
-        this.weekIndexDate = weekIndexDate;
-    }
-
-    @Transient
-    private Date weekIndexDate;
 
     @Transient
     private String seriesTitle;
