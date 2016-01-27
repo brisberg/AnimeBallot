@@ -504,10 +504,15 @@ public class ApiController {
     Map<String, Object> apiEpisodeVoteSummaries(@PathVariable("weekIndex") int weekIndex, HttpServletRequest request,
                                                 HttpSession session) {
 
-        List<EpisodeVoteSummary> configList = episodeVoteSummaryService.findEntityListByWeekIndex(weekIndex);
+        List<EpisodeVoteSummary> evsList = episodeVoteSummaryService.findEntityListByWeekIndex(weekIndex);
+
+        for (EpisodeVoteSummary evs : evsList) {
+            evs.setSeriesTitle(evs.getSeries().getTitle());
+            evs.setWeekStartDate(new Date());
+        }
 
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("episodeVoteSummaries", configList);
+        result.put("episodeVoteSummaries", evsList);
 
         return result;
     }

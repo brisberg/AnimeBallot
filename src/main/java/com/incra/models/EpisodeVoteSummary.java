@@ -2,6 +2,7 @@ package com.incra.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.incra.database.AbstractDatedDatabaseItem;
 import com.incra.models.Episode;
@@ -23,12 +24,14 @@ import java.util.List;
 public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
 
     @ManyToOne
+    @JsonIgnore
     private Season season;
 
     @Column(name = "week_index")
     private int weekIndex;
 
     @ManyToOne
+    @JsonIgnore
     private Series series;
 
     @Column(name = "episode_index")
@@ -49,6 +52,11 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
     @Basic
     private int change;
 
+    @Transient
+    private String seriesTitle;
+
+    @Transient
+    private Date weekStartDate;
     /**
      * Default Constructor
      */
@@ -125,6 +133,22 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
 
     public void setChange(int change) {
         this.change = change;
+    }
+
+    public String getSeriesTitle() {
+        return seriesTitle;
+    }
+
+    public void setSeriesTitle(String seriesTitle) {
+        this.seriesTitle = seriesTitle;
+    }
+
+    public Date getWeekStartDate() {
+        return weekStartDate;
+    }
+
+    public void setWeekStartDate(Date weekStartDate) {
+        this.weekStartDate = weekStartDate;
     }
 
     @Override
