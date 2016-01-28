@@ -377,64 +377,6 @@ public class ApiController {
         return null;
     }
 
-    @RequestMapping(value = "/api/voteSummaries", method = RequestMethod.GET, headers = "Accept=application/json")
-    public
-    @ResponseBody
-    Map<String, Object> apiVoteSummaryList(HttpServletRequest request, HttpSession session) {
-
-        String weekIndexStr = request.getParameter("weekIndex");
-
-        List<Series> seriesList = seriesService.findEntityList();
-
-        List<EpisodeVoteSummary> episodeVoteSummaryList = new ArrayList<EpisodeVoteSummary>();
-
-        StringBuilder voteSummarySQL = new StringBuilder();
-        voteSummarySQL.append("SELECT e.series_id,e.episode_index,count(b.id),sum(bv.score) ");
-        voteSummarySQL.append("FROM ballot_vote as bv ");
-        voteSummarySQL.append("LEFT JOIN ballot as b ON bv.ballot_id=b.id ");
-        voteSummarySQL.append("LEFT JOIN episode as e ON bv.episode_id=e.id ");
-        voteSummarySQL.append("WHERE b.week_index=" + weekIndexStr + " ");
-        voteSummarySQL.append("GROUP BY e.series_id,e.episode_index ");
-        voteSummarySQL.append("ORDER BY sum(bv.score) DESC; ");
-
-        List<Object[]> voteSummaryResults = em.createNativeQuery(voteSummarySQL.toString()).getResultList();
-
-        StringBuilder ballotCountSQL = new StringBuilder();
-        ballotCountSQL.append("SELECT count(b.id) ");
-        ballotCountSQL.append("FROM ballot as b ");
-        ballotCountSQL.append("WHERE b.week_index=1; ");
-
-        List<BigInteger> ballotCountResults = em.createNativeQuery(ballotCountSQL.toString()).getResultList();
-        int numTotalBallots = ballotCountResults.get(0).intValue();
-
-        System.out.println("Total ballots: " + numTotalBallots);
-
-        try {
-            int id = 1;
-            int rank = 1;
-            for (Object[] foobar : voteSummaryResults) {
-                EpisodeVoteSummary summary = new EpisodeVoteSummary();
-                summary.setId(id);
-                summary.setRank(rank);
-                summary.setSeries(seriesService.findEntityById((Integer) foobar[0]));
-                summary.setEpisodeIndex((Integer) foobar[1]);
-                summary.setPercentage(((BigInteger) foobar[2]).doubleValue() / numTotalBallots);
-                summary.setChange(((BigInteger) foobar[3]).intValue());
-
-                episodeVoteSummaryList.add(summary);
-                id++;
-                rank++;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("voteSummaries", episodeVoteSummaryList);
-
-        return result;
-    }
-
     @RequestMapping(value = "/api/tasks", headers = "Accept=application/json")
     public
     @ResponseBody
@@ -498,18 +440,84 @@ public class ApiController {
         return result;
     }
 
-    /*
-    @RequestMapping(value = "/api/episodeVoteSummaries/{weekIndex}", headers = "Accept=application/json")
+    @RequestMapping(value = "/api/voteSummaries", method = RequestMethod.GET, headers = "Accept=application/json")
     public
     @ResponseBody
-    Map<String, Object> apiEpisodeVoteSummaries(@PathVariable("weekIndex") int weekIndex, HttpServletRequest request,
-                                                HttpSession session) {
+    Map<String, Object> apiVoteSummaryList(HttpServletRequest request, HttpSession session) {
 
-        List<EpisodeVoteSummary> evsList = episodeVoteSummaryService.findEntityListByWeekIndex(weekIndex);
+        String weekIndexStr = request.getParameter("weekIndex");
+
+        List<Series> seriesList = seriesService.findEntityList();
+
+        List<EpisodeVoteSummary> episodeVoteSummaryList = new ArrayList<EpisodeVoteSummary>();
+
+        StringBuilder voteSummarySQL = new StringBuilder();
+        voteSummarySQL.append("SELECT e.series_id,e.episode_index,count(b.id),sum(bv.score) ");
+        voteSummarySQL.append("FROM ballot_vote as bv ");
+        voteSummarySQL.append("LEFT JOIN ballot as b ON bv.ballot_id=b.id ");
+        voteSummarySQL.append("LEFT JOIN episode as e ON bv.episode_id=e.id ");
+        voteSummarySQL.append("WHERE b.week_index=" + weekIndexStr + " ");
+        voteSummarySQL.append("GROUP BY e.series_id,e.episode_index ");
+        voteSummarySQL.append("ORDER BY sum(bv.score) DESC; ");
+
+        List<Object[]> voteSummaryResults = em.createNativeQuery(voteSummarySQL.toString()).getResultList();
+
+        StringBuilder ballotCountSQL = new StringBuilder();
+        ballotCountSQL.append("SELECT count(b.id) ");
+        ballotCountSQL.append("FROM ballot as b ");
+        ballotCountSQL.append("WHERE b.week_index=1; ");
+
+        List<BigInteger> ballotCountResults = em.createNativeQuery(ballotCountSQL.toString()).getResultList();
+        int numTotalBallots = ballotCountResults.get(0).intValue();
+
+        System.out.println("Total ballots: " + numTotalBallots);
+
+        try {
+            int id = 1;
+            int rank = 1;
+            for (Object[] foobar : voteSummaryResults) {
+                Series series = seriesService.findEntityById((Integer) foobar[0]);
+
+                EpisodeVoteSummary summary = new EpisodeVoteSummary();
+                summary.setId(id);
+                summary.setRank(rank);
+                summary.setSeries(series);
+                summary.setSeriesTitle(series.getTitle());
+                summary.setEpisodeIndex((Integer) foobar[1]);
+                summary.setPercentage(((BigInteger) foobar[2]).doubleValue() / numTotalBallots);
+                summary.setChange(((BigInteger) foobar[3]).intValue());
+
+                episodeVoteSummaryList.add(summary);
+                id++;
+                rank++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("voteSummaries", episodeVoteSummaryList);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/api/episodeVoteSummaries", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiEpisodeVoteSummaries(HttpServletRequest request, HttpSession session) {
+
+        String startWeekIndexStr = request.getParameter("startWeekIndex");
+        String endWeekIndexStr = request.getParameter("endWeekIndex");
+
+        List<EpisodeVoteSummary> evsList = episodeVoteSummaryService.findEntityListByWeekRange(1, 13);
 
         for (EpisodeVoteSummary evs : evsList) {
-            evs.setSeriesTitle(evs.getSeries().getTitle());
-            evs.setWeekStartDate(new Date());
+            Season season = evs.getSeason();
+            Series series = evs.getSeries();
+            int weekIndex = evs.getWeekIndex();
+
+            evs.setWeekStartDate(season.getStartDateByWeekIndex(weekIndex));
+            evs.setSeriesTitle(series.getTitle());
         }
 
         Map<String, Object> result = new HashMap<String, Object>();
@@ -517,27 +525,4 @@ public class ApiController {
 
         return result;
     }
-<<<<<<< Updated upstream
-=======
-    */
-
-    @RequestMapping(value = "/api/episodeVoteSummaries/{seasonId}", headers = "Accept=application/json")
-    public
-    @ResponseBody
-    Map<String, Object> apiEpisodeVoteSummaries(@PathVariable("seasonId") Season season, HttpServletRequest request,
-                                                HttpSession session) {
-
-        List<EpisodeVoteSummary> evsList = episodeVoteSummaryService.findEntityListByWeekRange(1, 13);
-
-        //for (EpisodeVoteSummary evs : evsList) {
-        //    Season season = evs.getSeason();
-        //    evs.setWeekIndexDate(season.getStartDateByWeekIndex(weekIndex));
-        //}
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("episodeVoteSummaries", evsList);
-
-        return result;
-    }
->>>>>>> Stashed changes
 }

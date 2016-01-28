@@ -80,7 +80,7 @@ public class Season extends AbstractDatedDatabaseItem {
 
         for (int i = 1; i < weekIndex; i++) {
             c.setTime(startDate);
-            c.add(Calendar.DATE, 7);
+            c.add(Calendar.WEEK_OF_YEAR, 1);
             startDate = c.getTime();
         }
 

@@ -1,5 +1,8 @@
 import Ember from 'ember';
 
+/*global $:false */
+/*global d3:false */
+/*global Rickshaw:false */
 export default Ember.Route.extend({
 
     model: function (params) {
@@ -9,64 +12,75 @@ export default Ember.Route.extend({
         var currentSeason = configuration.get('currentSeason');
         var currentWeekIndex = configuration.get('currentWeekIndex');
 
+        var seriesData = [];
+        var graph;
+
         // Get the chart data
-        var episodeVoteSummaries = this.get('store').query('episode-vote-summary', {weekIndex: currentWeekIndex});
+        this.get('store').query('episode-vote-summary', {startWeekIndex: currentWeekIndex, endWeekIndex: currentWeekIndex})
+            .then(function (data) {
+                var p = d3.scale.category10();
+                var newChartData = {};
+                var seriesCount = 0;
 
-        var chartData = [];
-        var chart;
+                data.forEach(function (evs) {
+                    // get the series
+                    var seriesTitle = evs.get("seriesTitle");
+                    var chartData = newChartData[seriesTitle];
 
-        chart = {
-            name: "Asterisk",
-            data: [
-                {x: 1449101800, y: 10},
-                {x: 1449706600, y: 20},
-                {x: 1450311401, y: 30}
-            ],
-            color: 'red'
-        };
-        chartData.push(chart);
+                    if (chartData == null) {
+                        chartData = {};
+                        chartData.name = seriesTitle;
+                        chartData.color = p(seriesCount);
+                        chartData.data = [];
+                        newChartData[seriesTitle] = chartData;
+                        seriesCount++;
+                    }
 
-        chart = {
-            name: "One-Punch Man",
-            data: [
-                {x: 1449101800, y: 20},
-                {x: 1449706600, y: 19},
-                {x: 1450311401, y: 24}
-            ],
-            color: 'blue'
-        };
-        chartData.push(chart);
+                    // now add to the time values
+                    chartData.data.push({x: evs.get("weekStartDate")/1000, y: evs.get("rawScore")});
+                });
+                $.each(newChartData, function (k, v) {
+                    seriesData.push(v);
+                });
+                graph.update();
+                $('#legend').empty();
+                new Rickshaw.Graph.Legend({
+                    element: document.querySelector('#legend'),
+                    graph: graph
+                });
+            });
 
-        chart = {
-            name: "Rakudai",
-            data: [
-                {x: 1449101800, y: 12},
-                {x: 1449706600, y: 22},
-                {x: 1450311401, y: 29}
-            ],
-            color: 'green'
-        };
-        chartData.push(chart);
+        Ember.run.scheduleOnce('afterRender', this, function () {
+            graph = new Rickshaw.Graph({
+                element: document.querySelector("#chart"),
+                width: 540,
+                height: 240,
+                renderer: 'line',
+                series: seriesData
+            });
 
-        // check the episodeVoteSummaries
-        var newChartData = {};
-        episodeVoteSummaries.forEach(function (evs) {
-            // get the series
-            var series = evs.get("series");
-            var seriesTitle = series.get("title");
-            var chartData = newChartData[seriesTitle];
+            new Rickshaw.Graph.HoverDetail( {
+                graph: graph
+            } );
 
-            if (chartData == null) {
-                chartData = {};
-                chartData.name = series.name;
-                chartData.color = "green";
-                newChartData[seriesTitle] = chartData;
-            }
+            new Rickshaw.Graph.Axis.Time({
+                graph: graph
+            });
 
-            // now add to the time values
-            // to be written
+            new Rickshaw.Graph.Axis.Y({
+                graph: graph,
+                orientation: 'left',
+                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+                element: document.getElementById('y_axis')
+            });
+
+            new Rickshaw.Graph.Legend({
+                element: document.querySelector('#legend'),
+                graph: graph
+            });
+
+            graph.render();
         });
-        console.log(newChartData);
 
         // Get the vote summaries
         var voteSummaries = this.get('store').query('vote-summary', {weekIndex: currentWeekIndex});
@@ -92,47 +106,10 @@ export default Ember.Route.extend({
             tasks = this.get('store').query('task', {userId: userId});
         }
 
-        Ember.run.scheduleOnce('afterRender', this, function () {
-            console.log("beginAfterRender");
-
-            /* jshint ignore:start */
-            var graph = new Rickshaw.Graph({
-                element: document.querySelector("#chart"),
-                width: 540,
-                height: 240,
-                renderer: 'line',
-                series: chartData
-            });
-
-            var x_axis = new Rickshaw.Graph.Axis.Time({graph: graph});
-
-            var y_axis = new Rickshaw.Graph.Axis.Y({
-                graph: graph,
-                orientation: 'left',
-                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-                element: document.getElementById('y_axis')
-            });
-
-            var legend = new Rickshaw.Graph.Legend({
-                element: document.querySelector('#legend'),
-                graph: graph
-            });
-
-            console.log(graph);
-            console.log(x_axis);
-            console.log(y_axis);
-            console.log(legend);
-
-            graph.render();
-            /* jshint ignore:end */
-            console.log("endAfterRender");
-        });
-
         return {
             userId: userId,
             loggedIn: (userId !== '0'),
             season: currentSeason,
-            chartData: chartData,
             voteSummaries: voteSummaries,
             ballots: ballots,
             ballotVotes: ballotVotes,

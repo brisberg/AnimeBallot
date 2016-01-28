@@ -59,6 +59,7 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
 
     @Transient
     private Date weekStartDate;
+
     /**
      * Default Constructor
      */
