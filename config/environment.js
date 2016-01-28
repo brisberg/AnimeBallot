@@ -45,7 +45,7 @@ module.exports = function (environment) {
     }
 
     if (environment === 'production') {
-        ENV.baseURL - '/AnimeBallot/';
+        ENV.baseURL = '/AnimeBallot/';
     }
 
     return ENV;
