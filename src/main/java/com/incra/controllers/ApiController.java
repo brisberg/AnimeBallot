@@ -498,6 +498,7 @@ public class ApiController {
         return result;
     }
 
+    /*
     @RequestMapping(value = "/api/episodeVoteSummaries/{weekIndex}", headers = "Accept=application/json")
     public
     @ResponseBody
@@ -516,4 +517,27 @@ public class ApiController {
 
         return result;
     }
+<<<<<<< Updated upstream
+=======
+    */
+
+    @RequestMapping(value = "/api/episodeVoteSummaries/{seasonId}", headers = "Accept=application/json")
+    public
+    @ResponseBody
+    Map<String, Object> apiEpisodeVoteSummaries(@PathVariable("seasonId") Season season, HttpServletRequest request,
+                                                HttpSession session) {
+
+        List<EpisodeVoteSummary> evsList = episodeVoteSummaryService.findEntityListByWeekRange(1, 13);
+
+        //for (EpisodeVoteSummary evs : evsList) {
+        //    Season season = evs.getSeason();
+        //    evs.setWeekIndexDate(season.getStartDateByWeekIndex(weekIndex));
+        //}
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("episodeVoteSummaries", evsList);
+
+        return result;
+    }
+>>>>>>> Stashed changes
 }

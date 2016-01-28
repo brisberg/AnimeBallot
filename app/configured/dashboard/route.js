@@ -49,29 +49,24 @@ export default Ember.Route.extend({
         chartData.push(chart);
 
         // check the episodeVoteSummaries
-        var newChartData = [];
+        var newChartData = {};
         episodeVoteSummaries.forEach(function (evs) {
             // get the series
             var series = evs.get("series");
-            var chartData = null;
-
-            // find if it already exists
-            newChartData.forEach(function (cd) {
-                if (cd.name === series.name) {
-                    chartData = cd;
-                }
-            });
+            var seriesTitle = series.get("title");
+            var chartData = newChartData[seriesTitle];
 
             if (chartData == null) {
                 chartData = {};
                 chartData.name = series.name;
                 chartData.color = "green";
-                newChartData.push(chartData);
+                newChartData[seriesTitle] = chartData;
             }
 
             // now add to the time values
             // to be written
         });
+        console.log(newChartData);
 
         // Get the vote summaries
         var voteSummaries = this.get('store').query('vote-summary', {weekIndex: currentWeekIndex});
