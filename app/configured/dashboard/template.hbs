@@ -6,6 +6,7 @@
     .table-striped tr th {
         padding: 6px;
     }
+
     #chart_container {
         margin-top: 30px;
         display: inline-block;
@@ -75,12 +76,19 @@
         </table>
 
         {{#if model.loggedIn}}
-            <div style="margin: 10px 0 10px 0; background: #fff; border: 1px solid #888; padding: 5px; ">
-                {{#each model.ballots as |ballot|}}
-                    Comment: {{ballot.comment}}
-                {{/each}}
-            </div>
-            {{#link-to 'configured.voting' model.userId class="btn btn-default"}}Edit{{/link-to}}
+            {{#if mode.ballots.length}}
+                <div style="margin: 10px 0 10px 0; background: #fff; border: 1px solid #888; padding: 5px; ">
+                    {{#each model.ballots as |ballot|}}
+                        Comment: {{ballot.comment}}
+                    {{/each}}
+                </div>
+                {{#link-to 'configured.voting' model.userId class="btn btn-default"}}Edit{{/link-to}}
+            {{else}}
+                <div style="margin: 10px 0 10px 0; background: #fff; border: 1px solid #888; padding: 5px; ">
+                    You have not voted yet!
+                </div>
+                {{#link-to 'configured.voting' model.userId class="btn btn-default"}}Vote{{/link-to}}
+            {{/if}}
 
             <h3>Current Tasks</h3>
             <table class="table-striped" width="100%">
