@@ -16,7 +16,7 @@ export default Ember.Route.extend({
         var graph;
 
         // Get the chart data
-        this.get('store').query('episode-vote-summary', {startWeekIndex: currentWeekIndex, endWeekIndex: currentWeekIndex})
+        this.get('store').query('episode-vote-summary', {startWeekIndex: 1, endWeekIndex: currentWeekIndex-1})
             .then(function (data) {
                 var p = d3.scale.category10();
                 var newChartData = {};
@@ -83,7 +83,7 @@ export default Ember.Route.extend({
         });
 
         // Get the vote summaries
-        var voteSummaries = this.get('store').query('vote-summary', {weekIndex: currentWeekIndex});
+        var voteSummaries = this.get('store').query('episode-vote-summary', {startWeekIndex: currentWeekIndex-1, endWeekIndex: currentWeekIndex-1});
 
         // Get the current ballot
         var ballots = [];
@@ -110,6 +110,7 @@ export default Ember.Route.extend({
             userId: userId,
             loggedIn: (userId !== '0'),
             season: currentSeason,
+            currentWeekIndex: currentWeekIndex,
             voteSummaries: voteSummaries,
             ballots: ballots,
             ballotVotes: ballotVotes,

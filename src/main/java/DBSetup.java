@@ -50,7 +50,6 @@ public class DBSetup {
         loadSetupFile(appContext, "DB_Populate_50_Ballots.sql");
         loadSetupFile(appContext, "DB_Populate_60_Configuration.sql");
         loadSetupFile(appContext, "DB_Populate_70_Tasks.sql");
-        loadSetupFile(appContext, "DB_Populate_80_EpisodeVoteSummaries.sql");
     }
 
     @SuppressWarnings("deprecation")

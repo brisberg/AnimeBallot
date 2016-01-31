@@ -31,15 +31,15 @@ VALUES (13, 2, 41, 2, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
 VALUES (21, 11, 2, 5, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
-VALUES (22, 11, 21, 2, now(), now());
+VALUES (22, 11, 22, 2, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
-VALUES (23, 11, 41, 3, now(), now());
+VALUES (23, 11, 42, 3, now(), now());
 
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
 VALUES (31, 12, 2, 2, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
-VALUES (32, 12, 21, 2, now(), now());
+VALUES (32, 12, 22, 2, now(), now());
 INSERT INTO ballot_vote (id, ballot_id, episode_id, score, date_created, last_updated)
-VALUES (33, 12, 41, 5, now(), now());
+VALUES (33, 12, 42, 5, now(), now());
 
 ALTER SEQUENCE ballot_vote_id_seq RESTART WITH 9999;

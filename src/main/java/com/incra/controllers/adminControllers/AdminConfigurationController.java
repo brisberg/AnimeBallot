@@ -1,9 +1,12 @@
 package com.incra.controllers.adminControllers;
 
 import com.incra.models.Configuration;
+import com.incra.models.DayIndex;
+import com.incra.models.HourIndex;
 import com.incra.models.Season;
 import com.incra.models.propertyEditor.SeasonPropertyEditor;
 import com.incra.services.ConfigurationService;
+import com.incra.services.EpisodeVoteSummaryService;
 import com.incra.services.PageFrameworkService;
 import com.incra.services.SeasonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,8 @@ public class AdminConfigurationController extends AbstractAdminController {
     private PageFrameworkService pageFrameworkService;
     @Autowired
     private SeasonService seasonService;
+    @Autowired
+    private EpisodeVoteSummaryService episodeVoteSummaryService;
 
     @InitBinder
     protected void initBinder(WebDataBinder dataBinder) throws Exception {
@@ -58,7 +63,7 @@ public class AdminConfigurationController extends AbstractAdminController {
             model.addAttribute(config);
             return "admin/configuration/show";
         } else {
-            return "redirect:/admin/configuration/create";
+            return "redirect:/admin/configuration/edit";
         }
     }
 
@@ -66,6 +71,15 @@ public class AdminConfigurationController extends AbstractAdminController {
     public ModelAndView edit() {
 
         Configuration config = configurationService.findActiveEntity();
+
+        if (config == null) {
+            config = new Configuration();
+            config.setWeekStartDay(DayIndex.D00);
+            config.setWeekStartHour(HourIndex.H00);
+            config.setCurrentWeekIndex(1);
+        }
+
+        config.setPriorCurrentWeekIndex(config.getCurrentWeekIndex());
 
         ModelAndView modelAndView = new ModelAndView("admin/configuration/edit");
         modelAndView.addObject("command", config);
@@ -84,6 +98,12 @@ public class AdminConfigurationController extends AbstractAdminController {
             config.setLastUpdated(new Date());
 
             configurationService.save(config);
+
+            if (config.getCurrentWeekIndex() > config.getPriorCurrentWeekIndex()) {
+                episodeVoteSummaryService.recalc(
+                        config.getPriorCurrentWeekIndex(),
+                        config.getCurrentWeekIndex()-1);
+            }
         } catch (RuntimeException re) {
             pageFrameworkService.setFlashMessage(session, re.getMessage());
             pageFrameworkService.setIsRedirect(session, Boolean.TRUE);

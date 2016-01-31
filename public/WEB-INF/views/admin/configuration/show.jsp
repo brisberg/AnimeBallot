@@ -2,14 +2,20 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%@ page import="com.incra.models.DayIndex" %>
+<%@ page import="com.incra.models.Configuration" %>
+
 <c:if test="${flashMessage != null}">
     <div class="message">${flashMessage}</div>
 </c:if>
 
-<table class="table">
+<table class="table" style="width: 400px; margin-top: 20px;">
     <tr>
-        <td>Week Start Date:</td>
-        <td>${configuration.weekStartTime}</td>
+        <td>Week Start Day/Hour:</td>
+        <td>
+            ${configuration.weekStartDay.label}
+            ${configuration.weekStartHour.label}
+        </td>
     </tr>
     <tr>
         <td>Current Season:</td>

@@ -16,8 +16,11 @@ import java.util.Date;
 public class Configuration extends AbstractDatedDatabaseItem {
 
     // Rarely changes
-    @Column(name = "week_start_time")
-    private Date weekStartTime;
+    @Column(name = "week_start_day")
+    private DayIndex weekStartDay;
+
+    @Column(name = "week_start_hour")
+    private HourIndex weekStartHour;
 
     // Sometimes changes
     @OneToOne
@@ -26,9 +29,12 @@ public class Configuration extends AbstractDatedDatabaseItem {
     @JsonIdentityReference(alwaysAsId = true)
     private Season currentSeason;
 
-    // Weekly changes
+    // Changes each week
     @Column(name = "current_week_index")
     private int currentWeekIndex;
+
+    @Transient
+    private int priorCurrentWeekIndex;
 
     /**
      * Default Constructor
@@ -36,12 +42,20 @@ public class Configuration extends AbstractDatedDatabaseItem {
     public Configuration() {
     }
 
-    public Date getWeekStartTime() {
-        return weekStartTime;
+    public DayIndex getWeekStartDay() {
+        return weekStartDay;
     }
 
-    public void setWeekStartTime(Date weekStartTime) {
-        this.weekStartTime = weekStartTime;
+    public void setWeekStartDay(DayIndex weekStartDay) {
+        this.weekStartDay = weekStartDay;
+    }
+
+    public HourIndex getWeekStartHour() {
+        return weekStartHour;
+    }
+
+    public void setWeekStartHour(HourIndex weekStartHour) {
+        this.weekStartHour = weekStartHour;
     }
 
     public Season getCurrentSeason() {
@@ -58,5 +72,13 @@ public class Configuration extends AbstractDatedDatabaseItem {
 
     public void setCurrentWeekIndex(int currentWeekIndex) {
         this.currentWeekIndex = currentWeekIndex;
+    }
+
+    public int getPriorCurrentWeekIndex() {
+        return priorCurrentWeekIndex;
+    }
+
+    public void setPriorCurrentWeekIndex(int priorCurrentWeekIndex) {
+        this.priorCurrentWeekIndex = priorCurrentWeekIndex;
     }
 }

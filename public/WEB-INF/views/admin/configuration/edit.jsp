@@ -2,15 +2,25 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+<%@ page import="com.incra.models.DayIndex" %>
+<%@ page import="com.incra.models.Configuration" %>
+
 <c:url var="saveUrl" value="/admin/configuration/save"/>
 <form:form method="post" action="${saveUrl}">
     <form:hidden path="id"/>
+    <form:hidden path="priorCurrentWeekIndex"/>
 
-    <table>
+    <table class="table" style="width: 400px; margin-top: 20px;">
         <tr>
-            <td>Week Start Date:</td>
-            <td><form:input path="weekStartTime" size="40"/></td>
-            <td><form:errors path="weekStartTime" cssClass="error"/></td>
+            <td>Week Start Day/Hour:</td>
+            <td>
+                <form:select path="weekStartDay">
+                    <form:options itemLabel="label"/>
+                </form:select>
+                <form:select path="weekStartHour">
+                    <form:options itemLabel="label"/>
+                </form:select>
+            </td>
         </tr>
         <tr>
             <td>Season:</td>
@@ -23,7 +33,11 @@
         </tr>
         <tr>
             <td>Week Index (1-13):</td>
-            <td><form:input path="currentWeekIndex" size="40"/></td>
+            <td>
+                <span id="arrow-left" class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                <form:input id="currentWeekIndex" path="currentWeekIndex" size="15"/>
+                <span id="arrow-right" class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+            </td>
             <td><form:errors path="currentWeekIndex" cssClass="error"/></td>
         </tr>
     </table>
@@ -34,3 +48,27 @@
 
     <form:hidden path="dateCreated"/>
 </form:form>
+
+<script>
+    $(document).ready(function () {
+        $("#arrow-left").click(function () {
+            var currentWeekIndexStr = $('#currentWeekIndex').val();
+            var currentWeekIndex = parseInt(currentWeekIndexStr);
+
+            if (currentWeekIndex > 1) {
+                currentWeekIndex--;
+                $('#currentWeekIndex').val("" + currentWeekIndex);
+            }
+        });
+
+        $("#arrow-right").click(function () {
+            var currentWeekIndexStr = $('#currentWeekIndex').val();
+            var currentWeekIndex = parseInt(currentWeekIndexStr);
+
+            if (currentWeekIndex < 13) {
+                currentWeekIndex++;
+                $('#currentWeekIndex').val("" + currentWeekIndex);
+            }
+        });
+    });
+</script>
