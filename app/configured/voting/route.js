@@ -39,11 +39,13 @@ export default Ember.Route.extend({
             episodes.forEach(function (episode) {
                 var episodeId = episode.id;
                 var element = document.getElementById("score_" + episodeId);
-                var score = element.value;
+                if (element.value !== null && element.value !== "") {
+                    var score = element.value;
 
-                // Create a ballotVote
-                var ballotVote = me.get('store').createRecord('ballot-vote', {episode: episode, score: score});
-                ballot.get('ballotVotes').pushObject(ballotVote);
+                    // Create a ballotVote
+                    var ballotVote = me.get('store').createRecord('ballot-vote', {episode: episode, score: score});
+                    ballot.get('ballotVotes').pushObject(ballotVote);
+                }
             });
 
             ballot.save().then(() => {

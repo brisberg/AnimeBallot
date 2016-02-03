@@ -13,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -217,16 +216,18 @@ public class ApiController {
                 for (Map ballotVoteData : ballotVotesData) {
 
                     Integer score = (Integer) ballotVoteData.get("score");
-                    String episodeIdStr = (String) ballotVoteData.get("episode");
-                    int episodeId = Integer.parseInt(episodeIdStr);
-                    Episode episode = episodeService.findEntityById(episodeId);
+                    if (score != null) {
+                        String episodeIdStr = (String) ballotVoteData.get("episode");
+                        int episodeId = Integer.parseInt(episodeIdStr);
+                        Episode episode = episodeService.findEntityById(episodeId);
 
-                    BallotVote ballotVote = new BallotVote();
-                    ballotVote.setEpisode(episode);
-                    ballotVote.setScore(score);
+                        BallotVote ballotVote = new BallotVote();
+                        ballotVote.setEpisode(episode);
+                        ballotVote.setScore(score);
 
-                    ballot.getBallotVotes().add(ballotVote);
-                    ballotVote.setBallot(ballot);
+                        ballot.getBallotVotes().add(ballotVote);
+                        ballotVote.setBallot(ballot);
+                    }
                 }
             }
 
@@ -238,7 +239,7 @@ public class ApiController {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace(); // TODO: add logging, log.error(e);
         }
 
         return null;
