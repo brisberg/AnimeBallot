@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.incra.models.*;
 import com.incra.services.*;
 import com.incra.models.EpisodeVoteSummary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,7 @@ import java.util.*;
  */
 @Controller
 public class ApiController {
+    private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 
     @PersistenceContext
     private EntityManager em;
@@ -239,7 +242,7 @@ public class ApiController {
 
             return result;
         } catch (Exception e) {
-            e.printStackTrace(); // TODO: add logging, log.error(e);
+            logger.error(e.getMessage());
         }
 
         return null;
@@ -398,6 +401,7 @@ public class ApiController {
             taskList = taskService.findEntityList();
         }
 
+        logger.info("Task list " + taskList);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("tasks", taskList);
 
