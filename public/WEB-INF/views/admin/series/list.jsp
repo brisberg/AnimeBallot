@@ -3,40 +3,35 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="ren" uri="/WEB-INF/RenderLibDescriptor.tld" %>
 
 <c:if test="${flashMessage != null}">
     <div class="message">${flashMessage}</div>
 </c:if>
 
-
 <div class="row" style="padding-top: 8px">
-    <div class="col-md-4" style="font-size: 16px; font-weight: bold">
+    <div class="col-md-8" style="font-size: 16px; font-weight: bold">
         Find, edit, and create Series
     </div>
     <div class="col-md-4">
-        <form action="<c:url value="/admin/series/filter" />" method="post">
-            <select name="season">
-                <c:forEach var="season" items="${seasonList}">
-                    <option value="${season.id}">${season.title}</option>
-                </c:forEach>
-            </select>
-            <input type="submit"/>
-        </form>
-    </div>
-    <div class="col-md-4">
-        <a href="<c:url value="/admin/series/create" />" class="pull-right btn btn-default" style="padding: 0px 10px">
+        <a href="<c:url value="/admin/series/create" />" class="pull-right btn btn-default" style="padding: 0 10px">
             Create New Series &raquo
         </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <ren:filterGrid url="/admin/series/list" filterDisplays="${filterDisplays}"/>
     </div>
 </div>
 <div>
     <table class="table" style="background:#DDDDDD">
         <thead>
         <tr>
-            <th>Title</th>
-            <th>Season</th>
-            <th>Start</th>
-            <th>End</th>
+            <ren:sortableHeader url="/admin/series/list" property="title" title="Title"/>
+            <ren:sortableHeader url="/admin/series/list" property="season" title="Season"/>
+            <ren:sortableHeader url="/admin/series/list" property="startDate" title="Start Date"/>
+            <ren:sortableHeader url="/admin/series/list" property="endDate" title="End Date"/>
             <th>Action</th>
         </tr>
         </thead>
@@ -74,4 +69,5 @@
         </c:if>
         </tbody>
     </table>
+    <ren:paginate url="/admin/series/list" totalCount="${seriesCount}"/>
 </div>

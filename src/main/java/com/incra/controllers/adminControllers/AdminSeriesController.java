@@ -1,8 +1,6 @@
 package com.incra.controllers.adminControllers;
 
-import com.incra.models.Episode;
-import com.incra.models.Season;
-import com.incra.models.Series;
+import com.incra.models.*;
 import com.incra.models.propertyEditor.SeasonPropertyEditor;
 import com.incra.services.EpisodeService;
 import com.incra.services.PageFrameworkService;
@@ -12,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +19,14 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -63,13 +67,57 @@ public class AdminSeriesController extends AbstractAdminController {
     }
 
     @RequestMapping(value = "/admin/series/list")
-    public ModelAndView list(Object criteria) {
+    public ModelAndView list(HttpServletRequest request) {
 
-        List<Series> seriesList = seriesService.findEntityList();
+        List<Season> seasonList = seasonService.findEntityList();
+
+        List<FilterDisplayPojo> filterDisplays = new ArrayList<FilterDisplayPojo>();
+        FilterDisplayPojo dfp;
+
+        dfp = new FilterDisplayPojo("title", "Title", FilterType.STRING, null);
+        filterDisplays.add(dfp);
+
+        dfp = new FilterDisplayPojo("season", "Season", FilterType.SELECT, seasonList);
+        filterDisplays.add(dfp);
+
+        // Set up the criteria
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Series> criteria = cb.createQuery(Series.class);
+        Root<Series> root = criteria.from(Series.class);
+
+        List<Predicate> predList = new ArrayList<Predicate>();
+        if (request.getParameter("title") != null && request.getParameter("title").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.get("title")),
+                            "%" + request.getParameter("title").trim().toLowerCase() + "%"));
+        }
+        if (request.getParameter("season") != null && request.getParameter("season").trim() != null) {
+            try {
+                Season season = seasonService.findEntityById(Integer.parseInt(request.getParameter("season")));
+                if (season != null)
+                    predList.add(
+                            cb.equal(root.get("season"),
+                                    season));
+            } catch (Exception e) {
+                // nothing to do here
+            }
+        }
+        Predicate[] predArray = new Predicate[predList.size()];
+        predList.toArray(predArray);
+
+        Query listQuery = buildListQuery(cb, criteria, root, predArray, request);
+
+        CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
+        Root rootCount = criteriaCount.from(Series.class);
+
+        Query countQuery = buildCountQuery(cb, criteriaCount, rootCount, predArray);
 
         ModelAndView modelAndView = new ModelAndView("admin/series/list");
-        modelAndView.addObject("seriesList", seriesList);
-        modelAndView.addObject("seasonList", seasonService.findEntityList());
+        modelAndView.addObject("filterDisplays", filterDisplays);
+        modelAndView.addObject("seasonList", seasonList);
+        modelAndView.addObject("seriesList", listQuery.getResultList());
+        modelAndView.addObject("seriesCount", countQuery.getSingleResult());
+
         return modelAndView;
     }
 

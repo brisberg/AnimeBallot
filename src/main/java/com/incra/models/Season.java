@@ -106,12 +106,6 @@ public class Season extends AbstractDatedDatabaseItem {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Season[title=");
-        sb.append(title);
-        sb.append("]");
-
-        return sb.toString();
+        return title; // must be just title, because this is used in FilterGrid drop-down
     }
 }

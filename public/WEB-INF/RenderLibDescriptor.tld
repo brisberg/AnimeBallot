@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>1.1</jsp-version>
+    <short-name>RenderLib</short-name>
+    <description>Taglib for rendering of grids</description>
+    <tag>
+        <name>sortableHeader</name>
+        <tag-class>com.incra.taglib.SortableHeaderTagHandler</tag-class>
+        <description>Header rendering tag</description>
+        <attribute>
+            <name>url</name>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>property</name>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>filterGrid</name>
+        <tag-class>com.incra.taglib.FilterGridTagHandler</tag-class>
+        <description>Filter grid rendering tag</description>
+        <attribute>
+            <name>url</name>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>filterDisplays</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>paginate</name>
+        <tag-class>com.incra.taglib.PaginateTagHandler</tag-class>
+        <description>Pagination rendering tag</description>
+        <attribute>
+            <name>url</name>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>totalCount</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>

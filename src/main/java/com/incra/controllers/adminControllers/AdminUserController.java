@@ -1,6 +1,6 @@
 package com.incra.controllers.adminControllers;
 
-import com.incra.models.User;
+import com.incra.models.*;
 import com.incra.services.PageFrameworkService;
 import com.incra.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,15 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,12 +50,58 @@ public class AdminUserController extends AbstractAdminController {
     }
 
     @RequestMapping(value = "/admin/user/list", method = RequestMethod.GET)
-    public String listUsers(ModelMap model) {
+    public ModelAndView listUsers(HttpServletRequest request) {
 
-        List<User> users = userService.findEntityList();
+        List<FilterDisplayPojo> filterDisplays = new ArrayList<FilterDisplayPojo>();
+        FilterDisplayPojo dfp;
 
-        model.addAttribute("userList", users);
-        return "admin/user/list";
+        dfp = new FilterDisplayPojo("email", "Email", FilterType.STRING, null);
+        filterDisplays.add(dfp);
+
+        dfp = new FilterDisplayPojo("firstName", "First Name", FilterType.STRING, null);
+        filterDisplays.add(dfp);
+
+        dfp = new FilterDisplayPojo("lastName", "Last Name", FilterType.STRING, null);
+        filterDisplays.add(dfp);
+
+        // Set up the criteria
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = cb.createQuery(User.class);
+        Root<User> root = criteria.from(User.class);
+
+        List<Predicate> predList = new ArrayList<Predicate>();
+        if (request.getParameter("email") != null && request.getParameter("email").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.get("email")),
+                            "%" + request.getParameter("email").trim().toLowerCase() + "%"));
+        }
+        if (request.getParameter("firstName") != null && request.getParameter("firstName").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.get("firstName")),
+                            "%" + request.getParameter("firstName").trim().toLowerCase() + "%"));
+        }
+        if (request.getParameter("lastName") != null && request.getParameter("lastName").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.get("lastName")),
+                            "%" + request.getParameter("lastName").trim().toLowerCase() + "%"));
+        }
+
+        Predicate[] predArray = new Predicate[predList.size()];
+        predList.toArray(predArray);
+
+        Query listQuery = buildListQuery(cb, criteria, root, predArray, request);
+
+        CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
+        Root rootCount = criteriaCount.from(User.class);
+
+        Query countQuery = buildCountQuery(cb, criteriaCount, rootCount, predArray);
+
+        ModelAndView modelAndView = new ModelAndView("admin/user/list");
+        modelAndView.addObject("filterDisplays", filterDisplays);
+        modelAndView.addObject("userList", listQuery.getResultList());
+        modelAndView.addObject("userCount", countQuery.getSingleResult());
+
+        return modelAndView;
     }
 
     @RequestMapping(value = "/admin/user/show/{userId}", method = RequestMethod.GET)
