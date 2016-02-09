@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The <i>SeriesController</i> controller implements listing of series and episodes.
+ * The <i>AdminSeriesController</i> controller implements listing of series and episodes.
  *
  * @author Brandon Risberg
  * @since 10/23/2015
@@ -84,33 +84,15 @@ public class AdminSeriesController extends AbstractAdminController {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Series> criteria = cb.createQuery(Series.class);
         Root<Series> root = criteria.from(Series.class);
+        Predicate[] predArrayList = this.createPredArray(cb, root, request);
 
-        List<Predicate> predList = new ArrayList<Predicate>();
-        if (request.getParameter("title") != null && request.getParameter("title").trim() != null) {
-            predList.add(
-                    cb.like(cb.lower(root.get("title")),
-                            "%" + request.getParameter("title").trim().toLowerCase() + "%"));
-        }
-        if (request.getParameter("season") != null && request.getParameter("season").trim() != null) {
-            try {
-                Season season = seasonService.findEntityById(Integer.parseInt(request.getParameter("season")));
-                if (season != null)
-                    predList.add(
-                            cb.equal(root.get("season"),
-                                    season));
-            } catch (Exception e) {
-                // nothing to do here
-            }
-        }
-        Predicate[] predArray = new Predicate[predList.size()];
-        predList.toArray(predArray);
-
-        Query listQuery = buildListQuery(cb, criteria, root, predArray, request);
+        Query listQuery = buildListQuery(cb, criteria, root, predArrayList, request);
 
         CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
         Root rootCount = criteriaCount.from(Series.class);
+        Predicate[] predArrayCount = this.createPredArray(cb, rootCount, request);
 
-        Query countQuery = buildCountQuery(cb, criteriaCount, rootCount, predArray);
+        Query countQuery = buildCountQuery(cb, criteriaCount, rootCount, predArrayCount);
 
         ModelAndView modelAndView = new ModelAndView("admin/series/list");
         modelAndView.addObject("filterDisplays", filterDisplays);
@@ -318,5 +300,28 @@ public class AdminSeriesController extends AbstractAdminController {
         }
 
         return "redirect:/admin/series/" + seriesId + "/episode/list";
+    }
+
+    protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {
+        List<Predicate> predList = new ArrayList<Predicate>();
+        if (request.getParameter("title") != null && request.getParameter("title").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.get("title")),
+                            "%" + request.getParameter("title").trim().toLowerCase() + "%"));
+        }
+        if (request.getParameter("season") != null && request.getParameter("season").trim() != null) {
+            try {
+                Season season = seasonService.findEntityById(Integer.parseInt(request.getParameter("season")));
+                if (season != null)
+                    predList.add(
+                            cb.equal(root.get("season"),
+                                    season));
+            } catch (Exception e) {
+                // nothing to do here
+            }
+        }
+        Predicate[] predArray = new Predicate[predList.size()];
+        predList.toArray(predArray);
+        return predArray;
     }
 }

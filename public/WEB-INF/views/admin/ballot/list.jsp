@@ -31,6 +31,7 @@
         <tr>
             <ren:sortableHeader url="/admin/ballot/list" property="season" title="Season"/>
             <ren:sortableHeader url="/admin/ballot/list" property="user" title="User"/>
+            <ren:sortableHeader url="/admin/ballot/list" property="weekIndex" title="Week Index"/>
             <ren:sortableHeader url="/admin/ballot/list" property="dateCreated" title="Date Created"/>
             <th>Action</th>
         </tr>
@@ -43,6 +44,9 @@
                 </td>
                 <td>
                         ${ballot.user.name}
+                </td>
+                <td>
+                        ${ballot.weekIndex}
                 </td>
                 <td>
                     <fmt:formatDate pattern="MM-dd-yyyy HH:mm"

@@ -69,33 +69,15 @@ public class AdminUserController extends AbstractAdminController {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<User> criteria = cb.createQuery(User.class);
         Root<User> root = criteria.from(User.class);
+        Predicate[] predArrayList = this.createPredArray(cb, root, request);
 
-        List<Predicate> predList = new ArrayList<Predicate>();
-        if (request.getParameter("email") != null && request.getParameter("email").trim() != null) {
-            predList.add(
-                    cb.like(cb.lower(root.get("email")),
-                            "%" + request.getParameter("email").trim().toLowerCase() + "%"));
-        }
-        if (request.getParameter("firstName") != null && request.getParameter("firstName").trim() != null) {
-            predList.add(
-                    cb.like(cb.lower(root.get("firstName")),
-                            "%" + request.getParameter("firstName").trim().toLowerCase() + "%"));
-        }
-        if (request.getParameter("lastName") != null && request.getParameter("lastName").trim() != null) {
-            predList.add(
-                    cb.like(cb.lower(root.get("lastName")),
-                            "%" + request.getParameter("lastName").trim().toLowerCase() + "%"));
-        }
-
-        Predicate[] predArray = new Predicate[predList.size()];
-        predList.toArray(predArray);
-
-        Query listQuery = buildListQuery(cb, criteria, root, predArray, request);
+        Query listQuery = buildListQuery(cb, criteria, root, predArrayList, request);
 
         CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
         Root rootCount = criteriaCount.from(User.class);
+        Predicate[] predArrayCount = this.createPredArray(cb, rootCount, request);
 
-        Query countQuery = buildCountQuery(cb, criteriaCount, rootCount, predArray);
+        Query countQuery = buildCountQuery(cb, criteriaCount, rootCount, predArrayCount);
 
         ModelAndView modelAndView = new ModelAndView("admin/user/list");
         modelAndView.addObject("filterDisplays", filterDisplays);
@@ -164,5 +146,28 @@ public class AdminUserController extends AbstractAdminController {
             pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
         }
         return "redirect:/admin/user/list";
+    }
+
+
+    protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {
+        List<Predicate> predList = new ArrayList<Predicate>();
+        if (request.getParameter("email") != null && request.getParameter("email").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.get("email")),
+                            "%" + request.getParameter("email").trim().toLowerCase() + "%"));
+        }
+        if (request.getParameter("firstName") != null && request.getParameter("firstName").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.get("firstName")),
+                            "%" + request.getParameter("firstName").trim().toLowerCase() + "%"));
+        }
+        if (request.getParameter("lastName") != null && request.getParameter("lastName").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.get("lastName")),
+                            "%" + request.getParameter("lastName").trim().toLowerCase() + "%"));
+        }
+        Predicate[] predArray = new Predicate[predList.size()];
+        predList.toArray(predArray);
+        return predArray;
     }
 }

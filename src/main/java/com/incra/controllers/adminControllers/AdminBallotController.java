@@ -69,7 +69,6 @@ public class AdminBallotController extends AbstractAdminController {
     @RequestMapping(value = "/admin/ballot/list")
     public ModelAndView list(HttpServletRequest request) {
 
-        //List<Ballot> ballotList = ballotService.findEntityList();
         List<Season> seasonList = seasonService.findEntityList();
 
         List<FilterDisplay> filterDisplays = new ArrayList<FilterDisplay>();
@@ -81,38 +80,22 @@ public class AdminBallotController extends AbstractAdminController {
         dfp = new FilterDisplay("user", "User", FilterType.STRING, null);
         filterDisplays.add(dfp);
 
+        dfp = new FilterDisplay("weekIndex", "Week Index", FilterType.STRING, null);
+        filterDisplays.add(dfp);
+
         //set up the query
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Ballot> criteria = cb.createQuery(Ballot.class);
         Root<Ballot> root = criteria.from(Ballot.class);
+        Predicate[] predArrayList = createPredArray(cb, root, request);
 
-        List<Predicate> predList = new ArrayList<Predicate>();
-        if (false && request.getParameter("user") != null && request.getParameter("user").trim() != null) {
-            User user = userService.findEntityByName(request.getParameter("user").trim());
-            predList.add(
-                    cb.equal(root.get("user"),
-                            user)); // TODO: add a join to actually look up the user name
-        }
-        if (request.getParameter("season") != null && request.getParameter("season").trim() != null) {
-            try {
-                Season season = seasonService.findEntityById(Integer.parseInt(request.getParameter("season")));
-                if (season != null)
-                    predList.add(
-                            cb.equal(root.get("season"),
-                                    season));
-            } catch (Exception e) {
-                // nothing to do here
-            }
-        }
-        Predicate[] predArray = new Predicate[predList.size()];
-        predList.toArray(predArray);
-
-        Query listQuery = buildListQuery(cb, criteria, root, predArray, request);
+        Query listQuery = buildListQuery(cb, criteria, root, predArrayList, request);
 
         CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
         Root rootCount = criteriaCount.from(Ballot.class);
+        Predicate[] predArrayCount = createPredArray(cb, rootCount, request);
 
-        Query countQuery = buildCountQuery(cb, criteriaCount, rootCount, predArray);
+        Query countQuery = buildCountQuery(cb, criteriaCount, rootCount, predArrayCount);
 
         ModelAndView modelAndView = new ModelAndView("admin/ballot/list");
         modelAndView.addObject("filterDisplays", filterDisplays);
@@ -134,5 +117,35 @@ public class AdminBallotController extends AbstractAdminController {
             pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
             return "redirect:/admin/ballot/list";
         }
+    }
+
+    protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {
+        List<Predicate> predList = new ArrayList<Predicate>();
+        if (request.getParameter("season") != null && request.getParameter("season").trim() != null) {
+            try {
+                Season season = seasonService.findEntityById(Integer.parseInt(request.getParameter("season")));
+                if (season != null)
+                    predList.add(cb.equal(root.get("season"), season));
+            } catch (Exception e) {
+                // nothing to do here
+            }
+        }
+        if (request.getParameter("user") != null && request.getParameter("user").trim() != null) {
+            predList.add(
+                    cb.like(cb.lower(root.join("user").get("email")),
+                            "%" + request.getParameter("user").trim() + "%"));
+        }
+        if (request.getParameter("weekIndex") != null && request.getParameter("weekIndex").trim() != null) {
+            try {
+                predList.add(
+                        cb.equal(root.get("weekIndex"),
+                                Integer.parseInt(request.getParameter("weekIndex").trim())));
+            } catch (Exception e) {
+                // nothing to do here
+            }
+        }
+        Predicate[] predArray = new Predicate[predList.size()];
+        predList.toArray(predArray);
+        return predArray;
     }
 }

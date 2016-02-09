@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The <i>SeasonController</i> controller implements listing of seasons.
+ * The <i>AdminSeasonController</i> controller implements listing of seasons.
  *
  * @author Brandon Risberg
  * @since 10/22/2015

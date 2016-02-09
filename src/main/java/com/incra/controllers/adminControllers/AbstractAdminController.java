@@ -73,7 +73,6 @@ public abstract class AbstractAdminController {
     protected Query buildCountQuery(CriteriaBuilder cb, CriteriaQuery criteriaCount, Root rootCount, Predicate[] predArray) {
         criteriaCount.select(cb.count(rootCount));
         criteriaCount.where(predArray);
-        criteriaCount.select(cb.count(rootCount));
 
         Query query = em.createQuery(criteriaCount);
 
