@@ -1,4 +1,4 @@
-package com.incra.models;
+package com.incra.pojo;
 
 /**
  * Value is the number of seconds from 0000 hours to the selected hour.

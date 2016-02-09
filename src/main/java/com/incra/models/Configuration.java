@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.incra.database.AbstractDatedDatabaseItem;
+import com.incra.pojo.DayIndex;
+import com.incra.pojo.HourIndex;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Stores the global settings for running the application. These will be set by admins.

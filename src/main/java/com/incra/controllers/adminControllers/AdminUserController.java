@@ -1,13 +1,14 @@
 package com.incra.controllers.adminControllers;
 
 import com.incra.models.*;
+import com.incra.pojo.FilterDisplay;
+import com.incra.pojo.FilterType;
 import com.incra.services.PageFrameworkService;
 import com.incra.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -52,16 +53,16 @@ public class AdminUserController extends AbstractAdminController {
     @RequestMapping(value = "/admin/user/list", method = RequestMethod.GET)
     public ModelAndView listUsers(HttpServletRequest request) {
 
-        List<FilterDisplayPojo> filterDisplays = new ArrayList<FilterDisplayPojo>();
-        FilterDisplayPojo dfp;
+        List<FilterDisplay> filterDisplays = new ArrayList<FilterDisplay>();
+        FilterDisplay dfp;
 
-        dfp = new FilterDisplayPojo("email", "Email", FilterType.STRING, null);
+        dfp = new FilterDisplay("email", "Email", FilterType.STRING, null);
         filterDisplays.add(dfp);
 
-        dfp = new FilterDisplayPojo("firstName", "First Name", FilterType.STRING, null);
+        dfp = new FilterDisplay("firstName", "First Name", FilterType.STRING, null);
         filterDisplays.add(dfp);
 
-        dfp = new FilterDisplayPojo("lastName", "Last Name", FilterType.STRING, null);
+        dfp = new FilterDisplay("lastName", "Last Name", FilterType.STRING, null);
         filterDisplays.add(dfp);
 
         // Set up the criteria

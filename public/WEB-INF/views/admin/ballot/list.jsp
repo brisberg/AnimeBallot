@@ -1,6 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="ren" uri="/WEB-INF/RenderLibDescriptor.tld" %>
 
 <c:if test="${flashMessage != null}">
     <div class="message">${flashMessage}</div>
@@ -17,13 +20,18 @@
         </a>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <ren:filterGrid url="/admin/ballot/list" filterDisplays="${filterDisplays}"/>
+    </div>
+</div>
 <div>
     <table class="table" style="background:#DDDDDD">
         <thead>
         <tr>
-            <th>Season</th>
-            <th>User</th>
-            <th>Date Created</th>
+            <ren:sortableHeader url="/admin/ballot/list" property="season" title="Season"/>
+            <ren:sortableHeader url="/admin/ballot/list" property="user" title="User"/>
+            <ren:sortableHeader url="/admin/ballot/list" property="dateCreated" title="Date Created"/>
             <th>Action</th>
         </tr>
         </thead>
@@ -57,4 +65,5 @@
         </c:if>
         </tbody>
     </table>
+    <ren:paginate url="/admin/ballot/list" totalCount="${ballotCount}"/>
 </div>

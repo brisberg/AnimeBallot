@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@ page import="com.incra.models.DayIndex" %>
+<%@ page import="com.incra.pojo.DayIndex" %>
 <%@ page import="com.incra.models.Configuration" %>
 
 <c:if test="${flashMessage != null}">

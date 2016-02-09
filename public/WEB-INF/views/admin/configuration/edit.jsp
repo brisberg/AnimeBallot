@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<%@ page import="com.incra.models.DayIndex" %>
+<%@ page import="com.incra.pojo.DayIndex" %>
 <%@ page import="com.incra.models.Configuration" %>
 
 <c:url var="saveUrl" value="/admin/configuration/save"/>

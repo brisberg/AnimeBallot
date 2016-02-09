@@ -1,8 +1,8 @@
 package com.incra.taglib;
 
 import com.incra.database.AbstractDatabaseItem;
-import com.incra.models.FilterDisplayPojo;
-import com.incra.models.FilterType;
+import com.incra.pojo.FilterDisplay;
+import com.incra.pojo.FilterType;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class FilterGridTagHandler extends AbstractTagHandler {
     private String url;
-    private List<FilterDisplayPojo> filterDisplays;
+    private List<FilterDisplay> filterDisplays;
 
     @Override
     public int doStartTag() throws JspException {
@@ -33,7 +33,7 @@ public class FilterGridTagHandler extends AbstractTagHandler {
             out.println("<form action='" + resolveUrl(url, null, pageContext) + "'>");
             out.println("<input type='submit' class='btn' value='Search' />");
 
-            for (FilterDisplayPojo filterDisplay : filterDisplays) {
+            for (FilterDisplay filterDisplay : filterDisplays) {
                 String name = filterDisplay.getName();
                 String label = filterDisplay.getLabel();
                 FilterType type = filterDisplay.getType();
@@ -61,8 +61,22 @@ public class FilterGridTagHandler extends AbstractTagHandler {
                         }
                         out.println("</select>");
                         break;
+
+                    case ENUMERATION:
+                        out.println("<select name='" + name + "'>");
+                        out.println("<option>Any</option>");
+                        Enum[] enumValues = (Enum[]) values;
+
+                        for (Enum e : enumValues) {
+                            out.println("<option value='" + e.name() + ">");
+                            out.println(e.toString());
+                            out.println("</option>");
+                        }
+                        out.println("</select>");
+                        break;
+
                     default:
-                        throw new RuntimeException("Implemented FilterType");
+                        throw new RuntimeException("Umplemented FilterType");
                 }
             }
 
@@ -91,11 +105,11 @@ public class FilterGridTagHandler extends AbstractTagHandler {
         this.url = url;
     }
 
-    public List<FilterDisplayPojo> getFilterDisplays() {
+    public List<FilterDisplay> getFilterDisplays() {
         return filterDisplays;
     }
 
-    public void setFilterDisplays(List<FilterDisplayPojo> filterDisplays) {
+    public void setFilterDisplays(List<FilterDisplay> filterDisplays) {
         this.filterDisplays = filterDisplays;
     }
 }

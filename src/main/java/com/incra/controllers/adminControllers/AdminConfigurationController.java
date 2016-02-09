@@ -1,8 +1,8 @@
 package com.incra.controllers.adminControllers;
 
 import com.incra.models.Configuration;
-import com.incra.models.DayIndex;
-import com.incra.models.HourIndex;
+import com.incra.pojo.DayIndex;
+import com.incra.pojo.HourIndex;
 import com.incra.models.Season;
 import com.incra.models.propertyEditor.SeasonPropertyEditor;
 import com.incra.services.ConfigurationService;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * The <i>AdminConfigurationController</i> allows system admin to update the configuration.

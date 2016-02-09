@@ -2,6 +2,8 @@ package com.incra.controllers.adminControllers;
 
 import com.incra.models.*;
 import com.incra.models.propertyEditor.SeasonPropertyEditor;
+import com.incra.pojo.FilterDisplay;
+import com.incra.pojo.FilterType;
 import com.incra.services.EpisodeService;
 import com.incra.services.PageFrameworkService;
 import com.incra.services.SeasonService;
@@ -10,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.*;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -71,13 +71,13 @@ public class AdminSeriesController extends AbstractAdminController {
 
         List<Season> seasonList = seasonService.findEntityList();
 
-        List<FilterDisplayPojo> filterDisplays = new ArrayList<FilterDisplayPojo>();
-        FilterDisplayPojo dfp;
+        List<FilterDisplay> filterDisplays = new ArrayList<FilterDisplay>();
+        FilterDisplay dfp;
 
-        dfp = new FilterDisplayPojo("title", "Title", FilterType.STRING, null);
+        dfp = new FilterDisplay("title", "Title", FilterType.STRING, null);
         filterDisplays.add(dfp);
 
-        dfp = new FilterDisplayPojo("season", "Season", FilterType.SELECT, seasonList);
+        dfp = new FilterDisplay("season", "Season", FilterType.SELECT, seasonList);
         filterDisplays.add(dfp);
 
         // Set up the criteria
