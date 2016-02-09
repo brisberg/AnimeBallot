@@ -121,7 +121,7 @@ public class AdminBallotController extends AbstractAdminController {
 
     protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {
         List<Predicate> predList = new ArrayList<Predicate>();
-        if (request.getParameter("season") != null && request.getParameter("season").trim() != null) {
+        if (request.getParameter("season") != null && request.getParameter("season").trim() != "") {
             try {
                 Season season = seasonService.findEntityById(Integer.parseInt(request.getParameter("season")));
                 if (season != null)
@@ -130,12 +130,12 @@ public class AdminBallotController extends AbstractAdminController {
                 // nothing to do here
             }
         }
-        if (request.getParameter("user") != null && request.getParameter("user").trim() != null) {
+        if (request.getParameter("user") != null && request.getParameter("user").trim() != "") {
             predList.add(
                     cb.like(cb.lower(root.join("user").get("email")),
                             "%" + request.getParameter("user").trim() + "%"));
         }
-        if (request.getParameter("weekIndex") != null && request.getParameter("weekIndex").trim() != null) {
+        if (request.getParameter("weekIndex") != null && request.getParameter("weekIndex").trim() != "") {
             try {
                 predList.add(
                         cb.equal(root.get("weekIndex"),

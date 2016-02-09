@@ -151,17 +151,17 @@ public class AdminUserController extends AbstractAdminController {
 
     protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {
         List<Predicate> predList = new ArrayList<Predicate>();
-        if (request.getParameter("email") != null && request.getParameter("email").trim() != null) {
+        if (request.getParameter("email") != null && request.getParameter("email").trim() != "") {
             predList.add(
                     cb.like(cb.lower(root.get("email")),
                             "%" + request.getParameter("email").trim().toLowerCase() + "%"));
         }
-        if (request.getParameter("firstName") != null && request.getParameter("firstName").trim() != null) {
+        if (request.getParameter("firstName") != null && request.getParameter("firstName").trim() != "") {
             predList.add(
                     cb.like(cb.lower(root.get("firstName")),
                             "%" + request.getParameter("firstName").trim().toLowerCase() + "%"));
         }
-        if (request.getParameter("lastName") != null && request.getParameter("lastName").trim() != null) {
+        if (request.getParameter("lastName") != null && request.getParameter("lastName").trim() != "") {
             predList.add(
                     cb.like(cb.lower(root.get("lastName")),
                             "%" + request.getParameter("lastName").trim().toLowerCase() + "%"));

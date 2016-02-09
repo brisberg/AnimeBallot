@@ -64,11 +64,13 @@ public class FilterGridTagHandler extends AbstractTagHandler {
 
                     case ENUMERATION:
                         out.println("<select name='" + name + "'>");
-                        out.println("<option>Any</option>");
+                        out.println("<option value=''>Any</option>");
                         Enum[] enumValues = (Enum[]) values;
 
                         for (Enum e : enumValues) {
-                            out.println("<option value='" + e.name() + ">");
+                            boolean selected = e.name().equals(curValue);
+
+                            out.println("<option value='" + e.name() + "' " + (selected ? "selected" : "") + ">");
                             out.println(e.toString());
                             out.println("</option>");
                         }

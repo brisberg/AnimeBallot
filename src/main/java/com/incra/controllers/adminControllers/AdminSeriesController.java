@@ -304,12 +304,12 @@ public class AdminSeriesController extends AbstractAdminController {
 
     protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {
         List<Predicate> predList = new ArrayList<Predicate>();
-        if (request.getParameter("title") != null && request.getParameter("title").trim() != null) {
+        if (request.getParameter("title") != null && request.getParameter("title").trim() != "") {
             predList.add(
                     cb.like(cb.lower(root.get("title")),
                             "%" + request.getParameter("title").trim().toLowerCase() + "%"));
         }
-        if (request.getParameter("season") != null && request.getParameter("season").trim() != null) {
+        if (request.getParameter("season") != null && request.getParameter("season").trim() != "") {
             try {
                 Season season = seasonService.findEntityById(Integer.parseInt(request.getParameter("season")));
                 if (season != null)
