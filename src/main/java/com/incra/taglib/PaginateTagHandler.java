@@ -48,7 +48,7 @@ public class PaginateTagHandler extends AbstractTagHandler {
             JspWriter out = pageContext.getOut();
 
             out.println("<div style='background: eee'>");
-            out.println(totalCount + " records");
+            out.println(totalCount + " records total"); // TODO: update this to show "X out of X records";
             if (showPrev) {
                 out.println("&nbsp;&nbsp;");
                 out.println("<a href='" + resolveUrl(url, null, pageContext) + "?offset=" + (offset - max));
