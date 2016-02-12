@@ -18,11 +18,15 @@ export default DS.Model.extend({
     }.property('percentage'),
 
     formattedChange: function () {
-        if (this.get('change') > 0) {
-            return "+" + this.get('change');
+        var change = this.get('change');
+        if (change > 0) {
+            return "+" + change;
+        }
+        else if (change === 0) {
+            return change;
         }
         else {
-            return this.get('change');
+            return "<span style='color:red'>" + change + "</span>";
         }
     }.property('change')
 });

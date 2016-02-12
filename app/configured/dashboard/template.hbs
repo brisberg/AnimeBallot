@@ -53,9 +53,9 @@
                     <td>{{voteSummary.seriesTitle}}</td>
                     <td>{{voteSummary.episodeIndex}}</td>
                     <td style="text-align: right;">{{voteSummary.formattedPercentage}}</td>
-                    <td style="text-align: right;">
+                    <td style="text-align: right; font-weight: bold">
                         {{#if voteSummary.change}}
-                            {{voteSummary.formattedChange}}
+                            {{{voteSummary.formattedChange}}}
                         {{else}}
                             --
                         {{/if}}
