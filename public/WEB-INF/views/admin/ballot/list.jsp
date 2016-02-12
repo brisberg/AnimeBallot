@@ -30,7 +30,8 @@
         <thead>
         <tr>
             <ren:sortableHeader url="/admin/ballot/list" property="season" title="Season"/>
-            <ren:sortableHeader url="/admin/ballot/list" property="user" title="User"/>
+            <th>User</th>
+            <ren:sortableHeader url="/admin/ballot/list" property="user" title="User Email"/>
             <ren:sortableHeader url="/admin/ballot/list" property="weekIndex" title="Week Index"/>
             <ren:sortableHeader url="/admin/ballot/list" property="dateCreated" title="Date Created"/>
             <th>Action</th>
@@ -44,6 +45,9 @@
                 </td>
                 <td>
                         ${ballot.user.name}
+                </td>
+                <td>
+                        ${ballot.user.email}
                 </td>
                 <td>
                         ${ballot.weekIndex}

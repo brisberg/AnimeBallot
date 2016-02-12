@@ -77,7 +77,7 @@ public class AdminBallotController extends AbstractAdminController {
         dfp = new FilterDisplay("season", "Season", FilterType.SELECT, seasonList);
         filterDisplays.add(dfp);
 
-        dfp = new FilterDisplay("user", "User", FilterType.STRING, null);
+        dfp = new FilterDisplay("email", "User Email", FilterType.STRING, null);
         filterDisplays.add(dfp);
 
         dfp = new FilterDisplay("weekIndex", "Week Index", FilterType.STRING, null);
@@ -130,10 +130,10 @@ public class AdminBallotController extends AbstractAdminController {
                 // nothing to do here
             }
         }
-        if (request.getParameter("user") != null && request.getParameter("user").trim() != "") {
+        if (request.getParameter("email") != null && request.getParameter("email").trim() != "") {
             predList.add(
                     cb.like(cb.lower(root.join("user").get("email")),
-                            "%" + request.getParameter("user").trim() + "%"));
+                            "%" + request.getParameter("email").trim() + "%"));
         }
         if (request.getParameter("weekIndex") != null && request.getParameter("weekIndex").trim() != "") {
             try {
