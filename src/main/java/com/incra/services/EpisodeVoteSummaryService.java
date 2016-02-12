@@ -16,7 +16,9 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The <i>EpisodeVoteSummaryService</i> handles the fetching, saving, and calculating of EpisodeVoteSummary records.
@@ -63,6 +65,20 @@ public class EpisodeVoteSummaryService {
      * @param endWeekIndex
      */
     public void recalc(int startWeekIndex, int endWeekIndex) {
+        Map<Integer, Integer> priorRanks = new HashMap<>();
+
+        if (startWeekIndex > 1) {
+            StringBuilder priorWeekSummarySQL = new StringBuilder();
+            priorWeekSummarySQL.append("SELECT series_id,episode_index,rank ");
+            priorWeekSummarySQL.append("FROM episode_vote_summaries ");
+            priorWeekSummarySQL.append("WHERE week_index=" + (startWeekIndex - 1) + " ");
+
+            List<Object[]> priorWeekSummaryResults = em.createNativeQuery(priorWeekSummarySQL.toString()).getResultList();
+
+            for (Object[] row : priorWeekSummaryResults) {
+                priorRanks.put((Integer) row[0], (Integer) row[2]);
+            }
+        }
 
         for (int weekIndex = startWeekIndex; weekIndex <= endWeekIndex; weekIndex++) {
             List<EpisodeVoteSummary> episodeVoteSummaryList = new ArrayList<EpisodeVoteSummary>();
@@ -111,13 +127,20 @@ public class EpisodeVoteSummaryService {
                     summary.setSeriesTitle(series.getTitle());
                     summary.setEpisodeIndex((Integer) foobar[1]);
 
+                    Integer previousRank = priorRanks.get(series.getId());
+
                     summary.setRank(rank);
                     summary.setRawScore(((BigInteger) foobar[3]).intValue());
                     summary.setNormScore(((BigInteger) foobar[3]).doubleValue() / numTotalBallots);
                     summary.setPercentage(((BigInteger) foobar[2]).doubleValue() / numTotalBallots);
-                    summary.setChange(((BigInteger) foobar[3]).intValue()); // FIXME: need prior week
+                    if (previousRank != null) {
+                        summary.setChange(previousRank.intValue() - rank);
+                    } else {
+                        summary.setChange(null);
+                    }
 
                     episodeVoteSummaryList.add(summary);
+                    priorRanks.put(series.getId(), new Integer(rank));
                     rank++;
                 }
             } catch (Exception e) {

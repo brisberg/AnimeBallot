@@ -52,7 +52,7 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
     private double percentage;
 
     @Column(name = "change")
-    private int change;
+    private Integer change;
 
     @Transient
     private String seriesTitle;
@@ -130,11 +130,11 @@ public class EpisodeVoteSummary extends AbstractDatedDatabaseItem {
         this.percentage = percentage;
     }
 
-    public int getChange() {
+    public Integer getChange() {
         return change;
     }
 
-    public void setChange(int change) {
+    public void setChange(Integer change) {
         this.change = change;
     }
 

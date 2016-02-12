@@ -44,7 +44,7 @@
             <th>Series</th>
             <th>Episode</th>
             <th style="text-align: right;">% of Ballots</th>
-            <th style="text-align: right;">Net Score</th>
+            <th style="text-align: right;">Change</th>
             </thead>
             <tbody>
             {{#each model.voteSummaries as |voteSummary|}}
@@ -53,7 +53,13 @@
                     <td>{{voteSummary.seriesTitle}}</td>
                     <td>{{voteSummary.episodeIndex}}</td>
                     <td style="text-align: right;">{{voteSummary.formattedPercentage}}</td>
-                    <td style="text-align: right;">{{voteSummary.change}}</td>
+                    <td style="text-align: right;">
+                        {{#if voteSummary.change}}
+                            {{voteSummary.formattedChange}}
+                        {{else}}
+                            --
+                        {{/if}}
+                    </td>
                 </tr>
             {{/each}}
             </tbody>

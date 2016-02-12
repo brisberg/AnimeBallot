@@ -15,5 +15,14 @@ export default DS.Model.extend({
         var value = this.get('percentage') * 100.0;
         var formatted = value.toFixed(2);
         return formatted + "%";
-    }.property('percentage')
+    }.property('percentage'),
+
+    formattedChange: function () {
+        if (this.get('change') > 0) {
+            return "+" + this.get('change');
+        }
+        else {
+            return this.get('change');
+        }
+    }.property('change')
 });
