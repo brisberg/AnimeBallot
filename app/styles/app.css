@@ -43,3 +43,8 @@ h3 {
     padding-left: 10px;
     color: #fff;
 }
+
+.table thead th {
+    background: #EEE;
+    color: #333;
+}
