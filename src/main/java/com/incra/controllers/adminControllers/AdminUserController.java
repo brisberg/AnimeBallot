@@ -54,16 +54,16 @@ public class AdminUserController extends AbstractAdminController {
     public ModelAndView listUsers(HttpServletRequest request) {
 
         List<FilterDisplay> filterDisplays = new ArrayList<FilterDisplay>();
-        FilterDisplay dfp;
+        FilterDisplay df;
 
-        dfp = new FilterDisplay("email", "Email", FilterType.STRING, null);
-        filterDisplays.add(dfp);
+        df = new FilterDisplay("email", "Email", FilterType.STRING, null);
+        filterDisplays.add(df);
 
-        dfp = new FilterDisplay("firstName", "First Name", FilterType.STRING, null);
-        filterDisplays.add(dfp);
+        df = new FilterDisplay("firstName", "First Name", FilterType.STRING, null);
+        filterDisplays.add(df);
 
-        dfp = new FilterDisplay("lastName", "Last Name", FilterType.STRING, null);
-        filterDisplays.add(dfp);
+        df = new FilterDisplay("lastName", "Last Name", FilterType.STRING, null);
+        filterDisplays.add(df);
 
         // Set up the criteria
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -148,20 +148,20 @@ public class AdminUserController extends AbstractAdminController {
         return "redirect:/admin/user/list";
     }
 
-
     protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {
         List<Predicate> predList = new ArrayList<Predicate>();
-        if (request.getParameter("email") != null && request.getParameter("email").trim() != "") {
+
+        if (request.getParameter("email") != null && request.getParameter("email").trim().length() > 0) {
             predList.add(
                     cb.like(cb.lower(root.get("email")),
                             "%" + request.getParameter("email").trim().toLowerCase() + "%"));
         }
-        if (request.getParameter("firstName") != null && request.getParameter("firstName").trim() != "") {
+        if (request.getParameter("firstName") != null && request.getParameter("firstName").trim().length() > 0) {
             predList.add(
                     cb.like(cb.lower(root.get("firstName")),
                             "%" + request.getParameter("firstName").trim().toLowerCase() + "%"));
         }
-        if (request.getParameter("lastName") != null && request.getParameter("lastName").trim() != "") {
+        if (request.getParameter("lastName") != null && request.getParameter("lastName").trim().length() > 0) {
             predList.add(
                     cb.like(cb.lower(root.get("lastName")),
                             "%" + request.getParameter("lastName").trim().toLowerCase() + "%"));

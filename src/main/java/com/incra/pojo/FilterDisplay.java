@@ -11,18 +11,22 @@ public class FilterDisplay {
     private String name;
     private String label;
     private FilterType type;
+    private int size;
     private Object values;
 
-    public FilterDisplay(String name, String label, FilterType type, Object values) {
+    public FilterDisplay(String name, String label, FilterType type, int size, Object values) {
         this.name = name;
         this.label = label;
         this.type = type;
+        this.size = size;
         this.values = values;
     }
 
-    public String getName() {
-        return name;
+    public FilterDisplay(String name, String label, FilterType type, Object values) {
+        this(name, label, type, 12, values);
     }
+
+    public String getName() { return name; }
 
     public String getLabel() {
         return label;
@@ -31,6 +35,8 @@ public class FilterDisplay {
     public FilterType getType() {
         return type;
     }
+
+    public int getSize() { return size; }
 
     public Object getValues() {
         return values;

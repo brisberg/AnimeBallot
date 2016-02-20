@@ -72,13 +72,13 @@ public class AdminSeriesController extends AbstractAdminController {
         List<Season> seasonList = seasonService.findEntityList();
 
         List<FilterDisplay> filterDisplays = new ArrayList<FilterDisplay>();
-        FilterDisplay dfp;
+        FilterDisplay df;
 
-        dfp = new FilterDisplay("title", "Title", FilterType.STRING, null);
-        filterDisplays.add(dfp);
+        df = new FilterDisplay("title", "Title", FilterType.STRING, null);
+        filterDisplays.add(df);
 
-        dfp = new FilterDisplay("season", "Season", FilterType.SELECT, seasonList);
-        filterDisplays.add(dfp);
+        df = new FilterDisplay("season", "Season", FilterType.SELECT, seasonList);
+        filterDisplays.add(df);
 
         // Set up the criteria
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -304,12 +304,13 @@ public class AdminSeriesController extends AbstractAdminController {
 
     protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {
         List<Predicate> predList = new ArrayList<Predicate>();
-        if (request.getParameter("title") != null && request.getParameter("title").trim() != "") {
+
+        if (request.getParameter("title") != null && request.getParameter("title").trim().length() > 0) {
             predList.add(
                     cb.like(cb.lower(root.get("title")),
                             "%" + request.getParameter("title").trim().toLowerCase() + "%"));
         }
-        if (request.getParameter("season") != null && request.getParameter("season").trim() != "") {
+        if (request.getParameter("season") != null && request.getParameter("season").trim().length() > 0) {
             try {
                 Season season = seasonService.findEntityById(Integer.parseInt(request.getParameter("season")));
                 if (season != null)

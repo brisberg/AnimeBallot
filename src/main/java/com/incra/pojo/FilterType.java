@@ -7,5 +7,5 @@ package com.incra.pojo;
  * @since 1/30/2016
  */
 public enum FilterType {
-    STRING, SELECT, ENUMERATION, DATE, DATE_RANGE, CHECKBOX;
+    HIDDEN, STRING, SELECT, ENUMERATION, DATE, DATE_RANGE, CHECKBOX;
 }

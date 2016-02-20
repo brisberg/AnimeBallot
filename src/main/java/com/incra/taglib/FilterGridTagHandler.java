@@ -7,7 +7,6 @@ import com.incra.pojo.FilterType;
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +22,12 @@ public class FilterGridTagHandler extends AbstractTagHandler {
 
     @Override
     public int doStartTag() throws JspException {
+        if (url == null) {
+            throw new JspException("Invalid URL value");
+        }
+        if (filterDisplays == null) {
+            throw new JspException("Missing FilterDisplays list");
+        }
 
         ServletRequest request = pageContext.getRequest();
         Map<String, String[]> parameters = request.getParameterMap();
@@ -37,23 +42,29 @@ public class FilterGridTagHandler extends AbstractTagHandler {
                 String name = filterDisplay.getName();
                 String label = filterDisplay.getLabel();
                 FilterType type = filterDisplay.getType();
+                int size = filterDisplay.getSize();
                 Object values = filterDisplay.getValues();
                 String curValue = request.getParameter(name);
 
                 out.println("&nbsp;&nbsp;" + label);
 
                 switch (type) {
+                    case HIDDEN:
+                        if (curValue == null) curValue = "";
+                        out.println("<input type='hidden' name='" + name + "' value='" + curValue + "'>");
+                        break;
+
                     case STRING:
                         if (curValue == null) curValue = "";
-                        out.println("<input name='" + name + "' value='" + curValue + "'>");
+                        out.println("<input name='" + name + "' size='" + size + "' value='" + curValue + "'>");
                         break;
 
                     case SELECT:
                         out.println("<select name='" + name + "'>");
-                        out.println("<option>Any</option>");
+                        out.println("<option value=''>Any</option>");
                         List<AbstractDatabaseItem> valueList = (List<AbstractDatabaseItem>) values;
                         for (AbstractDatabaseItem value : valueList) {
-                            boolean selected = ("" + value.getId()).equals(curValue);
+                            boolean selected = (curValue != null) && ("" + value.getId()).equals(curValue);
 
                             out.println("<option value='" + value.getId() + "' " + (selected ? "selected" : "") + ">");
                             out.println(value.toString());
@@ -68,7 +79,7 @@ public class FilterGridTagHandler extends AbstractTagHandler {
                         Enum[] enumValues = (Enum[]) values;
 
                         for (Enum e : enumValues) {
-                            boolean selected = e.name().equals(curValue);
+                            boolean selected = (curValue != null) && e.name().equals(curValue);
 
                             out.println("<option value='" + e.name() + "' " + (selected ? "selected" : "") + ">");
                             out.println(e.toString());
@@ -88,12 +99,15 @@ public class FilterGridTagHandler extends AbstractTagHandler {
                 if (key.equals("sort") || key.equals("order")) {
                     String[] value = entry.getValue();
 
-                    out.println("<input type=hidden name='" + key + "' value='" + value[0] + "'/>");
+                    if (value != null && value.length > 0) {
+                        out.println("<input type=hidden name='" + key + "' value='" + value[0] + "'/>");
+                    }
                 }
             }
+            out.println("<input type='hidden' name='offset' value='0'>");
 
             out.println("</form>");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return SKIP_BODY;

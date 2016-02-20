@@ -48,5 +48,13 @@
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <name>showCount</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <name>countMessage</name>
+            <required>false</required>
+        </attribute>
     </tag>
 </taglib>
