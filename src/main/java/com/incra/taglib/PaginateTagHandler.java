@@ -66,7 +66,7 @@ public class PaginateTagHandler extends AbstractTagHandler {
 
             // Left arrow
             if (currentstep > firststep) {
-                emitElement(offset - max, "&laquo;", "", parameters);
+                emitElement(offset - max, "&laquo;", parameters);
             } else {
                 out.println("<li class='disabled'><span>&laquo;</span></li>");
             }
@@ -88,27 +88,29 @@ public class PaginateTagHandler extends AbstractTagHandler {
 
             // Display firststep link when beginstep is not firststep
             if (beginstep > firststep) {
-                emitElement(0, "" + firststep, "", parameters);
+                emitElement(0, "" + firststep, parameters);
                 out.println("<li class='disabled'><span>...</span></li>");
             }
 
             // Display paginate steps
             for (int i = beginstep; i <= endstep; i++) {
+                String iStr = String.format("%,d", i);
+
                 if (i == currentstep)
-                    out.println("<li class='active'><span>" + i + "</span></li>");
+                    out.println("<li class='active'><span>" + iStr + "</span></li>");
                 else
-                    emitElement((i - 1) * max, "" + i, "", parameters);
+                    emitElement((i - 1) * max, iStr, parameters);
             }
 
             // Display laststep link when endstep is not laststep
             if (endstep < laststep) {
                 out.println("<li class='disabled'><span>...</span></li>");
-                emitElement((laststep - 1) * max, "" + laststep, "", parameters);
+                emitElement((laststep - 1) * max, "" + laststep, parameters);
             }
 
             // Right arrow
             if (currentstep < laststep) {
-                emitElement(offset + max, "&raquo;", "", parameters);
+                emitElement(offset + max, "&raquo;", parameters);
             } else {
                 out.println("<li class='disabled'><span>&raquo;</span></li>");
 
@@ -137,12 +139,11 @@ public class PaginateTagHandler extends AbstractTagHandler {
         this.countMessage = countMessage;
     }
 
-    protected void emitElement(int offset, String text, String cssClass, Map<String, String[]> parameters)
+    protected void emitElement(int offset, String text, Map<String, String[]> parameters)
             throws IOException, JspException {
         JspWriter out = pageContext.getOut();
 
-        out.println("<li class='" + cssClass + "'>");
-        out.println("<a href='" + resolveUrl(url, null, pageContext) + "?offset=" + offset);
+        out.println("<li><a href='" + resolveUrl(url, null, pageContext) + "?offset=" + offset);
 
         for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
             String key = entry.getKey();
@@ -154,7 +155,6 @@ public class PaginateTagHandler extends AbstractTagHandler {
         out.println("'>");
 
         out.println(text);
-        out.println("</a>");
-        out.println("</li>");
+        out.println("</a></li>");
     }
 }
