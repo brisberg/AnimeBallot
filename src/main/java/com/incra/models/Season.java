@@ -24,6 +24,12 @@ public class Season extends AbstractDatedDatabaseItem {
     @Size(min = 3)
     private String title;
 
+    @Column(name = "year")
+    private int year;
+
+    @Column(name = "quarter")
+    private String quarter; // TODO: make this an enum for ("summer", "fall, "winter", "spring")
+
     @Column(name = "start_date")
     private Date startDate;
 
@@ -46,6 +52,22 @@ public class Season extends AbstractDatedDatabaseItem {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getQuarter() {
+        return quarter;
+    }
+
+    public void setQuarter(String quarter) {
+        this.quarter = quarter;
     }
 
     public Date getStartDate() {

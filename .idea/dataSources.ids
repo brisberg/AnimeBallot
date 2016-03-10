@@ -4,7 +4,7 @@
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
   <data-source name="PostgreSQL - animeballot@localhost" uuid="1fdd3ab5-b71b-4178-b81e-6ee51de60609">
-    <database-info product="PostgreSQL" version="9.4.4" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.4 JDBC4 (build 1201)">
+    <database-info product="PostgreSQL" version="9.4.5" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.4 JDBC4 (build 1201)">
       <identifier-quote-string>&quot;</identifier-quote-string>
     </database-info>
     <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact"/>
@@ -2371,7 +2371,7 @@
       <column name="definition" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
     </table>
     <table name="ballot" schema="public" catalog="animeballot" type="TABLE">
-      <column name="id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnYmFsbG90X2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
       <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="comment" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -2384,8 +2384,20 @@
       <foreign-key name="fkacc4902491b1a5f0" columns="user_id" ref-table="users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="fkaa75f225e484edd0" table="ballot_vote" schema="public" catalog="animeballot" columns="ballot_id"/>
     </table>
+    <table name="ballot_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
     <table name="ballot_vote" schema="public" catalog="animeballot" type="TABLE">
-      <column name="id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnYmFsbG90X3ZvdGVfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
       <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="score" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -2394,6 +2406,18 @@
       <primary-key name="ballot_vote_pkey" columns="id"/>
       <foreign-key name="fkaa75f225e484edd0" columns="ballot_id" ref-table="ballot" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="fkaa75f2252ae52004" columns="episode_id" ref-table="episode" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="ballot_vote_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
     </table>
     <table name="choice" schema="public" catalog="animeballot" type="TABLE">
       <column name="id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -2405,8 +2429,31 @@
       <primary-key name="choice_pkey" columns="id"/>
       <foreign-key name="fkaedd5da146b21a10" columns="survey_id" ref-table="survey" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
+    <table name="configuration" schema="public" catalog="animeballot" type="TABLE">
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnY29uZmlndXJhdGlvbl9pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
+      <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="current_week_index" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="week_start_day" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="week_start_hour" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="current_season_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="configuration_pkey" columns="id"/>
+      <foreign-key name="fk733374f6a892762a" columns="current_season_id" ref-table="season" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="configuration_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
     <table name="episode" schema="public" catalog="animeballot" type="TABLE">
-      <column name="id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnZXBpc29kZV9pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
       <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="air_date" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
@@ -2419,6 +2466,47 @@
       <foreign-key name="fka3f1bdfb3fd58170" columns="season_id" ref-table="season" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="fka3f1bdfbb18be8f0" columns="series_id" ref-table="series" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="fkaa75f2252ae52004" table="ballot_vote" schema="public" catalog="animeballot" columns="episode_id"/>
+    </table>
+    <table name="episode_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
+    <table name="episode_vote_summaries" schema="public" catalog="animeballot" type="TABLE">
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnZXBpc29kZV92b3RlX3N1bW1hcmllc19pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
+      <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="change" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="episode_index" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="score_norm" sqlType="float8" precision="17" scale="17" nullable="true" jdbcType="8"/>
+      <column name="percentage" sqlType="float8" precision="17" scale="17" nullable="true" jdbcType="8"/>
+      <column name="rank" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="score_raw" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="week_index" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="season_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="series_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="episode_vote_summaries_pkey" columns="id"/>
+      <foreign-key name="fkd26df2733fd58170" columns="season_id" ref-table="season" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fkd26df273b18be8f0" columns="series_id" ref-table="series" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="episode_vote_summaries_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
     </table>
     <table name="hibernate_sequence" schema="public" catalog="animeballot" type="SEQUENCE">
       <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
@@ -2445,19 +2533,35 @@
       <primary-key name="image_pkey" columns="id"/>
     </table>
     <table name="season" schema="public" catalog="animeballot" type="TABLE">
-      <column name="id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnc2Vhc29uX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
       <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="end_date" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="quarter" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="start_date" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="title" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="year" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="season_pkey" columns="id"/>
       <exported-key name="fkacc490243fd58170" table="ballot" schema="public" catalog="animeballot" columns="season_id"/>
+      <exported-key name="fk733374f6a892762a" table="configuration" schema="public" catalog="animeballot" columns="current_season_id"/>
       <exported-key name="fka3f1bdfb3fd58170" table="episode" schema="public" catalog="animeballot" columns="season_id"/>
+      <exported-key name="fkd26df2733fd58170" table="episode_vote_summaries" schema="public" catalog="animeballot" columns="season_id"/>
       <exported-key name="fkca01fe773fd58170" table="series" schema="public" catalog="animeballot" columns="season_id"/>
     </table>
+    <table name="season_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
     <table name="series" schema="public" catalog="animeballot" type="TABLE">
-      <column name="id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnc2VyaWVzX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
       <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="end_date" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
@@ -2465,9 +2569,23 @@
       <column name="start_date" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="title" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="season_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="ani_list_id" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="series_pkey" columns="id"/>
       <foreign-key name="fkca01fe773fd58170" columns="season_id" ref-table="season" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="fka3f1bdfbb18be8f0" table="episode" schema="public" catalog="animeballot" columns="series_id"/>
+      <exported-key name="fkd26df273b18be8f0" table="episode_vote_summaries" schema="public" catalog="animeballot" columns="series_id"/>
+    </table>
+    <table name="series_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
     </table>
     <table name="survey" schema="public" catalog="animeballot" type="TABLE">
       <column name="id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -2479,16 +2597,53 @@
       <primary-key name="survey_pkey" columns="id"/>
       <exported-key name="fkaedd5da146b21a10" table="choice" schema="public" catalog="animeballot" columns="survey_id"/>
     </table>
+    <table name="tasks" schema="public" catalog="animeballot" type="TABLE">
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndGFza3NfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
+      <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="done" sqlType="bool" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="due_date" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="name" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="user_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="tasks_pkey" columns="id"/>
+      <foreign-key name="fk6907b8e91b1a5f0" columns="user_id" ref-table="users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="tasks_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
     <table name="users" schema="public" catalog="animeballot" type="TABLE">
-      <column name="id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndXNlcnNfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
       <column name="date_created" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="last_updated" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="email" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="firstname" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="lastname" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="name" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="password" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="users_pkey" columns="id"/>
       <exported-key name="fkacc4902491b1a5f0" table="ballot" schema="public" catalog="animeballot" columns="user_id"/>
+      <exported-key name="fk6907b8e91b1a5f0" table="tasks" schema="public" catalog="animeballot" columns="user_id"/>
+    </table>
+    <table name="users_id_seq" schema="public" catalog="animeballot" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
     </table>
     <procedure name="_pg_char_max_length" schema="information_schema" catalog="animeballot" type="2">
       <prototype>

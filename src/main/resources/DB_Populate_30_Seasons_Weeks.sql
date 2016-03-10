@@ -1,9 +1,9 @@
 -- seasons
 
-INSERT INTO season (id, title, start_date, end_date, date_created, last_updated)
-VALUES (1, 'Fall 2015', '2015-10-10 00:00:00', '2016-01-09 00:00:00', now(), now());
-INSERT INTO season (id, title, start_date, end_date, date_created, last_updated)
-VALUES (2, 'Summer 2015', '2015-07-02 00:00:00', '2015-10-05 00:00:00', now(), now());
+INSERT INTO season (id, title, year, quarter, start_date, end_date, date_created, last_updated)
+VALUES (1, 'Fall 2015', 2015, 'fall', '2015-10-10 00:00:00', '2016-01-09 00:00:00', now(), now());
+INSERT INTO season (id, title, year, quarter, start_date, end_date, date_created, last_updated)
+VALUES (2, 'Summer 2015', 2015, 'summer', '2015-07-02 00:00:00', '2015-10-05 00:00:00', now(), now());
 
 ALTER SEQUENCE season_id_seq RESTART WITH 9999;
 

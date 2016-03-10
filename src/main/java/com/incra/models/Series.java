@@ -1,9 +1,6 @@
 package com.incra.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.incra.database.AbstractDatedDatabaseItem;
 
 import javax.persistence.*;
@@ -25,6 +22,10 @@ public class Series extends AbstractDatedDatabaseItem {
     @Size(min = 3)
     private String title;
 
+    @Column(name = "ani_list_id")
+    @JsonProperty("id")
+    private Integer aniListId;
+
     @Column(name = "episode_count")
     private int episodeCount;
 
@@ -45,6 +46,14 @@ public class Series extends AbstractDatedDatabaseItem {
     private List<Episode> episodeList;
 
     public Series() {
+    }
+
+    public Integer getAniListId() {
+        return aniListId;
+    }
+
+    public void setAniListId(Integer aniListId) {
+        this.aniListId = aniListId;
     }
 
     public String getTitle() {
