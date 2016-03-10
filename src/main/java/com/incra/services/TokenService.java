@@ -74,7 +74,8 @@ public class TokenService {
                 System.out.println(responseBuffer.toString());
 
                 ObjectMapper mapper = new ObjectMapper();
-                return mapper.readValue(responseBuffer.toString(), AniListAccessToken.class);
+                aniListAccessToken = mapper.readValue(responseBuffer.toString(), AniListAccessToken.class);
+                return aniListAccessToken;
             } catch (Exception e) {
                 logger.error(e.toString());
             }
