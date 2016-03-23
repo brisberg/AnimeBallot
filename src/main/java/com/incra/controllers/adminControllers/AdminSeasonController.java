@@ -1,6 +1,7 @@
 package com.incra.controllers.adminControllers;
 
 import com.incra.models.Season;
+import com.incra.services.AniListApiService;
 import com.incra.services.PageFrameworkService;
 import com.incra.services.SeasonService;
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ public class AdminSeasonController extends AbstractAdminController {
 
     @Autowired
     private SeasonService seasonService;
+    @Autowired
+    private AniListApiService aniListApiService;
     @Autowired
     private PageFrameworkService pageFrameworkService;
 
@@ -99,7 +102,7 @@ public class AdminSeasonController extends AbstractAdminController {
                        BindingResult result, Model model, HttpSession session) {
 
         if (result.hasErrors()) {
-            for (ObjectError error: result.getAllErrors() ) {
+            for (ObjectError error : result.getAllErrors()) {
                 System.out.println(error);
             }
 
@@ -142,5 +145,32 @@ public class AdminSeasonController extends AbstractAdminController {
         }
 
         return "redirect:/admin/season/list";
+    }
+
+    /**
+     * Fetch all the smallAnime blobs from AniList.co for the given season.
+     *
+     * @param id
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/admin/season/import/{id}", method = RequestMethod.GET)
+    public String importAllSeries(@PathVariable int id, HttpSession session) {
+
+        Season season = seasonService.findEntityById(id);
+        if (season != null) {
+            try {
+                aniListApiService.fetchAllSeries(season);
+            } catch (RuntimeException re) {
+                pageFrameworkService.setFlashMessage(session, re.getMessage());
+                pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
+                return "redirect:/admin/season/show/" + id;
+            }
+        } else {
+            pageFrameworkService.setFlashMessage(session, "No Season with that id");
+            pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
+        }
+
+        return "redirect:/admin/season/show/" + id;
     }
 }

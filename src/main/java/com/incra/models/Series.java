@@ -104,6 +104,21 @@ public class Series extends AbstractDatedDatabaseItem {
         this.episodeList = episodeList;
     }
 
+    /**
+     * Get the episode for this series for the given index. return null if there is none.
+     *
+     * @param episodeIndex
+     * @return episode for the given index, null otherwise.
+     */
+    public Episode getEpisodeByIndex(int episodeIndex) {
+        for (Episode episode : episodeList) {
+            if (episode.getEpisodeIndex() == episodeIndex) {
+                return episode;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

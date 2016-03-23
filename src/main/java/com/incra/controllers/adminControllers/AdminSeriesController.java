@@ -4,10 +4,7 @@ import com.incra.models.*;
 import com.incra.models.propertyEditor.SeasonPropertyEditor;
 import com.incra.pojo.FilterDisplay;
 import com.incra.pojo.FilterType;
-import com.incra.services.EpisodeService;
-import com.incra.services.PageFrameworkService;
-import com.incra.services.SeasonService;
-import com.incra.services.SeriesService;
+import com.incra.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,8 @@ public class AdminSeriesController extends AbstractAdminController {
     private SeriesService seriesService;
     @Autowired
     private SeasonService seasonService;
+    @Autowired
+    private AniListApiService aniListApiService;
     @Autowired
     private PageFrameworkService pageFrameworkService;
 
@@ -300,6 +299,32 @@ public class AdminSeriesController extends AbstractAdminController {
         }
 
         return "redirect:/admin/series/" + seriesId + "/episode/list";
+    }
+
+    /**
+     * Import the given series from AniList
+     *
+     * @param seriesId
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/admin/series/import/{seriesId}", method = RequestMethod.GET)
+    public String importSeries(@PathVariable int seriesId, HttpSession session) {
+        Series series = seriesService.findEntityById(seriesId);
+        if (series != null) {
+            try {
+                aniListApiService.updateSeries(series);
+            } catch (RuntimeException re) {
+                pageFrameworkService.setFlashMessage(session, re.getMessage());
+                pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
+                return "redirect:/admin/series/" + seriesId + "/show";
+            }
+        } else {
+            pageFrameworkService.setFlashMessage(session, "No Series with that id");
+            pageFrameworkService.setIsRedirect(session, Boolean.TRUE);
+        }
+
+        return "redirect:/admin/series/" + seriesId + "/show";
     }
 
     protected Predicate[] createPredArray(CriteriaBuilder cb, Root root, HttpServletRequest request) {

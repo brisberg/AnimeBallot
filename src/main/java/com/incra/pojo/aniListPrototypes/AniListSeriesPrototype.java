@@ -7,14 +7,14 @@ import com.incra.models.Series;
 import java.util.Date;
 
 /**
- * AniListSeries is a transient shell object to catch the deserialized results from the AniList.co api responses.
+ * AniListSeriesPrototype is a transient shell object to catch the deserialized results from the AniList.co api responses.
  * It should be quickly converted into a proper Series object.
  *
  * @author Brandon Risberg
  * @since 3/9/2016
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AniListSeries {
+public class AniListSeriesPrototype {
 
     private int seriesId;
 
@@ -33,7 +33,7 @@ public class AniListSeries {
     @JsonProperty("end_date")
     private Date endDate;
 
-    public AniListSeries() {
+    public AniListSeriesPrototype() {
     }
 
     public int getSeriesId() {
@@ -87,9 +87,9 @@ public class AniListSeries {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AniListSeries)) return false;
+        if (!(o instanceof AniListSeriesPrototype)) return false;
 
-        AniListSeries series = (AniListSeries) o;
+        AniListSeriesPrototype series = (AniListSeriesPrototype) o;
 
         return title.equals(series.title);
 
@@ -104,24 +104,35 @@ public class AniListSeries {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("AniListSeries[title=");
+        sb.append("AniListSeriesPrototype[title=");
         sb.append(title);
         sb.append("]");
 
         return sb.toString();
     }
 
+    /**
+     * Convert this prototype into a new native Series object
+     */
     public Series convert() {
-        // create the mature series object we will eventually become
+        // create the native series object we will eventually become
         Series resultSeries = new Series();
 
         // copy our data over
-        resultSeries.setTitle(title);
-        resultSeries.setEpisodeCount(episodeCount);
-        resultSeries.setStartDate(startDate);
-        resultSeries.setEndDate(endDate);
-        resultSeries.setAniListId(aniListId);
+        updateInto(resultSeries);
 
         return resultSeries;
+    }
+
+    /**
+     * Copy prototype's data into an existing Series object
+     */
+    public void updateInto(Series series) {
+        // copy our data over
+        series.setTitle(title);
+        series.setAniListId(aniListId);
+        series.setEpisodeCount(episodeCount);
+        series.setStartDate(startDate);
+        series.setEndDate(endDate);
     }
 }
